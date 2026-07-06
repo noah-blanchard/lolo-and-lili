@@ -1,6 +1,7 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Couple, Database, Profile } from "@/lib/supabase/types";
 import { ApiError, ErrorCode, fail } from "@/lib/api/result";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 type DB = SupabaseClient<Database>;
 
@@ -48,12 +49,18 @@ export async function joinCouple(
   user: User,
   inviteCode: string,
 ): Promise<Couple> {
-  const { data: couple } = await supabase
+  // The invite-code lookup must bypass RLS: couples_select only exposes a
+  // couple you already belong to, but here you're joining a new one. Use the
+  // service-role client for the lookup ONLY — the profile link below still
+  // goes through the caller's RLS-enforced client.
+  const admin = createAdminClient();
+  const { data: couple, error } = await admin
     .from("couples")
     .select("*")
     .eq("invite_code", inviteCode.trim().toLowerCase())
     .maybeSingle();
 
+  if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
   if (!couple) throw fail.notFound("Invite code not found");
 
   await linkProfileToCouple(supabase, user.id, couple.id);
