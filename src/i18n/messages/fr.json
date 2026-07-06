@@ -16,21 +16,48 @@
     "empty": "Rien de prévu pour l'instant 🌷"
   },
   "status": {
-    "title": "Statut",
+    "title": "Nos statuts",
     "busy": "Occupé·e",
     "free": "Disponible",
     "setBusy": "Je suis occupé·e",
-    "setFree": "Je suis libre"
+    "setFree": "Je suis libre",
+    "online": "en ligne",
+    "offline": "hors ligne",
+    "me": "Moi",
+    "partner": "Mon amour"
   },
   "chores": {
     "title": "Tâches",
     "empty": "Aucune tâche pour le moment ✨",
-    "add": "Ajouter une tâche"
+    "add": "Ajouter une tâche",
+    "addTitle": "Nouvelle tâche",
+    "titlePlaceholder": "Ex. Sortir la poubelle",
+    "assignee": "Pour qui ?",
+    "assigneeAnyone": "Nous deux",
+    "recurrence": "Répétition",
+    "recurrenceNone": "Une fois",
+    "recurrenceDaily": "Chaque jour",
+    "recurrenceWeekly": "Chaque semaine",
+    "recurrenceMonthly": "Chaque mois",
+    "save": "Ajouter",
+    "completed": "Bien joué ! 🎉"
   },
   "moods": {
     "title": "Humeurs",
     "question": "Comment tu te sens ?",
-    "empty": "Pas encore d'humeur aujourd'hui"
+    "empty": "Pas encore d'humeur aujourd'hui",
+    "recent": "Récemment",
+    "logged": "Humeur enregistrée 💖",
+    "faces": {
+      "happy": "Heureux·se",
+      "loved": "Aimé·e",
+      "calm": "Serein·e",
+      "excited": "Excité·e",
+      "tired": "Fatigué·e",
+      "meh": "Bof",
+      "sad": "Triste",
+      "stressed": "Stressé·e"
+    }
   },
   "auth": {
     "loginTitle": "Connexion",

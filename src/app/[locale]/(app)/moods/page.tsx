@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Card, CardDescription } from "@/components/ui/card";
+import { MoodPicker } from "@/components/features/moods/mood-picker";
+import { MoodTimeline } from "@/components/features/moods/mood-timeline";
 
 export default async function MoodsPage({
   params,
@@ -13,9 +14,8 @@ export default async function MoodsPage({
   return (
     <div className="flex flex-col gap-5">
       <h1 className="px-1 pt-2 font-display text-3xl font-bold">{t("title")}</h1>
-      <Card>
-        <CardDescription>{t("empty")}</CardDescription>
-      </Card>
+      <MoodPicker />
+      <MoodTimeline />
     </div>
   );
 }

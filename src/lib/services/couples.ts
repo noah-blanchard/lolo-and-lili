@@ -1,8 +1,31 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
-import type { Couple, Database } from "@/lib/supabase/types";
+import type { Couple, Database, Profile } from "@/lib/supabase/types";
 import { ApiError, ErrorCode, fail } from "@/lib/api/result";
 
 type DB = SupabaseClient<Database>;
+
+/** The current user's couple id, or throw FORBIDDEN if they haven't joined one. */
+export async function requireCoupleId(supabase: DB, user: User): Promise<string> {
+  const { data } = await supabase
+    .from("profiles")
+    .select("couple_id")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (!data?.couple_id) throw fail.forbidden("You are not part of a couple yet");
+  return data.couple_id;
+}
+
+/** Both members of a couple (RLS keeps this scoped to the caller's couple). */
+export async function getCoupleMembers(
+  supabase: DB,
+  coupleId: string,
+): Promise<Profile[]> {
+  const { data } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("couple_id", coupleId);
+  return data ?? [];
+}
 
 /** Create a fresh couple and link the current user's profile to it. */
 export async function createCouple(supabase: DB, user: User): Promise<Couple> {

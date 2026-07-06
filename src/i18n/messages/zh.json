@@ -16,21 +16,48 @@
     "empty": "暂时没有安排哦 🌷"
   },
   "status": {
-    "title": "状态",
+    "title": "我们的状态",
     "busy": "忙碌中",
     "free": "有空",
     "setBusy": "我在忙",
-    "setFree": "我有空"
+    "setFree": "我有空",
+    "online": "在线",
+    "offline": "离线",
+    "me": "我",
+    "partner": "我的另一半"
   },
   "chores": {
     "title": "家务",
     "empty": "还没有家务 ✨",
-    "add": "添加家务"
+    "add": "添加家务",
+    "addTitle": "新家务",
+    "titlePlaceholder": "例如：倒垃圾",
+    "assignee": "谁来做？",
+    "assigneeAnyone": "我们俩",
+    "recurrence": "重复",
+    "recurrenceNone": "一次",
+    "recurrenceDaily": "每天",
+    "recurrenceWeekly": "每周",
+    "recurrenceMonthly": "每月",
+    "save": "添加",
+    "completed": "做得好！🎉"
   },
   "moods": {
     "title": "心情",
     "question": "你现在感觉怎么样？",
-    "empty": "今天还没有记录心情"
+    "empty": "今天还没有记录心情",
+    "recent": "最近",
+    "logged": "心情已记录 💖",
+    "faces": {
+      "happy": "开心",
+      "loved": "被爱",
+      "calm": "平静",
+      "excited": "兴奋",
+      "tired": "累了",
+      "meh": "一般",
+      "sad": "难过",
+      "stressed": "压力大"
+    }
   },
   "auth": {
     "loginTitle": "登录",

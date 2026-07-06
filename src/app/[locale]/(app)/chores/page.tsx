@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Card, CardDescription } from "@/components/ui/card";
+import { ChoreList } from "@/components/features/chores/chore-list";
 
 export default async function ChoresPage({
   params,
@@ -13,9 +13,7 @@ export default async function ChoresPage({
   return (
     <div className="flex flex-col gap-5">
       <h1 className="px-1 pt-2 font-display text-3xl font-bold">{t("title")}</h1>
-      <Card>
-        <CardDescription>{t("empty")}</CardDescription>
-      </Card>
+      <ChoreList />
     </div>
   );
 }
