@@ -1,0 +1,66 @@
+{
+  "app": {
+    "name": "Lolo & Lili",
+    "tagline": "我们的小家"
+  },
+  "nav": {
+    "home": "首页",
+    "chores": "家务",
+    "moods": "心情",
+    "profile": "我的"
+  },
+  "home": {
+    "greeting": "你好呀 {name} 👋",
+    "todayTitle": "今天",
+    "statusTitle": "我们的状态",
+    "empty": "暂时没有安排哦 🌷"
+  },
+  "status": {
+    "title": "状态",
+    "busy": "忙碌中",
+    "free": "有空",
+    "setBusy": "我在忙",
+    "setFree": "我有空"
+  },
+  "chores": {
+    "title": "家务",
+    "empty": "还没有家务 ✨",
+    "add": "添加家务"
+  },
+  "moods": {
+    "title": "心情",
+    "question": "你现在感觉怎么样？",
+    "empty": "今天还没有记录心情"
+  },
+  "auth": {
+    "loginTitle": "登录",
+    "emailLabel": "你的邮箱",
+    "sendLink": "发送魔法链接",
+    "checkEmail": "去查收邮件吧 💌"
+  },
+  "onboarding": {
+    "title": "来建我们的小窝吧 🪺",
+    "subtitle": "创建你们的二人空间，或加入你的另一半。",
+    "createTitle": "创建我们的空间",
+    "createSubtitle": "你会得到一个可分享的邀请码。",
+    "createCta": "开始吧 💕",
+    "or": "— 或 —",
+    "joinTitle": "加入另一半",
+    "joinPlaceholder": "邀请码",
+    "joinCta": "加入"
+  },
+  "profile": {
+    "theme": "主题",
+    "language": "语言",
+    "inviteCode": "邀请码",
+    "inviteHint": "把这个码分享给你的另一半 💞",
+    "signOut": "退出登录"
+  },
+  "common": {
+    "loading": "加载中…",
+    "retry": "重试",
+    "save": "保存",
+    "cancel": "取消",
+    "error": "哎呀，出错了"
+  }
+}

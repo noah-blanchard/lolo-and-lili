@@ -1,0 +1,66 @@
+{
+  "app": {
+    "name": "Lolo & Lili",
+    "tagline": "Notre petit chez-nous"
+  },
+  "nav": {
+    "home": "Accueil",
+    "chores": "Tâches",
+    "moods": "Humeurs",
+    "profile": "Profil"
+  },
+  "home": {
+    "greeting": "Coucou {name} 👋",
+    "todayTitle": "Aujourd'hui",
+    "statusTitle": "Nos statuts",
+    "empty": "Rien de prévu pour l'instant 🌷"
+  },
+  "status": {
+    "title": "Statut",
+    "busy": "Occupé·e",
+    "free": "Disponible",
+    "setBusy": "Je suis occupé·e",
+    "setFree": "Je suis libre"
+  },
+  "chores": {
+    "title": "Tâches",
+    "empty": "Aucune tâche pour le moment ✨",
+    "add": "Ajouter une tâche"
+  },
+  "moods": {
+    "title": "Humeurs",
+    "question": "Comment tu te sens ?",
+    "empty": "Pas encore d'humeur aujourd'hui"
+  },
+  "auth": {
+    "loginTitle": "Connexion",
+    "emailLabel": "Ton adresse e-mail",
+    "sendLink": "Recevoir mon lien magique",
+    "checkEmail": "Regarde ta boîte mail 💌"
+  },
+  "onboarding": {
+    "title": "Créons votre petit nid 🪺",
+    "subtitle": "Commence un espace à deux, ou rejoins celui de ton amour.",
+    "createTitle": "Créer notre espace",
+    "createSubtitle": "Tu obtiendras un code à partager.",
+    "createCta": "C'est parti 💕",
+    "or": "— ou —",
+    "joinTitle": "Rejoindre mon amour",
+    "joinPlaceholder": "Code d'invitation",
+    "joinCta": "Nous rejoindre"
+  },
+  "profile": {
+    "theme": "Thème",
+    "language": "Langue",
+    "inviteCode": "Code d'invitation",
+    "inviteHint": "Partage ce code avec ton amour 💞",
+    "signOut": "Se déconnecter"
+  },
+  "common": {
+    "loading": "Chargement…",
+    "retry": "Réessayer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "error": "Oups, une erreur est survenue"
+  }
+}

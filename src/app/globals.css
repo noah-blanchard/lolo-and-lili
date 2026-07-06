@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
+/* next-themes toggles a `.dark` class on <html>; make Tailwind's dark: variant follow it. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ *
+ * Peachy Pastel palette — light (default)
+ * ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff7f0; /* warm cream */
+  --surface: #ffffff; /* cards */
+  --surface-muted: #fdeee6;
+  --foreground: #4a3f44; /* ink */
+  --muted: #9b8e93; /* secondary text */
+
+  --primary: #ff8fa3; /* coral */
+  --primary-foreground: #ffffff;
+  --secondary: #9ee6cf; /* mint */
+  --secondary-foreground: #205247;
+  --accent: #ffd670; /* butter */
+  --accent-foreground: #6b5518;
+  --lavender: #c3b1e1;
+  --lavender-foreground: #3f3357;
+
+  --busy: #ff6b6b; /* status: busy */
+  --free: #59c98f; /* status: free */
+
+  --border: #f1e0d5;
+  --input: #f5e6dc;
+  --ring: #ff8fa3;
+
+  --radius: 1.25rem;
 }
 
+.dark {
+  --background: #211a1d; /* warm near-black */
+  --surface: #2c2327;
+  --surface-muted: #35292e;
+  --foreground: #f7ece9;
+  --muted: #b7a6ac;
+
+  --primary: #ff9db0;
+  --primary-foreground: #2a1418;
+  --secondary: #7fd9be;
+  --secondary-foreground: #08312a;
+  --accent: #ffd98a;
+  --accent-foreground: #3a2c07;
+  --lavender: #cbb9e9;
+  --lavender-foreground: #efe9f8;
+
+  --busy: #ff7b7b;
+  --free: #6ed6a0;
+
+  --border: #3a2e33;
+  --input: #3a2e33;
+  --ring: #ff9db0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Map CSS variables to Tailwind tokens (utilities: bg-primary, etc.)
+ * ------------------------------------------------------------------ */
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-lavender: var(--lavender);
+  --color-lavender-foreground: var(--lavender-foreground);
+
+  --color-busy: var(--busy);
+  --color-free: var(--free);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-display: var(--font-fredoka), "Fredoka", ui-rounded, system-ui, sans-serif;
+  --font-sans: var(--font-quicksand), "Quicksand", ui-rounded, system-ui, sans-serif;
+
+  /* Rounded, soft radii */
+  --radius-md: calc(var(--radius) - 0.5rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.5rem);
+  --radius-2xl: calc(var(--radius) + 1rem);
+  --radius-cute: 1.75rem;
+
+  /* Soft, pillowy shadows */
+  --shadow-cute: 0 8px 24px -8px rgb(255 143 163 / 0.35);
+  --shadow-soft: 0 4px 16px -6px rgb(74 63 68 / 0.12);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    height: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    min-height: 100%;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    /* iOS PWA safe areas */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) 0
+      env(safe-area-inset-left);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior-y: none;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Utility: bottom safe-area padding for fixed nav */
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+@utility mb-safe {
+  margin-bottom: env(safe-area-inset-bottom);
 }
