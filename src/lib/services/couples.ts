@@ -65,18 +65,24 @@ async function linkProfileToCouple(
   userId: string,
   coupleId: string,
 ) {
+  // Upsert (not update): self-heals users whose profile row was never created
+  // by the handle_new_user trigger. Only touches id + couple_id, so existing
+  // display_name/avatar_emoji are preserved.
   const { error: profileError } = await supabase
     .from("profiles")
-    .update({ couple_id: coupleId })
-    .eq("id", userId);
+    .upsert({ id: userId, couple_id: coupleId }, { onConflict: "id" });
   if (profileError) {
     throw new ApiError(ErrorCode.INTERNAL, profileError.message);
   }
 
   // Seed a default status row so the couple dashboard has something to show.
-  await supabase
+  // Non-fatal — the couple is usable even if this fails.
+  const { error: statusError } = await supabase
     .from("statuses")
     .upsert({ user_id: userId, couple_id: coupleId, state: "free" });
+  if (statusError) {
+    console.error("[couples] seed status failed:", statusError.message);
+  }
 }
 
 async function fetchCouple(supabase: DB, id: string): Promise<Couple> {
@@ -84,9 +90,13 @@ async function fetchCouple(supabase: DB, id: string): Promise<Couple> {
     .from("couples")
     .select("*")
     .eq("id", id)
-    .single();
-  if (error || !data) {
-    throw new ApiError(ErrorCode.INTERNAL, error?.message ?? "Couple not found");
+    .maybeSingle();
+  if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
+  if (!data) {
+    throw new ApiError(
+      ErrorCode.INTERNAL,
+      "Couple created but not readable — check that your profile is linked",
+    );
   }
   return data;
 }
