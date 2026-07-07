@@ -72,6 +72,26 @@
     "emptyHint": "留下第一句情话吧 💌",
     "delete": "删除"
   },
+  "meals": {
+    "title": "本周菜单",
+    "addMeal": "添加…",
+    "mealPlaceholder": "吃点什么呢？",
+    "cook": "谁下厨？",
+    "cookNone": "—",
+    "cookMe": "我",
+    "cookPartner": "亲爱的",
+    "notesPlaceholder": "备注（可选）",
+    "deleteMeal": "删除这一餐",
+    "ingredientsTitle": "食材 → 购物清单",
+    "ingredientsPlaceholder": "用逗号或换行分隔",
+    "addIngredients": "加入购物清单 🛒",
+    "ingredientsAdded": "已加入购物清单！",
+    "slots": {
+      "breakfast": "早餐",
+      "lunch": "午餐",
+      "dinner": "晚餐"
+    }
+  },
   "grocery": {
     "title": "购物清单",
     "namePlaceholder": "添加一项…",

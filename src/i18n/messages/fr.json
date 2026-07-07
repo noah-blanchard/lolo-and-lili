@@ -72,6 +72,26 @@
     "emptyHint": "Laisse le premier petit mot 💌",
     "delete": "Supprimer"
   },
+  "meals": {
+    "title": "Menu de la semaine",
+    "addMeal": "Ajouter…",
+    "mealPlaceholder": "Qu'est-ce qu'on mange ?",
+    "cook": "Qui cuisine ?",
+    "cookNone": "—",
+    "cookMe": "Moi",
+    "cookPartner": "Mon amour",
+    "notesPlaceholder": "Notes (facultatif)",
+    "deleteMeal": "Supprimer ce repas",
+    "ingredientsTitle": "Ingrédients → courses",
+    "ingredientsPlaceholder": "Séparez par des virgules ou des retours à la ligne",
+    "addIngredients": "Ajouter aux courses 🛒",
+    "ingredientsAdded": "Ajouté à la liste de courses !",
+    "slots": {
+      "breakfast": "Petit-déj",
+      "lunch": "Déjeuner",
+      "dinner": "Dîner"
+    }
+  },
   "grocery": {
     "title": "Liste de courses",
     "namePlaceholder": "Ajouter un article…",

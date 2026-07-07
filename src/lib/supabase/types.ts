@@ -262,6 +262,33 @@ type GroceryItemsTable = {
   Relationships: [];
 };
 
+type MealsTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    date: string;
+    slot: string;
+    title: string;
+    cook_id: string | null;
+    notes: string | null;
+    created_by: string | null;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    date: string;
+    slot: string;
+    title: string;
+    cook_id?: string | null;
+    notes?: string | null;
+    created_by?: string | null;
+    created_at?: string;
+  };
+  Update: Partial<MealsTable["Insert"]>;
+  Relationships: [];
+};
+
 export type Database = Omit<GeneratedDatabase, "public"> & {
   public: Omit<GeneratedDatabase["public"], "Tables"> & {
     Tables: Omit<
@@ -304,6 +331,7 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
       special_dates: SpecialDatesTable;
       bucket_items: BucketItemsTable;
       grocery_items: GroceryItemsTable;
+      meals: MealsTable;
     };
   };
 };
@@ -331,3 +359,4 @@ export type QuestionAnswer = Tables["question_answers"]["Row"];
 export type SpecialDate = Tables["special_dates"]["Row"];
 export type BucketItem = Tables["bucket_items"]["Row"];
 export type GroceryItem = Tables["grocery_items"]["Row"];
+export type Meal = Tables["meals"]["Row"];
