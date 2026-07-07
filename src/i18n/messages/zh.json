@@ -72,6 +72,24 @@
     "emptyHint": "留下第一句情话吧 💌",
     "delete": "删除"
   },
+  "dates": {
+    "title": "纪念日与倒数",
+    "add": "添加日期",
+    "addTitle": "新日期",
+    "titlePlaceholder": "例如：我们相遇 ❤️",
+    "recurring": "每年",
+    "today": "就是今天！",
+    "daysLeft": "天",
+    "years": "{count} 周年 💞",
+    "empty": "还没有日期",
+    "emptyHint": "添加你们的第一个特别日子 🗓️",
+    "delete": "删除",
+    "kind": {
+      "anniversary": "纪念日 💕",
+      "birthday": "生日 🎂",
+      "custom": "其他 ⭐"
+    }
+  },
   "question": {
     "title": "今日问题",
     "placeholder": "你的回答…",

@@ -72,6 +72,24 @@
     "emptyHint": "Laisse le premier petit mot 💌",
     "delete": "Supprimer"
   },
+  "dates": {
+    "title": "Dates & comptes à rebours",
+    "add": "Ajouter une date",
+    "addTitle": "Nouvelle date",
+    "titlePlaceholder": "Ex. Notre rencontre ❤️",
+    "recurring": "Chaque année",
+    "today": "Aujourd'hui !",
+    "daysLeft": "jours",
+    "years": "{count} ans 💞",
+    "empty": "Aucune date pour l'instant",
+    "emptyHint": "Ajoutez votre première date spéciale 🗓️",
+    "delete": "Supprimer",
+    "kind": {
+      "anniversary": "Anniv. 💕",
+      "birthday": "Naissance 🎂",
+      "custom": "Autre ⭐"
+    }
+  },
   "question": {
     "title": "Question du jour",
     "placeholder": "Ta réponse…",

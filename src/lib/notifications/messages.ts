@@ -12,7 +12,12 @@ export type NotifyKey =
   | "love_nudge"
   | "coupon_gifted"
   | "coupon_redeemed"
-  | "question_answered";
+  | "question_answered"
+  | "date_today"
+  | "date_soon"
+  | "meal_assigned"
+  | "expense_added"
+  | "expense_settled";
 
 type Loc = "fr" | "zh";
 type Vars = { actor: string; extra?: string };
@@ -140,6 +145,50 @@ export const NOTIFY: Record<NotifyKey, Record<Loc, (v: Vars) => Built>> = {
       url: "/question",
     }),
   },
+  date_today: {
+    fr: (v) => ({ title: "C'est le jour J ! 🎉", body: v.extra ?? "", url: "/dates" }),
+    zh: (v) => ({ title: "就是今天啦！🎉", body: v.extra ?? "", url: "/dates" }),
+  },
+  date_soon: {
+    fr: (v) => ({ title: "Dans une semaine 🗓️", body: v.extra ?? "", url: "/dates" }),
+    zh: (v) => ({ title: "还有一周 🗓️", body: v.extra ?? "", url: "/dates" }),
+  },
+  meal_assigned: {
+    fr: (v) => ({
+      title: "Aux fourneaux 👩‍🍳",
+      body: `${v.actor} t'a désigné·e chef : ${v.extra}`,
+      url: "/meals",
+    }),
+    zh: (v) => ({
+      title: "该你下厨啦 👩‍🍳",
+      body: `${v.actor} 指定你做：${v.extra}`,
+      url: "/meals",
+    }),
+  },
+  expense_added: {
+    fr: (v) => ({
+      title: "Nouvelle dépense 💸",
+      body: `${v.actor} a ajouté : ${v.extra}`,
+      url: "/expenses",
+    }),
+    zh: (v) => ({
+      title: "新的开销 💸",
+      body: `${v.actor} 记了一笔：${v.extra}`,
+      url: "/expenses",
+    }),
+  },
+  expense_settled: {
+    fr: (v) => ({
+      title: "Comptes réglés ✅",
+      body: `${v.actor} a soldé les comptes`,
+      url: "/expenses",
+    }),
+    zh: (v) => ({
+      title: "账已结清 ✅",
+      body: `${v.actor} 结清了账目`,
+      url: "/expenses",
+    }),
+  },
 };
 
 /** Which mutable category each template belongs to (for opt-out checks). */
@@ -155,6 +204,11 @@ export const CATEGORY_OF: Record<NotifyKey, NotifyCategory> = {
   coupon_gifted: "love",
   coupon_redeemed: "love",
   question_answered: "love",
+  date_today: "dates",
+  date_soon: "dates",
+  meal_assigned: "home",
+  expense_added: "home",
+  expense_settled: "home",
 };
 
 /** Build the payload for a template in the given locale (falls back to fr). */

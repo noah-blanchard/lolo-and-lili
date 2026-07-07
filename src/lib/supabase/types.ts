@@ -183,6 +183,33 @@ type QuestionAnswersTable = {
   Relationships: [];
 };
 
+type SpecialDatesTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    title: string;
+    date: string;
+    kind: string;
+    recurring: boolean;
+    emoji: string;
+    created_by: string | null;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    title: string;
+    date: string;
+    kind?: string;
+    recurring?: boolean;
+    emoji?: string;
+    created_by?: string | null;
+    created_at?: string;
+  };
+  Update: Partial<SpecialDatesTable["Insert"]>;
+  Relationships: [];
+};
+
 export type Database = Omit<GeneratedDatabase, "public"> & {
   public: Omit<GeneratedDatabase["public"], "Tables"> & {
     Tables: Omit<
@@ -222,6 +249,7 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
       love_notes: LoveNotesTable;
       coupons: CouponsTable;
       question_answers: QuestionAnswersTable;
+      special_dates: SpecialDatesTable;
     };
   };
 };
@@ -246,3 +274,4 @@ export type PetMemory = Tables["pet_memories"]["Row"];
 export type LoveNote = Tables["love_notes"]["Row"];
 export type Coupon = Tables["coupons"]["Row"];
 export type QuestionAnswer = Tables["question_answers"]["Row"];
+export type SpecialDate = Tables["special_dates"]["Row"];
