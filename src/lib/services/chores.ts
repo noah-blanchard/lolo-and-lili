@@ -4,6 +4,7 @@ import { ApiError, ErrorCode } from "@/lib/api/result";
 import type { CreateChoreInput } from "@/lib/schemas/chore";
 import { type ChoreWithStatus, today } from "@/lib/chores";
 import { requireCoupleId } from "./couples";
+import { rewardFromChore } from "./pets";
 
 type DB = SupabaseClient<Database>;
 
@@ -71,6 +72,13 @@ export async function toggleCompletion(
 ): Promise<{ completed_today: boolean }> {
   const occurrence = today();
 
+  const { data: chore } = await supabase
+    .from("chores")
+    .select("points")
+    .eq("id", choreId)
+    .maybeSingle();
+  const points = chore?.points ?? 0;
+
   const { data: existing } = await supabase
     .from("chore_completions")
     .select("id")
@@ -84,6 +92,8 @@ export async function toggleCompletion(
       .delete()
       .eq("id", existing.id);
     if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
+    // Refund the treats the completion had awarded the cat.
+    await rewardFromChore(supabase, user, points, true);
     return { completed_today: false };
   }
 
@@ -92,6 +102,8 @@ export async function toggleCompletion(
     { onConflict: "chore_id,occurrence_date", ignoreDuplicates: true },
   );
   if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
+  // Teamwork feeds the cat: award treats + a small energy nudge.
+  await rewardFromChore(supabase, user, points, false);
   return { completed_today: true };
 }
 

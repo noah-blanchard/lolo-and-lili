@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, ListChecks, Smile, Heart } from "lucide-react";
+import { Home, ListChecks, Smile, Heart, Cat } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -10,6 +10,7 @@ import { springBouncy } from "@/lib/motion";
 const items = [
   { href: "/", key: "home", icon: Home },
   { href: "/chores", key: "chores", icon: ListChecks },
+  { href: "/pet", key: "pet", icon: Cat },
   { href: "/moods", key: "moods", icon: Smile },
   { href: "/profile", key: "profile", icon: Heart },
 ] as const;

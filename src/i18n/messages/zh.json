@@ -6,6 +6,7 @@
   "nav": {
     "home": "首页",
     "chores": "家务",
+    "pet": "狗狗",
     "moods": "心情",
     "profile": "我的"
   },
@@ -59,6 +60,55 @@
       "stressed": "压力大"
     }
   },
+  "pet": {
+    "title": "我们的狗",
+    "adoptTitle": "领养一只小狗 🐶",
+    "adoptSubtitle": "一起给它起名字、选造型。",
+    "namePlaceholder": "它的名字",
+    "adoptCta": "领养它 💕",
+    "careTitle": "照顾它",
+    "cuddleTitle": "每日抱抱",
+    "cuddleHint": "你们俩一起抱抱它 🤍",
+    "cuddleWaiting": "等待你的另一半…",
+    "cuddleDone": "一起抱过啦！🔥",
+    "awayTitle": "它出走了… 🥺",
+    "awaySubtitle": "你们俩一起把它叫回家。",
+    "callBack": "叫它回来 🏡",
+    "callbackWaiting": "等你的另一半一起把它叫回来…",
+    "cameHome": "{name} 回家啦！🏡",
+    "leveledUp": "升到 {level} 级！✨",
+    "grewUp": "{name} 长大啦！🐕",
+    "unlocked": "解锁了新配饰 🎁",
+    "streakReached": "连续 {count} 天 🔥",
+    "partnerCared": "你的另一半刚照顾了狗狗 🐶",
+    "memoriesTitle": "我们的回忆",
+    "status": {
+      "ok": "元气满满",
+      "sick": "有点不舒服",
+      "away": "出走了"
+    },
+    "meters": {
+      "hunger": "饥饿",
+      "affection": "爱",
+      "energy": "活力",
+      "cleanliness": "清洁"
+    },
+    "actions": {
+      "feed": "喂食",
+      "pet": "抚摸",
+      "play": "玩耍",
+      "groom": "梳理",
+      "gift": "宠溺",
+      "heal": "治疗"
+    },
+    "memory": {
+      "adopted": "{name} 加入了家庭 🐶",
+      "stageUp": "小狗长大了 🐕",
+      "unlock": "解锁了新配饰 🎁",
+      "streak": "连续 {count} 天 🔥",
+      "recovered": "我们的狗回家了 🏡"
+    }
+  },
   "auth": {
     "loginTitle": "登录",
     "emailLabel": "你的邮箱",
@@ -84,6 +134,13 @@
     "joinCta": "加入"
   },
   "profile": {
+    "editProfile": "我的资料",
+    "name": "你的名字",
+    "namePlaceholder": "怎么称呼你？",
+    "avatar": "你的头像",
+    "color": "你的颜色",
+    "spaceName": "我们的空间",
+    "renameSpace": "重命名我们的空间",
     "theme": "主题",
     "language": "语言",
     "inviteCode": "邀请码",

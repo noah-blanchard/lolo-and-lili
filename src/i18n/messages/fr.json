@@ -6,6 +6,7 @@
   "nav": {
     "home": "Accueil",
     "chores": "Tâches",
+    "pet": "Chien",
     "moods": "Humeurs",
     "profile": "Profil"
   },
@@ -59,6 +60,55 @@
       "stressed": "Stressé·e"
     }
   },
+  "pet": {
+    "title": "Notre chien",
+    "adoptTitle": "Adopte un chiot 🐶",
+    "adoptSubtitle": "Choisissez son nom et son look, ensemble.",
+    "namePlaceholder": "Son petit nom",
+    "adoptCta": "L'adopter 💕",
+    "careTitle": "Prendre soin de lui",
+    "cuddleTitle": "Câlin du jour",
+    "cuddleHint": "Faites-lui un câlin tous les deux 🤍",
+    "cuddleWaiting": "En attente de ton amour…",
+    "cuddleDone": "Câlin à deux fait ! 🔥",
+    "awayTitle": "Il est parti se promener… 🥺",
+    "awaySubtitle": "Rappelez-le à la maison, tous les deux.",
+    "callBack": "Le rappeler 🏡",
+    "callbackWaiting": "En attente de ton amour pour le rappeler…",
+    "cameHome": "{name} est rentré ! 🏡",
+    "leveledUp": "Niveau {level} ! ✨",
+    "grewUp": "{name} a grandi ! 🐕",
+    "unlocked": "Nouvel accessoire débloqué 🎁",
+    "streakReached": "Série de {count} jours 🔥",
+    "partnerCared": "Ton amour vient de s'occuper du chien 🐶",
+    "memoriesTitle": "Nos souvenirs",
+    "status": {
+      "ok": "En pleine forme",
+      "sick": "Un peu malade",
+      "away": "Parti se promener"
+    },
+    "meters": {
+      "hunger": "Faim",
+      "affection": "Amour",
+      "energy": "Énergie",
+      "cleanliness": "Propreté"
+    },
+    "actions": {
+      "feed": "Nourrir",
+      "pet": "Câliner",
+      "play": "Jouer",
+      "groom": "Toiletter",
+      "gift": "Gâter",
+      "heal": "Soigner"
+    },
+    "memory": {
+      "adopted": "{name} a rejoint la famille 🐶",
+      "stageUp": "Notre chiot a grandi 🐕",
+      "unlock": "Nouvel accessoire débloqué 🎁",
+      "streak": "Série de {count} jours 🔥",
+      "recovered": "Notre chien est rentré 🏡"
+    }
+  },
   "auth": {
     "loginTitle": "Connexion",
     "emailLabel": "Ton adresse e-mail",
@@ -84,6 +134,13 @@
     "joinCta": "Nous rejoindre"
   },
   "profile": {
+    "editProfile": "Mon profil",
+    "name": "Ton prénom",
+    "namePlaceholder": "Comment on t'appelle ?",
+    "avatar": "Ton avatar",
+    "color": "Ta couleur",
+    "spaceName": "Notre espace",
+    "renameSpace": "Renommer notre espace",
     "theme": "Thème",
     "language": "Langue",
     "inviteCode": "Code d'invitation",

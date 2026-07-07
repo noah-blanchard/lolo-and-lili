@@ -3,6 +3,7 @@ import type { Database, Mood } from "@/lib/supabase/types";
 import { ApiError, ErrorCode } from "@/lib/api/result";
 import type { AddMoodInput } from "@/lib/schemas/mood";
 import { requireCoupleId } from "./couples";
+import { nourishFromMood } from "./pets";
 
 type DB = SupabaseClient<Database>;
 
@@ -40,5 +41,7 @@ export async function addMood(
   if (error || !data) {
     throw new ApiError(ErrorCode.INTERNAL, error?.message ?? "Failed to add mood");
   }
+  // Emotional check-ins nourish the cat's heart.
+  await nourishFromMood(supabase, user);
   return data;
 }

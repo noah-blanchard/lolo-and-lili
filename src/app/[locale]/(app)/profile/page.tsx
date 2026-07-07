@@ -4,6 +4,8 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/nav/theme-toggle";
 import { LocaleSwitcher } from "@/components/nav/locale-switcher";
+import { ProfileEditor } from "@/components/features/profile/profile-editor";
+import { CoupleNameEditor } from "@/components/features/profile/couple-name-editor";
 import { signOut } from "@/app/actions/auth";
 
 export default async function ProfilePage({
@@ -19,6 +21,7 @@ export default async function ProfilePage({
   const profile = await getProfile();
 
   let inviteCode: string | null = null;
+  let coupleName: string | null = null;
   if (profile?.couple_id) {
     const { data } = await supabase
       .from("couples")
@@ -26,6 +29,7 @@ export default async function ProfilePage({
       .eq("id", profile.couple_id)
       .single();
     inviteCode = data?.invite_code ?? null;
+    coupleName = data?.name ?? null;
   }
 
   return (
@@ -33,6 +37,10 @@ export default async function ProfilePage({
       <h1 className="px-1 pt-2 font-display text-3xl font-bold">
         {t("nav.profile")}
       </h1>
+
+      <ProfileEditor />
+
+      <CoupleNameEditor coupleName={coupleName} />
 
       {inviteCode && (
         <Card className="flex flex-col gap-1">

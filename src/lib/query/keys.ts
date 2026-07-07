@@ -9,4 +9,6 @@ export const queryKeys = {
   moods: () => ["moods"] as const,
   grocery: () => ["grocery"] as const,
   profile: () => ["profile"] as const,
+  pet: () => ["pet"] as const,
+  petMemories: () => ["pet", "memories"] as const,
 } as const;

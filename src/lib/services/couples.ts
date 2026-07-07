@@ -67,6 +67,25 @@ export async function joinCouple(
   return couple;
 }
 
+/** Rename the caller's couple/space (RLS: couples_update = id = current couple). */
+export async function renameCouple(
+  supabase: DB,
+  user: User,
+  name: string,
+): Promise<Couple> {
+  const coupleId = await requireCoupleId(supabase, user);
+  const { data, error } = await supabase
+    .from("couples")
+    .update({ name })
+    .eq("id", coupleId)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new ApiError(ErrorCode.INTERNAL, error?.message ?? "Failed to rename couple");
+  }
+  return data;
+}
+
 async function linkProfileToCouple(
   supabase: DB,
   userId: string,

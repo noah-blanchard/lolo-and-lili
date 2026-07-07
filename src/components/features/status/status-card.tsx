@@ -7,6 +7,7 @@ import { useSetStatus, useStatuses } from "@/hooks/use-statuses";
 import { Card, CardTitle } from "@/components/ui/card";
 import { SegmentedToggle } from "@/components/ui/segmented-toggle";
 import { cn } from "@/lib/utils";
+import { accentHex } from "@/lib/avatars";
 import type { Profile } from "@/lib/supabase/types";
 
 type State = "free" | "busy";
@@ -82,7 +83,10 @@ function PersonRow({
   return (
     <div className="flex items-center gap-3">
       <div className="relative">
-        <div className="flex size-12 items-center justify-center rounded-full bg-surface-muted text-2xl">
+        <div
+          className="flex size-12 items-center justify-center rounded-full bg-surface-muted text-2xl"
+          style={{ boxShadow: `0 0 0 2px ${accentHex(profile.accent_color)}` }}
+        >
           {profile.avatar_emoji ?? "🐣"}
         </div>
         {online && (

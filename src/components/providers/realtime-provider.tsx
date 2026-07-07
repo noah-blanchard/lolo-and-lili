@@ -10,6 +10,7 @@ import {
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "@/i18n/navigation";
 import { queryKeys } from "@/lib/query/keys";
 
 /** Set of currently-online user ids (via Presence). */
@@ -32,6 +33,7 @@ export function RealtimeProvider({
   children: ReactNode;
 }) {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const [online, setOnline] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -72,6 +74,28 @@ export function RealtimeProvider({
           { event: "*", schema: "public", table: "chore_completions" },
           () => invalidate(queryKeys.chores()),
         )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "profiles", filter: `couple_id=eq.${coupleId}` },
+          // Identity (name/emoji/color) lives in the server-rendered layout,
+          // not a query — refresh so a partner's edits appear live.
+          () => router.refresh(),
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "pets", filter: `couple_id=eq.${coupleId}` },
+          () => invalidate(queryKeys.pet()),
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "pet_actions", filter: `couple_id=eq.${coupleId}` },
+          () => invalidate(queryKeys.pet()),
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "pet_memories", filter: `couple_id=eq.${coupleId}` },
+          () => invalidate(queryKeys.petMemories()),
+        )
         .on("presence", { event: "sync" }, () => {
           setOnline(new Set(Object.keys(channel!.presenceState())));
         })
@@ -85,7 +109,7 @@ export function RealtimeProvider({
     return () => {
       if (channel) supabase.removeChannel(channel);
     };
-  }, [coupleId, userId, queryClient]);
+  }, [coupleId, userId, queryClient, router]);
 
   return (
     <PresenceContext.Provider value={online}>

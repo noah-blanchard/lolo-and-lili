@@ -34,7 +34,12 @@ export function AddChore() {
     { value: ANYONE, label: t("assigneeAnyone") },
     { value: me.id, label: me.avatar_emoji ?? me.display_name ?? "🐣" },
     ...(partner
-      ? [{ value: partner.id, label: partner.avatar_emoji ?? "💕" }]
+      ? [
+          {
+            value: partner.id,
+            label: partner.avatar_emoji ?? partner.display_name ?? "💕",
+          },
+        ]
       : []),
   ];
 
