@@ -5,6 +5,7 @@ import {
   Ticket,
   MessageCircleQuestion,
   CalendarHeart,
+  ListTodo,
 } from "lucide-react";
 import { HubCard } from "@/components/ui/hub-card";
 
@@ -54,6 +55,12 @@ export default async function NousPage({
           label={t("dates.title")}
           description={t("hub.datesDesc")}
           icon={CalendarHeart}
+        />
+        <HubCard
+          href="/bucket"
+          label={t("bucket.title")}
+          description={t("hub.bucketDesc")}
+          icon={ListTodo}
         />
       </div>
     </div>

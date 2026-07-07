@@ -72,6 +72,20 @@
     "emptyHint": "留下第一句情话吧 💌",
     "delete": "删除"
   },
+  "bucket": {
+    "title": "我们的心愿清单",
+    "add": "添加心愿",
+    "addTitle": "新的心愿",
+    "titlePlaceholder": "例如：一起看极光 ✨",
+    "notePlaceholder": "小备注（可选）",
+    "spin": "随机抽一个 🎲",
+    "tonight": "不如我们去…",
+    "toggle": "完成",
+    "delete": "删除",
+    "empty": "清单还是空的",
+    "emptyHint": "添加你俩的第一个心愿 🪣",
+    "doneTitle": "已实现 🎉"
+  },
   "dates": {
     "title": "纪念日与倒数",
     "add": "添加日期",

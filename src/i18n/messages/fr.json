@@ -72,6 +72,20 @@
     "emptyHint": "Laisse le premier petit mot 💌",
     "delete": "Supprimer"
   },
+  "bucket": {
+    "title": "Notre bucket list",
+    "add": "Ajouter une idée",
+    "addTitle": "Nouvelle idée",
+    "titlePlaceholder": "Ex. Voir une aurore boréale ✨",
+    "notePlaceholder": "Une petite note (facultatif)",
+    "spin": "Tirer une idée au sort 🎲",
+    "tonight": "Et si on faisait…",
+    "toggle": "Cocher",
+    "delete": "Supprimer",
+    "empty": "Votre liste est vide",
+    "emptyHint": "Ajoutez un premier rêve à deux 🪣",
+    "doneTitle": "Déjà réalisés 🎉"
+  },
   "dates": {
     "title": "Dates & comptes à rebours",
     "add": "Ajouter une date",

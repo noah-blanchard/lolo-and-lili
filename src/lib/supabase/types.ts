@@ -210,6 +210,33 @@ type SpecialDatesTable = {
   Relationships: [];
 };
 
+type BucketItemsTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    title: string;
+    note: string | null;
+    done: boolean;
+    done_by: string | null;
+    done_at: string | null;
+    created_by: string | null;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    title: string;
+    note?: string | null;
+    done?: boolean;
+    done_by?: string | null;
+    done_at?: string | null;
+    created_by?: string | null;
+    created_at?: string;
+  };
+  Update: Partial<BucketItemsTable["Insert"]>;
+  Relationships: [];
+};
+
 export type Database = Omit<GeneratedDatabase, "public"> & {
   public: Omit<GeneratedDatabase["public"], "Tables"> & {
     Tables: Omit<
@@ -250,6 +277,7 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
       coupons: CouponsTable;
       question_answers: QuestionAnswersTable;
       special_dates: SpecialDatesTable;
+      bucket_items: BucketItemsTable;
     };
   };
 };
@@ -275,3 +303,4 @@ export type LoveNote = Tables["love_notes"]["Row"];
 export type Coupon = Tables["coupons"]["Row"];
 export type QuestionAnswer = Tables["question_answers"]["Row"];
 export type SpecialDate = Tables["special_dates"]["Row"];
+export type BucketItem = Tables["bucket_items"]["Row"];
