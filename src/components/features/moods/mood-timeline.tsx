@@ -11,14 +11,15 @@ import { popIn } from "@/lib/motion";
 
 export function MoodTimeline() {
   const t = useTranslations("moods");
+  const ts = useTranslations("status");
   const locale = useLocale();
   const { me, partner } = useCouple();
   const { data: moods } = useMoods();
 
   const nameFor = (userId: string) =>
     userId === me.id
-      ? (me.display_name ?? t("faces.happy"))
-      : (partner?.display_name ?? "💕");
+      ? (me.display_name ?? ts("me"))
+      : (partner?.display_name ?? ts("partner"));
 
   if (!moods || moods.length === 0) {
     return (
