@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ListChecks, ShoppingBasket, UtensilsCrossed } from "lucide-react";
+import { ListChecks, ShoppingBasket, UtensilsCrossed, Wallet } from "lucide-react";
 import { HubCard } from "@/components/ui/hub-card";
 
 export default async function MaisonPage({
@@ -36,6 +36,12 @@ export default async function MaisonPage({
           label={t("meals.title")}
           description={t("hub.mealsDesc")}
           icon={UtensilsCrossed}
+        />
+        <HubCard
+          href="/expenses"
+          label={t("expenses.title")}
+          description={t("hub.expensesDesc")}
+          icon={Wallet}
         />
       </div>
     </div>

@@ -72,6 +72,21 @@
     "emptyHint": "Laisse le premier petit mot 💌",
     "delete": "Supprimer"
   },
+  "expenses": {
+    "title": "Dépenses partagées",
+    "add": "Ajouter une dépense",
+    "addTitle": "Nouvelle dépense",
+    "descPlaceholder": "Ex. Courses, resto…",
+    "partner": "Mon amour",
+    "even": "Vous êtes à égalité 🤝",
+    "owes": "{debtor} doit à {creditor}",
+    "settleUp": "Solder les comptes",
+    "settled": "Comptes réglés ! ✅",
+    "paidBy": "Payé par {name}",
+    "delete": "Supprimer",
+    "empty": "Aucune dépense",
+    "emptyHint": "Ajoutez votre première dépense partagée 💸"
+  },
   "meals": {
     "title": "Menu de la semaine",
     "addMeal": "Ajouter…",

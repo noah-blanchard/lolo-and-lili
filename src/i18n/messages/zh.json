@@ -72,6 +72,21 @@
     "emptyHint": "留下第一句情话吧 💌",
     "delete": "删除"
   },
+  "expenses": {
+    "title": "共同开销",
+    "add": "添加开销",
+    "addTitle": "新的开销",
+    "descPlaceholder": "例如：买菜、吃饭…",
+    "partner": "亲爱的",
+    "even": "你们已经扯平啦 🤝",
+    "owes": "{debtor} 欠 {creditor}",
+    "settleUp": "结清账目",
+    "settled": "账已结清！✅",
+    "paidBy": "由 {name} 支付",
+    "delete": "删除",
+    "empty": "还没有开销",
+    "emptyHint": "添加第一笔共同开销吧 💸"
+  },
   "meals": {
     "title": "本周菜单",
     "addMeal": "添加…",

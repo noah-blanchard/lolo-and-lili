@@ -289,6 +289,50 @@ type MealsTable = {
   Relationships: [];
 };
 
+type ExpensesTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    payer_id: string | null;
+    amount_cents: number;
+    currency: string;
+    description: string;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    payer_id?: string | null;
+    amount_cents: number;
+    currency?: string;
+    description: string;
+    created_at?: string;
+  };
+  Update: Partial<ExpensesTable["Insert"]>;
+  Relationships: [];
+};
+
+type ExpenseSettlementsTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    from_id: string | null;
+    to_id: string | null;
+    amount_cents: number;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    from_id?: string | null;
+    to_id?: string | null;
+    amount_cents: number;
+    created_at?: string;
+  };
+  Update: Partial<ExpenseSettlementsTable["Insert"]>;
+  Relationships: [];
+};
+
 export type Database = Omit<GeneratedDatabase, "public"> & {
   public: Omit<GeneratedDatabase["public"], "Tables"> & {
     Tables: Omit<
@@ -332,6 +376,8 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
       bucket_items: BucketItemsTable;
       grocery_items: GroceryItemsTable;
       meals: MealsTable;
+      expenses: ExpensesTable;
+      expense_settlements: ExpenseSettlementsTable;
     };
   };
 };
@@ -360,3 +406,5 @@ export type SpecialDate = Tables["special_dates"]["Row"];
 export type BucketItem = Tables["bucket_items"]["Row"];
 export type GroceryItem = Tables["grocery_items"]["Row"];
 export type Meal = Tables["meals"]["Row"];
+export type Expense = Tables["expenses"]["Row"];
+export type ExpenseSettlement = Tables["expense_settlements"]["Row"];
