@@ -72,6 +72,13 @@
     "emptyHint": "留下第一句情话吧 💌",
     "delete": "删除"
   },
+  "question": {
+    "title": "今日问题",
+    "placeholder": "你的回答…",
+    "submit": "回答",
+    "yourAnswer": "你的回答",
+    "waiting": "等待 {name} 回答… 💭"
+  },
   "coupons": {
     "title": "爱心券",
     "mint": "制作一张券",

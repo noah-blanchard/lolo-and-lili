@@ -72,6 +72,13 @@
     "emptyHint": "Laisse le premier petit mot 💌",
     "delete": "Supprimer"
   },
+  "question": {
+    "title": "Question du jour",
+    "placeholder": "Ta réponse…",
+    "submit": "Répondre",
+    "yourAnswer": "Ta réponse",
+    "waiting": "En attente de {name}… 💭"
+  },
   "coupons": {
     "title": "Bons d'amour",
     "mint": "Créer un bon",

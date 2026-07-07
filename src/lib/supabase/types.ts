@@ -160,6 +160,29 @@ type CouponsTable = {
   Relationships: [];
 };
 
+type QuestionAnswersTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    question_date: string;
+    question_key: string;
+    user_id: string;
+    answer: string;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    question_date?: string;
+    question_key: string;
+    user_id: string;
+    answer: string;
+    created_at?: string;
+  };
+  Update: Partial<QuestionAnswersTable["Insert"]>;
+  Relationships: [];
+};
+
 export type Database = Omit<GeneratedDatabase, "public"> & {
   public: Omit<GeneratedDatabase["public"], "Tables"> & {
     Tables: Omit<
@@ -198,6 +221,7 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
       pet_memories: PetMemoriesTable;
       love_notes: LoveNotesTable;
       coupons: CouponsTable;
+      question_answers: QuestionAnswersTable;
     };
   };
 };
@@ -221,3 +245,4 @@ export type PetAction = Tables["pet_actions"]["Row"];
 export type PetMemory = Tables["pet_memories"]["Row"];
 export type LoveNote = Tables["love_notes"]["Row"];
 export type Coupon = Tables["coupons"]["Row"];
+export type QuestionAnswer = Tables["question_answers"]["Row"];

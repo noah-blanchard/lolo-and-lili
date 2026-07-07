@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Smile, NotebookPen, Ticket } from "lucide-react";
+import { Smile, NotebookPen, Ticket, MessageCircleQuestion } from "lucide-react";
 import { HubCard } from "@/components/ui/hub-card";
 
 export default async function NousPage({
@@ -36,6 +36,12 @@ export default async function NousPage({
           label={t("coupons.title")}
           description={t("hub.couponsDesc")}
           icon={Ticket}
+        />
+        <HubCard
+          href="/question"
+          label={t("question.title")}
+          description={t("hub.questionDesc")}
+          icon={MessageCircleQuestion}
         />
       </div>
     </div>

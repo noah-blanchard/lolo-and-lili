@@ -11,7 +11,8 @@ export type NotifyKey =
   | "love_note"
   | "love_nudge"
   | "coupon_gifted"
-  | "coupon_redeemed";
+  | "coupon_redeemed"
+  | "question_answered";
 
 type Loc = "fr" | "zh";
 type Vars = { actor: string; extra?: string };
@@ -127,6 +128,18 @@ export const NOTIFY: Record<NotifyKey, Record<Loc, (v: Vars) => Built>> = {
       url: "/coupons",
     }),
   },
+  question_answered: {
+    fr: (v) => ({
+      title: "Question du jour ❓",
+      body: `${v.actor} a répondu — à ton tour !`,
+      url: "/question",
+    }),
+    zh: (v) => ({
+      title: "今日问题 ❓",
+      body: `${v.actor} 回答啦——轮到你咯！`,
+      url: "/question",
+    }),
+  },
 };
 
 /** Which mutable category each template belongs to (for opt-out checks). */
@@ -141,6 +154,7 @@ export const CATEGORY_OF: Record<NotifyKey, NotifyCategory> = {
   love_nudge: "love",
   coupon_gifted: "love",
   coupon_redeemed: "love",
+  question_answered: "love",
 };
 
 /** Build the payload for a template in the given locale (falls back to fr). */
