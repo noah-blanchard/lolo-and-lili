@@ -297,6 +297,24 @@ export async function equip(
 
 // --- Cross-feature "mirror" helpers (no-op when the couple has no pet) -------
 
+/**
+ * Spend treats from the shared wallet (e.g. redeeming a love coupon).
+ * Throws CONFLICT if there's no pet or not enough treats.
+ */
+export async function spendTreats(
+  supabase: DB,
+  user: User,
+  amount: number,
+): Promise<void> {
+  if (amount <= 0) return;
+  const coupleId = await requireCoupleId(supabase, user);
+  const pet = await fetchPetRow(supabase, coupleId);
+  if (!pet || pet.treats < amount) {
+    throw new ApiError(ErrorCode.CONFLICT, "Not enough treats — do a chore together 🪙");
+  }
+  await supabase.from("pets").update({ treats: pet.treats - amount }).eq("id", pet.id);
+}
+
 /** Chores award/refund treats (the economy) + a small energy nudge on complete. */
 export async function rewardFromChore(
   supabase: DB,

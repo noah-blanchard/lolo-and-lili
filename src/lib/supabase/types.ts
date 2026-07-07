@@ -108,6 +108,58 @@ type PetMemoriesTable = {
   Relationships: [];
 };
 
+// --- P3+ feature tables (until each migration is applied + gen:types runs) ---
+
+type LoveNotesTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    author_id: string | null;
+    body: string;
+    accent: string | null;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    author_id?: string | null;
+    body: string;
+    accent?: string | null;
+    created_at?: string;
+  };
+  Update: Partial<LoveNotesTable["Insert"]>;
+  Relationships: [];
+};
+
+type CouponsTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    created_by: string | null;
+    title: string;
+    emoji: string;
+    cost_treats: number;
+    status: string;
+    redeemed_by: string | null;
+    redeemed_at: string | null;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    created_by?: string | null;
+    title: string;
+    emoji?: string;
+    cost_treats?: number;
+    status?: string;
+    redeemed_by?: string | null;
+    redeemed_at?: string | null;
+    created_at?: string;
+  };
+  Update: Partial<CouponsTable["Insert"]>;
+  Relationships: [];
+};
+
 export type Database = Omit<GeneratedDatabase, "public"> & {
   public: Omit<GeneratedDatabase["public"], "Tables"> & {
     Tables: Omit<
@@ -144,6 +196,8 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
       pets: PetsTable;
       pet_actions: PetActionsTable;
       pet_memories: PetMemoriesTable;
+      love_notes: LoveNotesTable;
+      coupons: CouponsTable;
     };
   };
 };
@@ -165,3 +219,5 @@ export type PushSubscription = Tables["push_subscriptions"]["Row"];
 export type Pet = Tables["pets"]["Row"];
 export type PetAction = Tables["pet_actions"]["Row"];
 export type PetMemory = Tables["pet_memories"]["Row"];
+export type LoveNote = Tables["love_notes"]["Row"];
+export type Coupon = Tables["coupons"]["Row"];

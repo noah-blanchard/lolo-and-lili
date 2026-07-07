@@ -7,7 +7,11 @@ export type NotifyKey =
   | "status_busy"
   | "status_free"
   | "pet_cuddle"
-  | "pet_callback";
+  | "pet_callback"
+  | "love_note"
+  | "love_nudge"
+  | "coupon_gifted"
+  | "coupon_redeemed";
 
 type Loc = "fr" | "zh";
 type Vars = { actor: string; extra?: string };
@@ -75,6 +79,54 @@ export const NOTIFY: Record<NotifyKey, Record<Loc, (v: Vars) => Built>> = {
       url: "/pet",
     }),
   },
+  love_note: {
+    fr: (v) => ({
+      title: "Un petit mot 💌",
+      body: `${v.actor} t'a laissé un mot doux`,
+      url: "/notes",
+    }),
+    zh: (v) => ({
+      title: "一张小纸条 💌",
+      body: `${v.actor} 给你留了句情话`,
+      url: "/notes",
+    }),
+  },
+  love_nudge: {
+    fr: (v) => ({
+      title: "On pense à toi 💕",
+      body: `${v.actor} t'envoie plein de cœurs`,
+      url: "/notes",
+    }),
+    zh: (v) => ({
+      title: "有人在想你 💕",
+      body: `${v.actor} 给你送来满满的爱心`,
+      url: "/notes",
+    }),
+  },
+  coupon_gifted: {
+    fr: (v) => ({
+      title: "Un bon pour toi 🎟️",
+      body: `${v.actor} t'offre « ${v.extra} »`,
+      url: "/coupons",
+    }),
+    zh: (v) => ({
+      title: "送你一张券 🎟️",
+      body: `${v.actor} 送你「${v.extra}」`,
+      url: "/coupons",
+    }),
+  },
+  coupon_redeemed: {
+    fr: (v) => ({
+      title: "Bon utilisé 🎉",
+      body: `${v.actor} a utilisé « ${v.extra} »`,
+      url: "/coupons",
+    }),
+    zh: (v) => ({
+      title: "券被兑换啦 🎉",
+      body: `${v.actor} 用了「${v.extra}」`,
+      url: "/coupons",
+    }),
+  },
 };
 
 /** Which mutable category each template belongs to (for opt-out checks). */
@@ -85,6 +137,10 @@ export const CATEGORY_OF: Record<NotifyKey, NotifyCategory> = {
   status_free: "status",
   pet_cuddle: "pet",
   pet_callback: "pet",
+  love_note: "love",
+  love_nudge: "love",
+  coupon_gifted: "love",
+  coupon_redeemed: "love",
 };
 
 /** Build the payload for a template in the given locale (falls back to fr). */

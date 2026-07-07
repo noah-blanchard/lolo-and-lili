@@ -14,42 +14,7 @@ import {
 import { updateNotificationPrefsAction } from "@/app/actions/profiles";
 import { isOk } from "@/lib/api/result";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-
-function Toggle({
-  checked,
-  disabled,
-  onChange,
-  label,
-}: {
-  checked: boolean;
-  disabled?: boolean;
-  onChange: (next: boolean) => void;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      disabled={disabled}
-      onClick={() => onChange(!checked)}
-      className={cn(
-        "relative h-7 w-12 shrink-0 rounded-full transition-colors",
-        "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/40",
-        "disabled:opacity-40",
-        checked ? "bg-primary" : "bg-surface-muted",
-      )}
-    >
-      <span
-        className={cn(
-          "absolute left-1 top-1 size-5 rounded-full bg-white shadow-soft transition-transform",
-          checked ? "translate-x-5" : "translate-x-0",
-        )}
-      />
-    </button>
-  );
-}
+import { Switch } from "@/components/ui/switch";
 
 export function NotificationsCard({
   initialPrefs,
@@ -126,7 +91,7 @@ export function NotificationsCard({
         <>
           <div className="flex items-center justify-between">
             <span className="font-semibold">{t("master")}</span>
-            <Toggle
+            <Switch
               checked={subscribed}
               disabled={busy || permission === "denied"}
               onChange={onMasterChange}
@@ -147,7 +112,7 @@ export function NotificationsCard({
             {NOTIFY_CATEGORIES.map((category) => (
               <div key={category} className="flex items-center justify-between">
                 <span className="text-sm">{t(`categories.${category}`)}</span>
-                <Toggle
+                <Switch
                   checked={prefs[category] ?? DEFAULT_NOTIFICATION_PREFS[category]}
                   disabled={!subscribed}
                   onChange={(next) => onCategoryChange(category, next)}

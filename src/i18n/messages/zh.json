@@ -5,9 +5,11 @@
   },
   "nav": {
     "home": "首页",
+    "maison": "家",
     "chores": "家务",
     "pet": "狗狗",
     "moods": "心情",
+    "nous": "我们",
     "profile": "我的"
   },
   "home": {
@@ -59,6 +61,30 @@
       "sad": "难过",
       "stressed": "压力大"
     }
+  },
+  "notes": {
+    "title": "小情话",
+    "placeholder": "给你的另一半写句话…",
+    "send": "发送",
+    "sendHeart": "送个爱心 💕",
+    "typing": "对方正在输入… 💭",
+    "empty": "还没有留言",
+    "emptyHint": "留下第一句情话吧 💌",
+    "delete": "删除"
+  },
+  "coupons": {
+    "title": "爱心券",
+    "mint": "制作一张券",
+    "mintTitle": "新的券",
+    "titlePlaceholder": "例如：床上早餐 🥐",
+    "cost": "花费小零食 🪙",
+    "redeem": "使用",
+    "redeemed": "券已使用！🎉",
+    "used": "已使用",
+    "usedTitle": "已使用的券",
+    "empty": "还没有券",
+    "emptyHint": "给你的另一半做第一张券吧 🎟️",
+    "delete": "删除"
   },
   "pet": {
     "title": "我们的狗",
@@ -147,6 +173,22 @@
     "inviteHint": "把这个码分享给你的另一半 💞",
     "signOut": "退出登录"
   },
+  "hub": {
+    "maisonTitle": "家",
+    "maisonSubtitle": "把你们的小窝打理好 🏡",
+    "nousTitle": "我们",
+    "nousSubtitle": "属于你俩的小时光 💞",
+    "choresDesc": "共享的家务",
+    "groceryDesc": "购物清单",
+    "mealsDesc": "本周菜单",
+    "expensesDesc": "谁欠谁",
+    "moodsDesc": "你们的心情",
+    "notesDesc": "小情话",
+    "couponsDesc": "赠送与兑换的券",
+    "questionDesc": "今日问题",
+    "datesDesc": "纪念日与倒数",
+    "bucketDesc": "你俩的心愿"
+  },
   "notifications": {
     "title": "通知",
     "subtitle": "另一半有动静时，给你捎个小消息 💌",
@@ -163,7 +205,10 @@
       "chores": "家务完成",
       "moods": "心情",
       "status": "状态变化",
-      "pet": "我们的狗狗"
+      "pet": "我们的狗狗",
+      "love": "情话与抱抱",
+      "dates": "纪念日与倒数",
+      "home": "家务（购物、餐饮、开销）"
     }
   },
   "common": {

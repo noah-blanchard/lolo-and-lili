@@ -1,18 +1,33 @@
 "use client";
 
-import { Home, ListChecks, Smile, Heart, Cat } from "lucide-react";
+import { Home, House, Heart, Dog, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { springBouncy } from "@/lib/motion";
 
+/** Routes that light up each hub tab (the hub page + its child features). */
+const MAISON_ROUTES = ["/maison", "/chores", "/grocery", "/meals", "/expenses"];
+const NOUS_ROUTES = [
+  "/nous",
+  "/moods",
+  "/notes",
+  "/coupons",
+  "/question",
+  "/dates",
+  "/bucket",
+];
+
+const inGroup = (pathname: string, routes: string[]) =>
+  routes.some((r) => pathname === r || pathname.startsWith(`${r}/`));
+
 const items = [
-  { href: "/", key: "home", icon: Home },
-  { href: "/chores", key: "chores", icon: ListChecks },
-  { href: "/pet", key: "pet", icon: Cat },
-  { href: "/moods", key: "moods", icon: Smile },
-  { href: "/profile", key: "profile", icon: Heart },
+  { href: "/", key: "home", icon: Home, match: (p: string) => p === "/" },
+  { href: "/maison", key: "maison", icon: House, match: (p: string) => inGroup(p, MAISON_ROUTES) },
+  { href: "/pet", key: "pet", icon: Dog, match: (p: string) => p === "/pet" || p.startsWith("/pet/") },
+  { href: "/nous", key: "nous", icon: Heart, match: (p: string) => inGroup(p, NOUS_ROUTES) },
+  { href: "/profile", key: "profile", icon: UserRound, match: (p: string) => p.startsWith("/profile") },
 ] as const;
 
 export function BottomNav() {
@@ -22,9 +37,8 @@ export function BottomNav() {
   return (
     <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center pb-safe">
       <div className="pointer-events-auto m-3 flex w-full max-w-md items-stretch justify-around gap-1 rounded-cute border border-border bg-surface/90 p-1.5 shadow-cute backdrop-blur-lg">
-        {items.map(({ href, key, icon: Icon }) => {
-          const active =
-            href === "/" ? pathname === "/" : pathname.startsWith(href);
+        {items.map(({ href, key, icon: Icon, match }) => {
+          const active = match(pathname);
           return (
             <Link
               key={key}

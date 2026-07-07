@@ -1,7 +1,15 @@
 import { z } from "zod";
 
-/** The four notification categories a user can independently mute. */
-export const NOTIFY_CATEGORIES = ["chores", "moods", "status", "pet"] as const;
+/** The notification categories a user can independently mute. */
+export const NOTIFY_CATEGORIES = [
+  "chores",
+  "moods",
+  "status",
+  "pet",
+  "love",
+  "dates",
+  "home",
+] as const;
 export type NotifyCategory = (typeof NOTIFY_CATEGORIES)[number];
 
 /** Browser PushSubscription (from `subscription.toJSON()`) + the device locale. */
@@ -25,6 +33,9 @@ export const notificationPrefsSchema = z.object({
   moods: z.boolean(),
   status: z.boolean(),
   pet: z.boolean(),
+  love: z.boolean(),
+  dates: z.boolean(),
+  home: z.boolean(),
 });
 export type NotificationPrefs = z.infer<typeof notificationPrefsSchema>;
 
@@ -34,4 +45,7 @@ export const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
   moods: true,
   status: true,
   pet: true,
+  love: true,
+  dates: true,
+  home: true,
 };

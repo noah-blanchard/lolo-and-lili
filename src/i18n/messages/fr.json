@@ -5,9 +5,11 @@
   },
   "nav": {
     "home": "Accueil",
+    "maison": "Maison",
     "chores": "Tâches",
     "pet": "Chien",
     "moods": "Humeurs",
+    "nous": "Nous",
     "profile": "Profil"
   },
   "home": {
@@ -59,6 +61,30 @@
       "sad": "Triste",
       "stressed": "Stressé·e"
     }
+  },
+  "notes": {
+    "title": "Mots doux",
+    "placeholder": "Écris un petit mot à ton amour…",
+    "send": "Envoyer",
+    "sendHeart": "Envoyer un cœur 💕",
+    "typing": "Ton amour écrit… 💭",
+    "empty": "Aucun mot pour l'instant",
+    "emptyHint": "Laisse le premier petit mot 💌",
+    "delete": "Supprimer"
+  },
+  "coupons": {
+    "title": "Bons d'amour",
+    "mint": "Créer un bon",
+    "mintTitle": "Nouveau bon",
+    "titlePlaceholder": "Ex. Petit-déj au lit 🥐",
+    "cost": "Coût en friandises 🪙",
+    "redeem": "Utiliser",
+    "redeemed": "Bon utilisé ! 🎉",
+    "used": "Utilisé",
+    "usedTitle": "Déjà utilisés",
+    "empty": "Aucun bon pour l'instant",
+    "emptyHint": "Crée un premier bon pour ton amour 🎟️",
+    "delete": "Supprimer"
   },
   "pet": {
     "title": "Notre chien",
@@ -147,6 +173,22 @@
     "inviteHint": "Partage ce code avec ton amour 💞",
     "signOut": "Se déconnecter"
   },
+  "hub": {
+    "maisonTitle": "Maison",
+    "maisonSubtitle": "Votre petit chez-vous, organisé 🏡",
+    "nousTitle": "Nous",
+    "nousSubtitle": "Vos petits moments à deux 💞",
+    "choresDesc": "Vos corvées partagées",
+    "groceryDesc": "La liste de courses",
+    "mealsDesc": "Le menu de la semaine",
+    "expensesDesc": "Qui doit quoi",
+    "moodsDesc": "Comment vous vous sentez",
+    "notesDesc": "Petits mots doux",
+    "couponsDesc": "Bons à offrir & échanger",
+    "questionDesc": "La question du jour",
+    "datesDesc": "Dates & comptes à rebours",
+    "bucketDesc": "Vos rêves à deux"
+  },
   "notifications": {
     "title": "Notifications",
     "subtitle": "Reçois un petit mot quand ton amour fait quelque chose 💌",
@@ -163,7 +205,10 @@
       "chores": "Tâches terminées",
       "moods": "Humeurs",
       "status": "Changements de statut",
-      "pet": "Notre chien"
+      "pet": "Notre chien",
+      "love": "Mots doux & câlins",
+      "dates": "Dates & comptes à rebours",
+      "home": "Maison (courses, repas, dépenses)"
     }
   },
   "common": {

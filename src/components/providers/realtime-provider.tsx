@@ -96,6 +96,16 @@ export function RealtimeProvider({
           { event: "*", schema: "public", table: "pet_memories", filter: `couple_id=eq.${coupleId}` },
           () => invalidate(queryKeys.petMemories()),
         )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "love_notes", filter: `couple_id=eq.${coupleId}` },
+          () => invalidate(queryKeys.loveNotes()),
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "coupons", filter: `couple_id=eq.${coupleId}` },
+          () => invalidate(queryKeys.coupons()),
+        )
         .on("presence", { event: "sync" }, () => {
           setOnline(new Set(Object.keys(channel!.presenceState())));
         })
