@@ -1,0 +1,94 @@
+import type { NotifyCategory } from "@/lib/schemas/push";
+
+/** Which templated push each domain event maps to. */
+export type NotifyKey =
+  | "chore_done"
+  | "mood"
+  | "status_busy"
+  | "status_free"
+  | "pet_cuddle"
+  | "pet_callback";
+
+type Loc = "fr" | "zh";
+type Vars = { actor: string; extra?: string };
+type Built = { title: string; body: string; url: string };
+
+/**
+ * Localized push copy, keyed by template then locale. Kept server-side (no
+ * next-intl on the send path) and localized per the recipient device's locale.
+ * Keep roughly in sync with the `notifications` block in the i18n catalogs.
+ */
+export const NOTIFY: Record<NotifyKey, Record<Loc, (v: Vars) => Built>> = {
+  chore_done: {
+    fr: (v) => ({
+      title: "Corvée terminée 🎉",
+      body: `${v.actor} a coché « ${v.extra} »`,
+      url: "/chores",
+    }),
+    zh: (v) => ({
+      title: "家务完成啦 🎉",
+      body: `${v.actor} 完成了「${v.extra}」`,
+      url: "/chores",
+    }),
+  },
+  mood: {
+    fr: (v) => ({
+      title: "Nouvelle humeur 💭",
+      body: `${v.actor} partage son humeur ${v.extra ?? ""}`.trim(),
+      url: "/moods",
+    }),
+    zh: (v) => ({
+      title: "新的心情 💭",
+      body: `${v.actor} 分享了心情 ${v.extra ?? ""}`.trim(),
+      url: "/moods",
+    }),
+  },
+  status_busy: {
+    fr: (v) => ({ title: "Occupé·e 🔴", body: `${v.actor} est occupé·e`, url: "/" }),
+    zh: (v) => ({ title: "忙碌中 🔴", body: `${v.actor} 现在很忙`, url: "/" }),
+  },
+  status_free: {
+    fr: (v) => ({ title: "Disponible 🟢", body: `${v.actor} est libre`, url: "/" }),
+    zh: (v) => ({ title: "有空啦 🟢", body: `${v.actor} 现在有空`, url: "/" }),
+  },
+  pet_cuddle: {
+    fr: (v) => ({
+      title: "Câlin en attente 🐶",
+      body: `${v.actor} a fait un câlin — à ton tour pour le streak !`,
+      url: "/pet",
+    }),
+    zh: (v) => ({
+      title: "等你抱抱 🐶",
+      body: `${v.actor} 抱了狗狗——快回抱保持连击！`,
+      url: "/pet",
+    }),
+  },
+  pet_callback: {
+    fr: (v) => ({
+      title: "Il s'est enfui ! 🐾",
+      body: `Rappelez votre chien à deux avec ${v.actor}`,
+      url: "/pet",
+    }),
+    zh: (v) => ({
+      title: "狗狗跑走了！🐾",
+      body: `和 ${v.actor} 一起把它叫回来`,
+      url: "/pet",
+    }),
+  },
+};
+
+/** Which mutable category each template belongs to (for opt-out checks). */
+export const CATEGORY_OF: Record<NotifyKey, NotifyCategory> = {
+  chore_done: "chores",
+  mood: "moods",
+  status_busy: "status",
+  status_free: "status",
+  pet_cuddle: "pet",
+  pet_callback: "pet",
+};
+
+/** Build the payload for a template in the given locale (falls back to fr). */
+export function buildPayload(message: NotifyKey, locale: string, vars: Vars): Built {
+  const loc: Loc = locale === "zh" ? "zh" : "fr";
+  return NOTIFY[message][loc](vars);
+}

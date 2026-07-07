@@ -6,6 +6,11 @@ import { ThemeToggle } from "@/components/nav/theme-toggle";
 import { LocaleSwitcher } from "@/components/nav/locale-switcher";
 import { ProfileEditor } from "@/components/features/profile/profile-editor";
 import { CoupleNameEditor } from "@/components/features/profile/couple-name-editor";
+import { NotificationsCard } from "@/components/features/notifications/notifications-card";
+import {
+  DEFAULT_NOTIFICATION_PREFS,
+  type NotificationPrefs,
+} from "@/lib/schemas/push";
 import { signOut } from "@/app/actions/auth";
 
 export default async function ProfilePage({
@@ -19,6 +24,11 @@ export default async function ProfilePage({
 
   const { supabase } = await getSession();
   const profile = await getProfile();
+
+  const notificationPrefs: NotificationPrefs = {
+    ...DEFAULT_NOTIFICATION_PREFS,
+    ...((profile?.notification_prefs as Partial<NotificationPrefs> | null) ?? {}),
+  };
 
   let inviteCode: string | null = null;
   let coupleName: string | null = null;
@@ -61,6 +71,8 @@ export default async function ProfilePage({
         <CardDescription>{t("profile.language")}</CardDescription>
         <LocaleSwitcher />
       </Card>
+
+      <NotificationsCard initialPrefs={notificationPrefs} />
 
       <form action={signOut}>
         <Button type="submit" variant="ghost" className="w-full text-busy">

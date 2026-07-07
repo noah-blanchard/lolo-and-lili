@@ -2,6 +2,7 @@ import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Database, Profile } from "@/lib/supabase/types";
 import { ApiError, ErrorCode } from "@/lib/api/result";
 import type { UpdateProfileInput } from "@/lib/schemas/profile";
+import type { NotificationPrefs } from "@/lib/schemas/push";
 
 type DB = SupabaseClient<Database>;
 
@@ -25,4 +26,18 @@ export async function updateProfile(
     );
   }
   return data;
+}
+
+/** Update the current user's per-category push notification preferences. */
+export async function updateNotificationPrefs(
+  supabase: DB,
+  user: User,
+  prefs: NotificationPrefs,
+): Promise<NotificationPrefs> {
+  const { error } = await supabase
+    .from("profiles")
+    .update({ notification_prefs: prefs })
+    .eq("id", user.id);
+  if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
+  return prefs;
 }

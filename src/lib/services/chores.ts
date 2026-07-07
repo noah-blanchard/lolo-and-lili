@@ -4,6 +4,7 @@ import { ApiError, ErrorCode } from "@/lib/api/result";
 import type { CreateChoreInput } from "@/lib/schemas/chore";
 import { type ChoreWithStatus, today } from "@/lib/chores";
 import { requireCoupleId } from "./couples";
+import { notifyPartner } from "./notifications";
 import { rewardFromChore } from "./pets";
 
 type DB = SupabaseClient<Database>;
@@ -74,7 +75,7 @@ export async function toggleCompletion(
 
   const { data: chore } = await supabase
     .from("chores")
-    .select("points")
+    .select("points, title, couple_id")
     .eq("id", choreId)
     .maybeSingle();
   const points = chore?.points ?? 0;
@@ -104,6 +105,15 @@ export async function toggleCompletion(
   if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
   // Teamwork feeds the cat: award treats + a small energy nudge.
   await rewardFromChore(supabase, user, points, false);
+  // Tell the partner the chore got done (best-effort).
+  if (chore?.couple_id) {
+    await notifyPartner({
+      actorId: user.id,
+      coupleId: chore.couple_id,
+      message: "chore_done",
+      extra: chore.title,
+    });
+  }
   return { completed_today: true };
 }
 

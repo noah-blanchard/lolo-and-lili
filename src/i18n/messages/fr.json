@@ -147,6 +147,25 @@
     "inviteHint": "Partage ce code avec ton amour 💞",
     "signOut": "Se déconnecter"
   },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Reçois un petit mot quand ton amour fait quelque chose 💌",
+    "master": "Activer les notifications",
+    "enabled": "Notifications activées 🔔",
+    "disabled": "Notifications désactivées",
+    "enableFailed": "Impossible d'activer les notifications",
+    "blocked": "Notifications bloquées — autorise-les dans les réglages de ton navigateur",
+    "unsupported": "Ton navigateur ne gère pas les notifications 😢",
+    "iosInstall": "Ajoute l'app à ton écran d'accueil (Partager → Sur l'écran d'accueil) pour activer les notifications.",
+    "sendTest": "Envoyer un test",
+    "testSent": "Test envoyé ! 💕",
+    "categories": {
+      "chores": "Tâches terminées",
+      "moods": "Humeurs",
+      "status": "Changements de statut",
+      "pet": "Notre chien"
+    }
+  },
   "common": {
     "loading": "Chargement…",
     "retry": "Réessayer",

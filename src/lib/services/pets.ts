@@ -17,6 +17,8 @@ import {
   type CareResult,
 } from "@/lib/pets";
 import type { AdoptPetInput, CareInput, EquipInput } from "@/lib/schemas/pet";
+import type { NotifyKey } from "@/lib/notifications/messages";
+import { notifyPartner } from "./notifications";
 
 type DB = SupabaseClient<Database>;
 
@@ -187,6 +189,7 @@ export async function care(
 
   const events: PetEvent[] = [];
   let patch: Partial<Pet> = {};
+  let notify: NotifyKey | null = null;
 
   if (type === "cuddle") {
     // Once per day per person; the co-op day completes when BOTH have cuddled.
@@ -212,6 +215,9 @@ export async function care(
       patch.streak_count = streakCount;
       patch.streak_last_day = today();
       events.push({ kind: "streak", value: String(streakCount) });
+    } else if (!partnerCuddled) {
+      // Nudge the partner to cuddle back and complete today's co-op streak.
+      notify = "pet_cuddle";
     }
   } else if (type === "callback") {
     // Coax home: needs BOTH partners within the window.
@@ -224,7 +230,8 @@ export async function care(
       now,
     );
     if (!bothCalled) {
-      // Waiting on the other partner — no recovery yet.
+      // Waiting on the other partner — no recovery yet. Ask them to help call.
+      await notifyPartner({ actorId: user.id, coupleId, message: "pet_callback" });
       const view = await getPet(supabase, coupleId, user.id);
       return { pet: view!, events: [] };
     }
@@ -239,6 +246,10 @@ export async function care(
   }
 
   await supabase.from("pets").update(patch).eq("id", pet.id);
+
+  if (notify) {
+    await notifyPartner({ actorId: user.id, coupleId, message: notify });
+  }
 
   // Persist milestones as memories.
   for (const ev of events) {

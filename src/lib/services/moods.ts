@@ -2,7 +2,9 @@ import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Database, Mood } from "@/lib/supabase/types";
 import { ApiError, ErrorCode } from "@/lib/api/result";
 import type { AddMoodInput } from "@/lib/schemas/mood";
+import { moodEmoji } from "@/lib/moods";
 import { requireCoupleId } from "./couples";
+import { notifyPartner } from "./notifications";
 import { nourishFromMood } from "./pets";
 
 type DB = SupabaseClient<Database>;
@@ -43,5 +45,12 @@ export async function addMood(
   }
   // Emotional check-ins nourish the cat's heart.
   await nourishFromMood(supabase, user);
+  // Let the partner know (best-effort).
+  await notifyPartner({
+    actorId: user.id,
+    coupleId,
+    message: "mood",
+    extra: moodEmoji(input.mood),
+  });
   return data;
 }

@@ -10,7 +10,8 @@ export type { Json };
 // --- Manual table shapes for migrations not yet reflected in generated types ---
 // Teach the client about tables/columns before the migration is applied +
 // `bun run gen:types` runs. Harmless once regenerated (the intersections/adds
-// just become redundant). Covers 0002 (profiles.accent_color) and 0003 (pets).
+// just become redundant). Covers 0002 (profiles.accent_color), 0003 (pets),
+// and 0004 (profiles.notification_prefs + push_subscriptions.locale).
 
 type PetsTable = {
   Row: {
@@ -109,18 +110,36 @@ type PetMemoriesTable = {
 
 export type Database = Omit<GeneratedDatabase, "public"> & {
   public: Omit<GeneratedDatabase["public"], "Tables"> & {
-    Tables: Omit<GeneratedDatabase["public"]["Tables"], "profiles"> & {
+    Tables: Omit<
+      GeneratedDatabase["public"]["Tables"],
+      "profiles" | "push_subscriptions"
+    > & {
       profiles: {
         Row: GeneratedDatabase["public"]["Tables"]["profiles"]["Row"] & {
           accent_color: string | null;
+          notification_prefs: Json;
         };
         Insert: GeneratedDatabase["public"]["Tables"]["profiles"]["Insert"] & {
           accent_color?: string | null;
+          notification_prefs?: Json;
         };
         Update: GeneratedDatabase["public"]["Tables"]["profiles"]["Update"] & {
           accent_color?: string | null;
+          notification_prefs?: Json;
         };
         Relationships: GeneratedDatabase["public"]["Tables"]["profiles"]["Relationships"];
+      };
+      push_subscriptions: {
+        Row: GeneratedDatabase["public"]["Tables"]["push_subscriptions"]["Row"] & {
+          locale: string;
+        };
+        Insert: GeneratedDatabase["public"]["Tables"]["push_subscriptions"]["Insert"] & {
+          locale?: string;
+        };
+        Update: GeneratedDatabase["public"]["Tables"]["push_subscriptions"]["Update"] & {
+          locale?: string;
+        };
+        Relationships: GeneratedDatabase["public"]["Tables"]["push_subscriptions"]["Relationships"];
       };
       pets: PetsTable;
       pet_actions: PetActionsTable;

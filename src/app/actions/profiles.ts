@@ -3,7 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { defineAction } from "@/lib/api/define-action";
 import { updateProfileSchema } from "@/lib/schemas/profile";
-import { updateProfile } from "@/lib/services/profiles";
+import { notificationPrefsSchema } from "@/lib/schemas/push";
+import {
+  updateNotificationPrefs,
+  updateProfile,
+} from "@/lib/services/profiles";
 
 export const updateProfileAction = defineAction(
   updateProfileSchema,
@@ -12,5 +16,14 @@ export const updateProfileAction = defineAction(
     // Re-render the (app) layout so me/partner refresh everywhere.
     revalidatePath("/", "layout");
     return profile;
+  },
+);
+
+export const updateNotificationPrefsAction = defineAction(
+  notificationPrefsSchema,
+  async ({ input, supabase, user }) => {
+    const prefs = await updateNotificationPrefs(supabase, user, input);
+    revalidatePath("/", "layout");
+    return prefs;
   },
 );

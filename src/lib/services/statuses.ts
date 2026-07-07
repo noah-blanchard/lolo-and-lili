@@ -3,6 +3,7 @@ import type { Database, Status } from "@/lib/supabase/types";
 import { ApiError, ErrorCode } from "@/lib/api/result";
 import type { SetStatusInput } from "@/lib/schemas/status";
 import { requireCoupleId } from "./couples";
+import { notifyPartner } from "./notifications";
 
 type DB = SupabaseClient<Database>;
 
@@ -36,5 +37,10 @@ export async function setStatus(
   if (error || !data) {
     throw new ApiError(ErrorCode.INTERNAL, error?.message ?? "Failed to set status");
   }
+  await notifyPartner({
+    actorId: user.id,
+    coupleId,
+    message: input.state === "busy" ? "status_busy" : "status_free",
+  });
   return data;
 }
