@@ -72,6 +72,18 @@
     "emptyHint": "Laisse le premier petit mot 💌",
     "delete": "Supprimer"
   },
+  "grocery": {
+    "title": "Liste de courses",
+    "namePlaceholder": "Ajouter un article…",
+    "qty": "Qté",
+    "add": "Ajouter",
+    "toggle": "Cocher",
+    "delete": "Supprimer",
+    "checkedTitle": "Dans le panier",
+    "clear": "Vider les cochés",
+    "empty": "Le panier est vide",
+    "emptyHint": "Ajoutez votre premier article 🛒"
+  },
   "bucket": {
     "title": "Notre bucket list",
     "add": "Ajouter une idée",

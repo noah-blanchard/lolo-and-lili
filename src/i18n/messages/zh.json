@@ -72,6 +72,18 @@
     "emptyHint": "留下第一句情话吧 💌",
     "delete": "删除"
   },
+  "grocery": {
+    "title": "购物清单",
+    "namePlaceholder": "添加一项…",
+    "qty": "数量",
+    "add": "添加",
+    "toggle": "勾选",
+    "delete": "删除",
+    "checkedTitle": "已放入购物车",
+    "clear": "清除已勾选",
+    "empty": "购物车是空的",
+    "emptyHint": "添加第一件商品吧 🛒"
+  },
   "bucket": {
     "title": "我们的心愿清单",
     "add": "添加心愿",

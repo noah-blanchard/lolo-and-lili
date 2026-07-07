@@ -121,6 +121,11 @@ export function RealtimeProvider({
           { event: "*", schema: "public", table: "bucket_items", filter: `couple_id=eq.${coupleId}` },
           () => invalidate(queryKeys.bucket()),
         )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "grocery_items", filter: `couple_id=eq.${coupleId}` },
+          () => invalidate(queryKeys.grocery()),
+        )
         .on("presence", { event: "sync" }, () => {
           setOnline(new Set(Object.keys(channel!.presenceState())));
         })
