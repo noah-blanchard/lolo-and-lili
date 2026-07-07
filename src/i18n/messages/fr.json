@@ -62,8 +62,15 @@
   "auth": {
     "loginTitle": "Connexion",
     "emailLabel": "Ton adresse e-mail",
-    "sendLink": "Recevoir mon lien magique",
-    "checkEmail": "Regarde ta boîte mail 💌"
+    "sendCode": "Recevoir mon code 💌",
+    "codeSentTitle": "Vérifie ta boîte mail 💌",
+    "codeSentHint": "On a envoyé un code à 6 chiffres à {email}",
+    "codeLabel": "Ton code à 6 chiffres",
+    "verify": "Se connecter",
+    "resend": "Renvoyer le code",
+    "resendIn": "Renvoyer dans {seconds}s",
+    "changeEmail": "Changer d'e-mail",
+    "invalidCode": "Code invalide ou expiré 😢"
   },
   "onboarding": {
     "title": "Créons votre petit nid 🪺",
