@@ -174,29 +174,216 @@ export type Database = {
           },
         ]
       }
+      pet_actions: {
+        Row: {
+          couple_id: string
+          created_at: string
+          id: string
+          performed_by: string | null
+          pet_id: string
+          type: string
+        }
+        Insert: {
+          couple_id: string
+          created_at?: string
+          id?: string
+          performed_by?: string | null
+          pet_id: string
+          type: string
+        }
+        Update: {
+          couple_id?: string
+          created_at?: string
+          id?: string
+          performed_by?: string | null
+          pet_id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pet_actions_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pet_actions_performed_by_fkey"
+            columns: ["performed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pet_actions_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pet_memories: {
+        Row: {
+          couple_id: string
+          created_at: string
+          emoji: string
+          id: string
+          kind: string
+          meta: Json
+          pet_id: string
+          title: string
+        }
+        Insert: {
+          couple_id: string
+          created_at?: string
+          emoji?: string
+          id?: string
+          kind: string
+          meta?: Json
+          pet_id: string
+          title: string
+        }
+        Update: {
+          couple_id?: string
+          created_at?: string
+          emoji?: string
+          id?: string
+          kind?: string
+          meta?: Json
+          pet_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pet_memories_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pet_memories_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pets: {
+        Row: {
+          affection: number
+          cleanliness: number
+          couple_id: string
+          created_at: string
+          created_by: string | null
+          energy: number
+          equipped: Json
+          hunger: number
+          id: string
+          level: number
+          meters_at: string
+          name: string
+          ran_away_at: string | null
+          skin: string
+          stage: number
+          streak_count: number
+          streak_last_day: string | null
+          treats: number
+          unlocked: Json
+          xp: number
+        }
+        Insert: {
+          affection?: number
+          cleanliness?: number
+          couple_id: string
+          created_at?: string
+          created_by?: string | null
+          energy?: number
+          equipped?: Json
+          hunger?: number
+          id?: string
+          level?: number
+          meters_at?: string
+          name: string
+          ran_away_at?: string | null
+          skin?: string
+          stage?: number
+          streak_count?: number
+          streak_last_day?: string | null
+          treats?: number
+          unlocked?: Json
+          xp?: number
+        }
+        Update: {
+          affection?: number
+          cleanliness?: number
+          couple_id?: string
+          created_at?: string
+          created_by?: string | null
+          energy?: number
+          equipped?: Json
+          hunger?: number
+          id?: string
+          level?: number
+          meters_at?: string
+          name?: string
+          ran_away_at?: string | null
+          skin?: string
+          stage?: number
+          streak_count?: number
+          streak_last_day?: string | null
+          treats?: number
+          unlocked?: Json
+          xp?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pets_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: true
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pets_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
+          accent_color: string | null
           avatar_emoji: string | null
           couple_id: string | null
           created_at: string
           display_name: string | null
           id: string
+          notification_prefs: Json
           theme_pref: string | null
         }
         Insert: {
+          accent_color?: string | null
           avatar_emoji?: string | null
           couple_id?: string | null
           created_at?: string
           display_name?: string | null
           id: string
+          notification_prefs?: Json
           theme_pref?: string | null
         }
         Update: {
+          accent_color?: string | null
           avatar_emoji?: string | null
           couple_id?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
+          notification_prefs?: Json
           theme_pref?: string | null
         }
         Relationships: [
@@ -215,6 +402,7 @@ export type Database = {
           created_at: string
           endpoint: string
           id: string
+          locale: string
           p256dh: string
           user_id: string
         }
@@ -223,6 +411,7 @@ export type Database = {
           created_at?: string
           endpoint: string
           id?: string
+          locale?: string
           p256dh: string
           user_id: string
         }
@@ -231,6 +420,7 @@ export type Database = {
           created_at?: string
           endpoint?: string
           id?: string
+          locale?: string
           p256dh?: string
           user_id?: string
         }
