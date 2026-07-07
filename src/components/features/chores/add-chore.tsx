@@ -41,6 +41,7 @@ export function AddChore() {
   function submit() {
     if (!title.trim() || create.isPending) return;
     create.mutate({
+      id: crypto.randomUUID(),
       title: title.trim(),
       assignee_id: assignee === ANYONE ? null : assignee,
       recurrence,

@@ -27,7 +27,7 @@ export function useAddMood() {
       const previous = queryClient.getQueryData<Mood[]>(queryKeys.moods());
 
       const optimistic: Mood = {
-        id: `temp-${crypto.randomUUID()}`,
+        id: input.id,
         user_id: me.id,
         couple_id: coupleId,
         mood: input.mood,

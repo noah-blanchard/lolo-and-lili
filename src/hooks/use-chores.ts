@@ -28,7 +28,7 @@ export function useCreateChore() {
         queryKeys.chores(),
       );
       const optimistic: ChoreWithStatus = {
-        id: `temp-${crypto.randomUUID()}`,
+        id: input.id,
         couple_id: coupleId,
         title: input.title,
         assignee_id: input.assignee_id ?? null,

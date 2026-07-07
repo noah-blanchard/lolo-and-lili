@@ -2,6 +2,9 @@ import { z } from "zod";
 import { recurrences } from "@/lib/chores";
 
 export const createChoreSchema = z.object({
+  // Client-generated so the optimistic row and the persisted row share an id —
+  // keeps the list key stable across refetches (no animation flicker).
+  id: z.string().uuid(),
   title: z.string().trim().min(1, "Title required").max(80),
   assignee_id: z.string().uuid().nullish(),
   due_date: z

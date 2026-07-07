@@ -28,6 +28,7 @@ export async function addMood(
   const { data, error } = await supabase
     .from("moods")
     .insert({
+      id: input.id,
       user_id: user.id,
       couple_id: coupleId,
       mood: input.mood,

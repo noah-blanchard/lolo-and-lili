@@ -14,7 +14,7 @@ export function MoodPicker() {
   const addMood = useAddMood();
 
   function pick(mood: MoodKey) {
-    addMood.mutate({ mood });
+    addMood.mutate({ id: crypto.randomUUID(), mood });
     celebrate();
     toast.success(t("logged"));
   }

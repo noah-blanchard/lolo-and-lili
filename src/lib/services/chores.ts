@@ -41,6 +41,7 @@ export async function createChore(
   const { data, error } = await supabase
     .from("chores")
     .insert({
+      id: input.id,
       couple_id: coupleId,
       title: input.title,
       assignee_id: input.assignee_id ?? null,
