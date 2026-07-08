@@ -55,7 +55,7 @@ create table public.profiles (
 create table public.statuses (
   user_id    uuid primary key references public.profiles (id) on delete cascade,
   couple_id  uuid not null references public.couples (id) on delete cascade,
-  state      text not null default 'free' check (state in ('free', 'busy')),
+  state      text not null default 'free' check (state in ('free', 'busy', 'sieste')),
   emoji      text,
   note       text,
   updated_at timestamptz not null default now()

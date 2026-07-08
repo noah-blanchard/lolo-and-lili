@@ -30,6 +30,7 @@
 
   --busy: #ff6b6b; /* status: busy */
   --free: #59c98f; /* status: free */
+  --sieste: #b4a0e8; /* status: sieste */
 
   --border: #f1e0d5;
   --input: #f5e6dc;
@@ -56,6 +57,7 @@
 
   --busy: #ff7a8a;
   --free: #4fc7a0;
+  --sieste: #b09ce0;
 
   --border: #dde7f5;
   --input: #e8f0ff;
@@ -80,6 +82,7 @@
 
   --busy: #ff7a9c;
   --free: #5cc79a;
+  --sieste: #c4a8f0;
 
   --border: #ece2f7;
   --input: #f1e9fb;
@@ -104,6 +107,7 @@
 
   --busy: #ff7a8a;
   --free: #4fc77f;
+  --sieste: #b09cdb;
 
   --border: #dcefe4;
   --input: #e6f6ec;
@@ -128,6 +132,7 @@
 
   --busy: #ff7b8a;
   --free: #6ed6a0;
+  --sieste: #b8a6e6;
 
   --border: #2c3358;
   --input: #2c3358;
@@ -152,6 +157,7 @@
 
   --busy: #ff7b7b;
   --free: #6ed6a0;
+  --sieste: #c2ace8;
 
   --border: #3a2e33;
   --input: #3a2e33;
@@ -179,6 +185,7 @@
 
   --color-busy: var(--busy);
   --color-free: var(--free);
+  --color-sieste: var(--sieste);
 
   --color-border: var(--border);
   --color-input: var(--input);

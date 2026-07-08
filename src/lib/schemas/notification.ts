@@ -6,6 +6,7 @@ export const NOTIFY_KEYS = [
   "mood",
   "status_busy",
   "status_free",
+  "status_sieste",
   "pet_cuddle",
   "pet_callback",
   "love_note",

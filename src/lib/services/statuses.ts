@@ -40,7 +40,9 @@ export async function setStatus(
   await notifyPartner({
     actorId: user.id,
     coupleId,
-    message: input.state === "busy" ? "status_busy" : "status_free",
+    message: input.state === "sieste" ? "status_sieste"
+      : input.state === "busy" ? "status_busy"
+      : "status_free",
   });
   return data;
 }

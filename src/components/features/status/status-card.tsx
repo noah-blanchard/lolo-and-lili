@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { accentHex } from "@/lib/avatars";
 import type { Profile } from "@/lib/supabase/types";
 
-type State = "free" | "busy";
+type State = "free" | "busy" | "sieste";
 
 export function StatusCard() {
   const t = useTranslations("status");
@@ -57,6 +57,7 @@ export function StatusCard() {
         options={[
           { value: "free", label: <>🌿 {t("free")}</>, activeClassName: "bg-free/25" },
           { value: "busy", label: <>⏳ {t("busy")}</>, activeClassName: "bg-busy/25" },
+          { value: "sieste", label: <>😴 {t("sieste")}</>, activeClassName: "bg-sieste/25" },
         ]}
       />
     </Card>
@@ -102,9 +103,9 @@ function PersonRow({
       <span
         className={cn(
           "rounded-full px-3 py-1 text-sm font-semibold",
-          state === "busy"
-            ? "bg-busy/15 text-busy"
-            : "bg-free/15 text-free",
+          state === "busy" && "bg-busy/15 text-busy",
+          state === "sieste" && "bg-sieste/15 text-sieste",
+          state === "free" && "bg-free/15 text-free",
         )}
       >
         {stateLabel}

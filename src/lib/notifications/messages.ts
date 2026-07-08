@@ -6,6 +6,7 @@ export type NotifyKey =
   | "mood"
   | "status_busy"
   | "status_free"
+  | "status_sieste"
   | "pet_cuddle"
   | "pet_callback"
   | "love_note"
@@ -65,6 +66,10 @@ export const NOTIFY: Record<NotifyKey, Record<Loc, (v: Vars) => Built>> = {
   status_free: {
     fr: (v) => ({ title: "Disponible 🟢", body: `${v.actor} est libre`, url: "/" }),
     zh: (v) => ({ title: "有空啦 🟢", body: `${v.actor} 现在有空`, url: "/" }),
+  },
+  status_sieste: {
+    fr: (v) => ({ title: "Sieste 😴", body: `${v.actor} fait la sieste`, url: "/" }),
+    zh: (v) => ({ title: "小睡 😴", body: `${v.actor} 正在小睡`, url: "/" }),
   },
   pet_cuddle: {
     fr: (v) => ({
@@ -222,6 +227,7 @@ export const CATEGORY_OF: Record<NotifyKey, NotifyCategory> = {
   mood: "moods",
   status_busy: "status",
   status_free: "status",
+  status_sieste: "status",
   pet_cuddle: "pet",
   pet_callback: "pet",
   love_note: "love",

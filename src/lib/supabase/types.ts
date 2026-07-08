@@ -443,7 +443,7 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
 
 // App-level column refinements (Postgres CHECK constraints — the generator
 // emits plain `string`, so we keep these unions here for stronger typing).
-export type StatusState = "free" | "busy";
+export type StatusState = "free" | "busy" | "sieste";
 export type Recurrence = "none" | "daily" | "weekly" | "monthly";
 
 type Tables = Database["public"]["Tables"];

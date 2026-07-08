@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const statusStates = ["free", "busy"] as const;
+export const statusStates = ["free", "busy", "sieste"] as const;
 
 export const setStatusSchema = z.object({
   state: z.enum(statusStates),

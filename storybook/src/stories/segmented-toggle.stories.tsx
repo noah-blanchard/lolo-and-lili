@@ -49,7 +49,7 @@ export const WithActiveColor: Story = {
   },
 };
 
-type Mood = "free" | "busy";
+type Mood = "free" | "busy" | "sieste";
 
 export const TwoOptions: Story = {
   render: () => {
@@ -62,6 +62,7 @@ export const TwoOptions: Story = {
           options={[
             { value: "free", label: <>🌿 Free</>, activeClassName: "bg-free/25" },
             { value: "busy", label: <>⏳ Busy</>, activeClassName: "bg-busy/25" },
+            { value: "sieste", label: <>😴 Sieste</>, activeClassName: "bg-sieste/25" },
           ]}
         />
       </div>
