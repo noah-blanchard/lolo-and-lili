@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiFetch, jsonBody } from "@/lib/query/client";
 import { queryKeys } from "@/lib/query/keys";
 import type { LoveNote } from "@/lib/supabase/types";
-import type { AddLoveNoteInput } from "@/lib/schemas/love-note";
+import type { AddLoveNoteInput, OpenLoveNoteInput } from "@/lib/schemas/love-note";
 import { useCouple } from "@/components/providers/couple-provider";
 
 export function useLoveNotes() {
@@ -60,6 +60,33 @@ export function useDeleteLoveNote() {
       const previous = queryClient.getQueryData<LoveNote[]>(queryKeys.loveNotes());
       queryClient.setQueryData<LoveNote[]>(queryKeys.loveNotes(), (old) =>
         (old ?? []).filter((n) => n.id !== noteId),
+      );
+      return { previous };
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.previous)
+        queryClient.setQueryData(queryKeys.loveNotes(), ctx.previous);
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: queryKeys.loveNotes() }),
+  });
+}
+
+/** Mark a love note as opened (shared state between partners). */
+export function useOpenLoveNote() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ noteId, input }: { noteId: string; input: OpenLoveNoteInput }) =>
+      apiFetch<LoveNote>(`/api/notes/${noteId}/open`, jsonBody(input)),
+
+    onMutate: async ({ noteId, input }) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.loveNotes() });
+      const previous = queryClient.getQueryData<LoveNote[]>(queryKeys.loveNotes());
+      queryClient.setQueryData<LoveNote[]>(queryKeys.loveNotes(), (old) =>
+        (old ?? []).map((n) =>
+          n.id === noteId ? { ...n, opened_at: input.opened_at } : n,
+        ),
       );
       return { previous };
     },
