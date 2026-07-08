@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 import { accentHex } from "@/lib/avatars";
@@ -23,15 +23,21 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   const [flipped, setFlipped] = useState(false);
   const [archiving, setArchiving] = useState(false);
 
+  // Keep a reference to the note we're currently animating so the exit
+  // animation still has content even after the parent sets note=null.
+  const noteRef = useRef(note);
+  if (note) noteRef.current = note;
+  const renderedNote = note ?? noteRef.current;
+
   useEffect(() => {
     setFlipped(false);
     setArchiving(false);
   }, [note?.id]);
 
-  if (!note) return null;
+  if (!renderedNote) return null;
 
   const authorName =
-    note.author_id === me.id ? me.display_name : partner?.display_name;
+    renderedNote.author_id === me.id ? me.display_name : partner?.display_name;
 
   function handleFlip() {
     if (flipped || archiving) return;
@@ -40,11 +46,11 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   }
 
   function handleArchive() {
-    if (archiving || !note) return;
+    if (archiving || !renderedNote) return;
     setArchiving(true);
     vibrate(20);
     openNote.mutate(
-      { noteId: note.id, input: { opened_at: new Date().toISOString() } },
+      { noteId: renderedNote.id, input: { opened_at: new Date().toISOString() } },
       { onSettled: () => onClose() },
     );
   }
@@ -57,25 +63,27 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   return (
     <AnimatePresence>
       {isOpen && (
+        /* Full-screen black overlay — "lights out" */
         <motion.div
-          key="lightbox-overlay"
+          key="lights-out"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
+          transition={{ duration: 0.9, ease: "easeInOut" }}
           onClick={handleOverlayClick}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black p-6"
         >
+          {/* Card cluster */}
           <motion.div
             key="lightbox-card"
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={
               archiving
                 ? { opacity: 0, x: "100%", scale: 0.9 }
-                : { opacity: 1, scale: 1, x: 0 }
+                : { opacity: 1, scale: 1, y: 0, x: 0 }
             }
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={archiving ? { duration: 0.4, ease: "easeIn" } : springBouncy}
+            exit={{ opacity: 0, scale: 0.85, y: 10 }}
+            transition={archiving ? { duration: 0.45, ease: "easeIn" } : springBouncy}
             onClick={(e) => e.stopPropagation()}
             className="flex w-full max-w-sm flex-col items-center"
           >
@@ -97,14 +105,12 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
                   transition={{ duration: 0.15 }}
                   className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-cute shadow-soft"
                   style={{
-                    backgroundColor: `${accentHex(note.accent)}55`,
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
+                    backgroundColor: `${accentHex(renderedNote.accent)}55`,
                   }}
                 >
                   <span className="text-6xl">💌</span>
                   <p className="px-6 text-center text-sm font-semibold text-white/80">
-                    {note.author_id === me.id
+                    {renderedNote.author_id === me.id
                       ? t("youWroteNote")
                       : t("partnerWroteNote", { name: authorName ?? "💕" })}
                   </p>
@@ -117,14 +123,12 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
                   transition={{ duration: 0.15, delay: flipped ? 0.2 : 0 }}
                   className="absolute inset-0 flex flex-col gap-3 rounded-cute p-5 shadow-soft"
                   style={{
-                    backgroundColor: `${accentHex(note.accent)}55`,
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
+                    backgroundColor: `${accentHex(renderedNote.accent)}55`,
                     transform: "rotateY(180deg)",
                   }}
                 >
                   <p className="flex-1 whitespace-pre-wrap break-words text-sm leading-relaxed text-white/90">
-                    {note.body}
+                    {renderedNote.body}
                   </p>
                   <div className="flex items-center justify-between text-xs text-white/50">
                     <span>{authorName ?? "💕"}</span>
