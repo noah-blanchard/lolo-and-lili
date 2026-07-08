@@ -321,6 +321,15 @@
       "love": "Mots doux & câlins",
       "dates": "Dates & comptes à rebours",
       "home": "Maison (courses, repas, dépenses)"
+    },
+    "inApp": {
+      "panelTitle": "Notifications",
+      "panelSubtitle": "Ce que ton amour a fait 💌",
+      "empty": "Pas encore de notifications",
+      "emptyHint": "On te dira dès qu'il se passe quelque chose ✨",
+      "markAllRead": "Tout marquer comme lu",
+      "goTo": "Voir",
+      "unread": "{count} non lues"
     }
   },
   "common": {

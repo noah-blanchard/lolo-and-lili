@@ -19,4 +19,5 @@ export const queryKeys = {
   pet: () => ["pet"] as const,
   petMemories: () => ["pet", "memories"] as const,
   nudges: () => ["nudges"] as const,
+  notifications: () => ["notifications"] as const,
 } as const;

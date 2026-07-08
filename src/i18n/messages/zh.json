@@ -321,6 +321,15 @@
       "love": "情话与抱抱",
       "dates": "纪念日与倒数",
       "home": "家务（购物、餐饮、开销）"
+    },
+    "inApp": {
+      "panelTitle": "通知",
+      "panelSubtitle": "另一半刚做了什么 💌",
+      "empty": "还没有通知",
+      "emptyHint": "一有动静我们马上告诉你 ✨",
+      "markAllRead": "全部标为已读",
+      "goTo": "查看",
+      "unread": "{count} 条未读"
     }
   },
   "common": {

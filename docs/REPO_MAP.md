@@ -51,7 +51,7 @@ src/
     providers/                # Context providers (Query, Couple, Realtime, ColorTheme).
     nav/                      # BottomNav and app navigation.
     pwa/                      # Service-worker registration.
-  hooks/                      # One use-<feature>.ts per feature: TanStack Query hooks.
+  hooks/                      # One use-<feature>.ts per feature (e.g. use-notifications.ts): TanStack Query hooks.
   i18n/                       # next-intl routing, request config, messages/<locale>.json.
   lib/
     api/                      # THE CONTRACT: defineRoute, defineAction, result, http.
@@ -63,7 +63,7 @@ src/
     *.ts                      # Domain helpers (chores, pets, moods, motion, utils, auth, ...).
   global.d.ts, proxy.ts       # Global types + Supabase auth proxy (session refresh).
 supabase/
-  migrations/                 # Ordered SQL migrations (0001_init ... 0014_nudges).
+  migrations/                 # Ordered SQL migrations (0001_init ... 0015_in_app_notifications).
   templates/                  # Email templates (otp, magic-link).
   reset.sql / reset-and-reinit.sql
 scripts/                      # build helpers (gen-pet-lottie.mjs).
@@ -143,9 +143,15 @@ Keep a strict separation:
 - **RLS enforces scoping** — every query must include the `couple_id` filter so Postgres
   policies apply. Never rely on client-side filtering for security.
 - The **admin (service-role) client** (`lib/supabase/admin.ts`) bypasses RLS. Only use it
-  for cross-boundary operations that are impossible under RLS (e.g. invite-code lookup,
-  sending Web Push). Keep the caller's RLS-enforced client for any write the user owns.
-  It is `server-only` — never import into a Client Component.
+   for cross-boundary operations that are impossible under RLS (e.g. invite-code lookup,
+   sending Web Push). Keep the caller's RLS-enforced client for any write the user owns.
+   It is `server-only` — never import into a Client Component.
+   `notifyPartner` (`lib/services/notifications.ts`) now **persists** an in-app
+   `notifications` row (via the admin client, localized to the recipient's locale) for every
+   push it sends — the in-app center mirrors exactly what was pushed. Reads
+   (`listNotifications`, `markNotificationRead`, `markAllNotificationsRead`,
+   `deleteNotification`) use the caller's RLS-enforced client and are scoped by
+   `recipient_id = auth.uid()`.
 
 ---
 
@@ -172,10 +178,11 @@ Keep a strict separation:
 - Mutations follow the **optimistic pattern** (`use-chores.ts` is the reference):
   `onMutate` → `cancelQueries` + snapshot previous + `setQueryData` optimistic patch;
   `onError` → roll back to snapshot; `onSettled` → `invalidateQueries`.
-- **Realtime** (`components/providers/realtime-provider.tsx`) subscribes to one channel per
-  couple and `invalidateQueries` the relevant `queryKeys` on Postgres Changes. This is how
-  the partner's actions appear live. When adding a table, register its `postgres_changes`
-  listener here (and a `queryKeys` entry).
+ - **Realtime** (`components/providers/realtime-provider.tsx`) subscribes to one channel per
+   couple and `invalidateQueries` the relevant `queryKeys` on Postgres Changes. This is how
+   the partner's actions appear live. When adding a table, register its `postgres_changes`
+   listener here (and a `queryKeys` entry). The `notifications` table is registered here so a
+   partner's in-app entries appear live; its cache key is `queryKeys.notifications()`.
 
 ---
 
@@ -222,9 +229,21 @@ Keep a strict separation:
 9. **Page:** `src/app/[locale]/(app)/<feature>/page.tsx` (Server Component, `setRequestLocale`
    + `getTranslations`) rendering the feature component. Add nav entry in `components/nav`.
 10. **i18n:** add string keys to all `src/i18n/messages/*.json` locales.
-11. **Notifications (optional):** add a `NotifyKey` + message in `lib/notifications/messages`
-    and call `notifyPartner` from the service (best-effort).
-12. Run `npm run lint` and `npm run build` (or `next build`) to verify.
+ 11. **Notifications (optional):** add a `NotifyKey` + message in `lib/notifications/messages`
+     and call `notifyPartner` from the service (best-effort).
+ 12. Run `npm run lint` and `npm run build` (or `next build`) to verify.
+
+### In-app notifications (convention)
+- Every `NotifyKey` automatically yields **both** a Web Push and an in-app `notifications`
+  row: `notifyPartner` persists the row (via the admin client, localized to the recipient's
+  `push_subscriptions.locale`, falling back to `fr`) using the same `title`/`body`/`url` as the
+  push. No extra call site needed — the in-app center mirrors pushes exactly.
+- The `target` must be a locale-agnostic route that exists as an `(app)` page
+  (`/notes`, `/chores`, `/pet`, `/meals`, `/expenses`, `/coupons`, `/dates`, `/question`,
+  `/moods`, `/bucket`, `/grocery`, `/`). `target_id` is persisted for future deep-linking but
+  v1 navigates to the feature route only.
+- Rows are created only for the **partner** (recipient ≠ actor), never for self — matching
+  pushes.
 
 ---
 

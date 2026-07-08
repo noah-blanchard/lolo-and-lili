@@ -4,6 +4,8 @@
  * aliases and app-level refinements so nothing app-side breaks on regen.
  */
 import type { Database as GeneratedDatabase, Json } from "./database.types";
+import type { NotifyKey } from "@/lib/schemas/notification";
+import type { NotifyCategory } from "@/lib/schemas/push";
 
 export type { Json };
 
@@ -333,6 +335,39 @@ type ExpenseSettlementsTable = {
   Relationships: [];
 };
 
+type NotificationsTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    recipient_id: string;
+    actor_id: string | null;
+    key: NotifyKey;
+    category: NotifyCategory;
+    title: string;
+    body: string;
+    target: string;
+    target_id: string | null;
+    read: boolean;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    recipient_id: string;
+    actor_id?: string | null;
+    key: string;
+    category: string;
+    title: string;
+    body: string;
+    target: string;
+    target_id?: string | null;
+    read?: boolean;
+    created_at?: string;
+  };
+  Update: Partial<NotificationsTable["Insert"]>;
+  Relationships: [];
+};
+
 type NudgesTable = {
   Row: {
     id: string;
@@ -401,6 +436,7 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
       expenses: ExpensesTable;
       expense_settlements: ExpenseSettlementsTable;
       nudges: NudgesTable;
+      notifications: NotificationsTable;
     };
   };
 };
@@ -432,3 +468,4 @@ export type Meal = Tables["meals"]["Row"];
 export type Expense = Tables["expenses"]["Row"];
 export type ExpenseSettlement = Tables["expense_settlements"]["Row"];
 export type Nudge = Tables["nudges"]["Row"];
+export type Notification = Tables["notifications"]["Row"];
