@@ -23,6 +23,7 @@ const config: StorybookConfig = {
       // in a plain Vite runtime. Mock it so HubCard (and future Link-based
       // components) render as a plain anchor without touching app source.
       "@/i18n/navigation": path.resolve(here, "../src/mocks/navigation.tsx"),
+      "next-intl/navigation": path.resolve(here, "../src/mocks/navigation.tsx"),
       // Feature components read data from these hooks; alias them to mock
       // modules so stories render with static fixtures (no Supabase/network).
       "@/hooks/use-moods": path.resolve(here, "../src/mocks/hooks/use-moods.ts"),
@@ -49,6 +50,13 @@ const config: StorybookConfig = {
       "@/app/actions/profiles": path.resolve(here, "../src/mocks/actions-profiles.ts"),
       "@/app/actions/couples": path.resolve(here, "../src/mocks/actions-couples.ts"),
     };
+
+    cfg.define = {
+      ...cfg.define,
+      "process.env": JSON.stringify({}),
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV ?? "development"),
+    };
+
     return cfg;
   },
 };
