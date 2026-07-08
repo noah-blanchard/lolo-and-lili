@@ -51,7 +51,7 @@ export function CouponsBoard() {
             />
           ) : (
             <>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-3">
                 {available.map((c: Coupon) => (
                   <CouponCard key={c.id} coupon={c} />
                 ))}
@@ -59,7 +59,7 @@ export function CouponsBoard() {
               {used.length > 0 && (
                 <div className="flex flex-col gap-2">
                   <h2 className="px-1 text-sm font-semibold text-muted">{t("usedTitle")}</h2>
-                  <div className="grid grid-cols-2 gap-3 opacity-70">
+                  <div className="flex flex-col gap-3 opacity-70">
                     {used.map((c: Coupon) => (
                       <CouponCard key={c.id} coupon={c} />
                     ))}

@@ -234,3 +234,25 @@
 @utility mb-safe {
   margin-bottom: env(safe-area-inset-bottom);
 }
+
+/* ------------------------------------------------------------------ *
+ * Coupon ticket — realistic paper-voucher shape.
+ * Large quarter-circle notches at the four corners + scalloped left/right
+ * edges, punched out via a composed mask so the page background shows
+ * through (theme-agnostic). drop-shadow follows the masked alpha shape
+ * (box-shadow would ignore the mask and stay rectangular).
+ * ------------------------------------------------------------------ */
+@utility coupon-ticket {
+  --coupon-notch: 16px;
+  --coupon-scallop: 8px;
+  -webkit-mask:
+    radial-gradient(circle var(--coupon-notch) at top left,    #0000 calc(var(--coupon-notch) - 0.5px), #000 var(--coupon-notch)),
+    radial-gradient(circle var(--coupon-notch) at top right,   #0000 calc(var(--coupon-notch) - 0.5px), #000 var(--coupon-notch)),
+    radial-gradient(circle var(--coupon-notch) at bottom left,  #0000 calc(var(--coupon-notch) - 0.5px), #000 var(--coupon-notch)),
+    radial-gradient(circle var(--coupon-notch) at bottom right, #0000 calc(var(--coupon-notch) - 0.5px), #000 var(--coupon-notch)),
+    radial-gradient(circle var(--coupon-scallop) at left,  #0000 var(--coupon-scallop), #000 calc(var(--coupon-scallop) + 0.5px)) left  center / 100% calc(2 * var(--coupon-scallop)) repeat-y,
+    radial-gradient(circle var(--coupon-scallop) at right, #0000 var(--coupon-scallop), #000 calc(var(--coupon-scallop) + 0.5px)) right center / 100% calc(2 * var(--coupon-scallop)) repeat-y;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  filter: drop-shadow(0 6px 14px rgb(74 63 68 / 0.12));
+}

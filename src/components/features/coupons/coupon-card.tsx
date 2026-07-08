@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Trash2 } from "lucide-react";
 import { ApiError } from "@/lib/api/result";
 import { celebrate } from "@/lib/confetti";
@@ -10,6 +10,7 @@ import { vibrate } from "@/lib/feedback";
 import { Button } from "@/components/ui/button";
 import { useCouple } from "@/components/providers/couple-provider";
 import { useDeleteCoupon, useRedeemCoupon } from "@/hooks/use-coupons";
+import { springSoft } from "@/lib/motion";
 import type { Coupon } from "@/lib/supabase/types";
 
 export function CouponCard({ coupon }: { coupon: Coupon }) {
@@ -35,44 +36,67 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
   return (
     <motion.div
       layout
-      className="relative flex flex-col gap-2 rounded-cute bg-surface p-4 shadow-soft"
+      className="coupon-ticket relative bg-surface px-5 py-4"
     >
       <div className="flex items-start gap-2">
         <span className="text-3xl">{coupon.emoji}</span>
         <p className="flex-1 font-display font-semibold leading-tight">
           {coupon.title}
         </p>
+        {mine && !used && (
+          <button
+            type="button"
+            aria-label={t("delete")}
+            onClick={() => del.mutate(coupon.id)}
+            className="text-muted/60 transition-colors hover:text-busy"
+          >
+            <Trash2 className="size-4" />
+          </button>
+        )}
       </div>
-      {coupon.cost_treats > 0 && (
-        <span className="text-xs text-muted">🪙 {coupon.cost_treats}</span>
-      )}
-      {used ? (
-        <span className="mt-1 self-start rounded-full bg-surface-muted px-3 py-1 text-xs font-semibold text-muted">
-          {t("used")}
-        </span>
-      ) : mine ? (
-        <span className="mt-1 self-start rounded-full bg-surface-muted px-3 py-1 text-xs font-semibold text-muted">
-          {t("sentLabel")}
-        </span>
-      ) : (
-        <Button
-          size="sm"
-          onClick={onRedeem}
-          disabled={redeem.isPending}
-          className="mt-1"
+
+      <div className="my-3 border-t border-dashed border-border" />
+
+      <AnimatePresence initial={false}>
+        {!used && (
+          <motion.div
+            layout
+            exit={{ y: 24, scale: 0.9, opacity: 0 }}
+            transition={springSoft}
+            className="flex items-center justify-between gap-2"
+          >
+            {coupon.cost_treats > 0 && (
+              <span className="text-xs text-muted">🪙 {coupon.cost_treats}</span>
+            )}
+            {mine ? (
+              <span className="self-start rounded-full bg-surface-muted px-3 py-1 text-xs font-semibold text-muted">
+                {t("sentLabel")}
+              </span>
+            ) : (
+              <Button
+                size="sm"
+                onClick={onRedeem}
+                disabled={redeem.isPending}
+                className="ml-auto"
+              >
+                {t("redeem")}
+              </Button>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {used && (
+        <motion.div
+          initial={{ scale: 1.8, opacity: 0, rotate: -18 }}
+          animate={{ scale: 1, opacity: 1, rotate: -12 }}
+          transition={springSoft}
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
         >
-          {t("redeem")}
-        </Button>
-      )}
-      {mine && !used && (
-        <button
-          type="button"
-          aria-label={t("delete")}
-          onClick={() => del.mutate(coupon.id)}
-          className="absolute right-2 top-2 text-muted/60 transition-colors hover:text-busy"
-        >
-          <Trash2 className="size-4" />
-        </button>
+          <span className="rounded-full border-2 border-busy/70 px-4 py-1 font-display text-lg font-bold uppercase tracking-wide text-busy/80">
+            {t("used")}
+          </span>
+        </motion.div>
       )}
     </motion.div>
   );
