@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { motion } from "motion/react";
 import { useCoupons } from "@/hooks/use-coupons";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SegmentedToggle } from "@/components/ui/segmented-toggle";
 import { Skeleton } from "@/components/ui/skeleton";
+import { staggerContainer, popIn } from "@/lib/motion";
 import { CouponCard } from "./coupon-card";
 import { MintCoupon } from "./mint-coupon";
 import { useCouple } from "@/components/providers/couple-provider";
@@ -64,19 +66,23 @@ export function CouponsBoard() {
             />
           ) : (
             <>
-              <div className="flex flex-col gap-3">
+              <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3">
                 {available.map((c: Coupon) => (
-                  <CouponCard key={c.id} coupon={c} />
+                  <motion.div key={c.id} variants={popIn}>
+                    <CouponCard coupon={c} />
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
               {used.length > 0 && (
                 <div className="flex flex-col gap-2">
                   <h2 className="px-1 text-sm font-semibold text-muted">{t("usedTitle")}</h2>
-                  <div className="flex flex-col gap-3 opacity-70">
+                  <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3 opacity-70">
                     {used.map((c: Coupon) => (
-                      <CouponCard key={c.id} coupon={c} />
+                      <motion.div key={c.id} variants={popIn}>
+                        <CouponCard coupon={c} />
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
               )}
             </>

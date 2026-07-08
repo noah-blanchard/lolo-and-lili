@@ -1,10 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { motion } from "motion/react";
 import { celebrate } from "@/lib/confetti";
 import { useClearChecked, useGrocery } from "@/hooks/use-grocery";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
+import { staggerContainer, popIn } from "@/lib/motion";
 import { AddGrocery } from "./add-grocery";
 import { GroceryItem } from "./grocery-item";
 
@@ -36,9 +38,11 @@ export function GroceryList() {
       ) : !data?.length ? (
         <EmptyState emoji="🛒" title={t("empty")} description={t("emptyHint")} />
       ) : (
-        <div className="flex flex-col gap-3">
+        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3">
           {unchecked.map((i) => (
-            <GroceryItem key={i.id} item={i} />
+            <motion.div key={i.id} variants={popIn}>
+              <GroceryItem item={i} />
+            </motion.div>
           ))}
           {checked.length > 0 && (
             <>
@@ -53,11 +57,13 @@ export function GroceryList() {
                 </button>
               </div>
               {checked.map((i) => (
-                <GroceryItem key={i.id} item={i} />
+                <motion.div key={i.id} variants={popIn}>
+                  <GroceryItem item={i} />
+                </motion.div>
               ))}
             </>
           )}
-        </div>
+        </motion.div>
       )}
     </div>
   );

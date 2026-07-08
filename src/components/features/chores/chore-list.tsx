@@ -1,12 +1,13 @@
 "use client";
 
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useChores } from "@/hooks/use-chores";
 import { ChoreCard } from "./chore-card";
 import { AddChore } from "./add-chore";
 import { Card, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { staggerContainer, popIn } from "@/lib/motion";
 
 export function ChoreList() {
   const t = useTranslations("chores");
@@ -35,13 +36,15 @@ export function ChoreList() {
           <CardDescription>{t("empty")}</CardDescription>
         </Card>
       ) : (
-        <div className="flex flex-col gap-2">
+        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-2">
           <AnimatePresence initial={false}>
             {sorted.map((chore) => (
-              <ChoreCard key={chore.id} chore={chore} />
+              <motion.div key={chore.id} variants={popIn}>
+                <ChoreCard chore={chore} />
+              </motion.div>
             ))}
           </AnimatePresence>
-        </div>
+        </motion.div>
       )}
     </div>
   );

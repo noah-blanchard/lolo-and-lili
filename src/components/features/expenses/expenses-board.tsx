@@ -7,6 +7,7 @@ import { formatMoney } from "@/lib/expenses";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
+import { staggerContainer, popIn } from "@/lib/motion";
 import { useCouple } from "@/components/providers/couple-provider";
 import { useDeleteExpense, useExpenses } from "@/hooks/use-expenses";
 import { BalanceCard } from "./balance-card";
@@ -42,9 +43,9 @@ export function ExpensesBoard() {
       ) : !data?.expenses.length ? (
         <EmptyState emoji="💸" title={t("empty")} description={t("emptyHint")} />
       ) : (
-        <div className="flex flex-col gap-3">
+        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3">
           {data.expenses.map((e) => (
-            <motion.div key={e.id} layout>
+            <motion.div key={e.id} variants={popIn} layout>
               <Card className="flex items-center gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium">{e.description}</p>
@@ -66,7 +67,7 @@ export function ExpensesBoard() {
               </Card>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

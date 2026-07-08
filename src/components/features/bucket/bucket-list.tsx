@@ -1,9 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { motion } from "motion/react";
 import { useBucket } from "@/hooks/use-bucket";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
+import { staggerContainer, popIn } from "@/lib/motion";
 import { AddBucket } from "./add-bucket";
 import { SpinJar } from "./spin-jar";
 import { BucketItem } from "./bucket-item";
@@ -31,9 +33,11 @@ export function BucketList() {
       ) : !data?.length ? (
         <EmptyState emoji="🪣" title={t("empty")} description={t("emptyHint")} />
       ) : (
-        <div className="flex flex-col gap-3">
+        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3">
           {todo.map((i) => (
-            <BucketItem key={i.id} item={i} />
+            <motion.div key={i.id} variants={popIn}>
+              <BucketItem item={i} />
+            </motion.div>
           ))}
           {done.length > 0 && (
             <>
@@ -41,11 +45,13 @@ export function BucketList() {
                 {t("doneTitle")}
               </h2>
               {done.map((i) => (
-                <BucketItem key={i.id} item={i} />
+                <motion.div key={i.id} variants={popIn}>
+                  <BucketItem item={i} />
+                </motion.div>
               ))}
             </>
           )}
-        </div>
+        </motion.div>
       )}
     </div>
   );
