@@ -4,6 +4,7 @@ import { useLocale } from "next-intl";
 import { MEAL_SLOTS } from "@/lib/schemas/meal";
 import { useMeals } from "@/hooks/use-meals";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { MealSlot } from "./meal-slot";
 
 function weekDates(): string[] {
@@ -16,10 +17,27 @@ function weekDates(): string[] {
 
 export function WeekPlanner() {
   const locale = useLocale();
-  const { data } = useMeals();
+  const { data, isLoading } = useMeals();
   const days = weekDates();
   const mealFor = (date: string, slot: string) =>
     (data ?? []).find((m) => m.date === date && m.slot === slot) ?? null;
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-4">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <Card key={i} className="flex flex-col gap-2">
+            <Skeleton className="h-5 w-1/3" />
+            <div className="flex flex-col gap-1.5">
+              <Skeleton className="h-8 w-full rounded-cute" />
+              <Skeleton className="h-8 w-full rounded-cute" />
+              <Skeleton className="h-8 w-full rounded-cute" />
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">
