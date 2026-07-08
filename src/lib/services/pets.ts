@@ -245,7 +245,13 @@ export async function care(
     if (cost > 0) patch.treats = pet.treats - cost;
   }
 
-  await supabase.from("pets").update(patch).eq("id", pet.id);
+  const { error: updateError } = await supabase
+    .from("pets")
+    .update(patch)
+    .eq("id", pet.id);
+  if (updateError) {
+    throw new ApiError(ErrorCode.INTERNAL, updateError.message);
+  }
 
   if (notify) {
     await notifyPartner({ actorId: user.id, coupleId, message: notify });
@@ -351,7 +357,8 @@ async function nourish(
 ): Promise<void> {
   const now = new Date();
   const m = decayMeters(pet, now);
-  const clamp = (n: number) => Math.max(0, Math.min(100, n));
+  // Meter columns are integers — round so PostgREST doesn't reject the update.
+  const clamp = (n: number) => Math.round(Math.max(0, Math.min(100, n)));
   await supabase
     .from("pets")
     .update({

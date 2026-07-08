@@ -165,7 +165,11 @@ export const ACCESSORIES: Accessory[] = [
 
 // --- Helpers ----------------------------------------------------------------
 
-const clamp = (n: number, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, n));
+// Meters live in `integer` columns, so every clamped value must be a whole
+// number — decay uses fractional rates (e.g. 2.5/hr), and writing a float back
+// to an int column makes PostgREST reject the whole update.
+const clamp = (n: number, lo = 0, hi = 100) =>
+  Math.round(Math.max(lo, Math.min(hi, n)));
 
 function hoursBetween(fromISO: string, now: Date): number {
   return Math.max(0, (now.getTime() - new Date(fromISO).getTime()) / 3_600_000);
