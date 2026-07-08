@@ -12,6 +12,9 @@ import "@fontsource/quicksand/600.css";
 // Real design tokens (pastel themes, rounded radii, cute shadows) from the app.
 import "../../src/app/globals.css";
 
+// App-shell providers the feature components rely on (couple, intl, query, theme).
+import { withAppProviders } from "../src/mocks/providers";
+
 const THEMES = ["peach", "blue", "lilac", "mint", "midnight", "cocoa"] as const;
 
 // next/font normally injects these; mirror them so font-family resolves in SB.
@@ -66,7 +69,7 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [withTheme],
+  decorators: [withTheme, withAppProviders],
 };
 
 export default preview;
