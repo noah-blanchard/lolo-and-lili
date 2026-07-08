@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Tailwind scans these for class usage. The app's own components plus the
+ * Storybook stories (which live in a sub-directory) so utilities render in SB. */
+@source "../components/**/*.{ts,tsx}";
+@source "../../storybook/src/**/*.{ts,tsx}";
+
 /* ------------------------------------------------------------------ *
  * Pastel color themes — each is a *complete* palette (background included).
  * Applied via [data-color-theme="..."] on <html>. There is a single control:

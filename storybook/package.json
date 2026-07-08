@@ -1,0 +1,31 @@
+{
+  "name": "lolo-and-lili-storybook",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/fredoka": "^5.0.0",
+    "@fontsource/quicksand": "^5.0.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^10.4.6",
+    "@storybook/react-vite": "^10.4.6",
+    "@tailwindcss/postcss": "^4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.3.0",
+    "storybook": "^10.4.6",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite": "^5.4.0",
+    "eslint-plugin-storybook": "10.4.6",
+    "@storybook/addon-docs": "^10.4.6"
+  }
+}

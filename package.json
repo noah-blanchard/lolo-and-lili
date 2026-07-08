@@ -2,12 +2,17 @@
   "name": "lolo-and-lili",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "storybook"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "gen:types": "supabase gen types typescript --project-id dtaibjerhhjbidqisnye > src/lib/supabase/database.types.ts"
+    "gen:types": "supabase gen types typescript --project-id dtaibjerhhjbidqisnye > src/lib/supabase/database.types.ts",
+    "storybook": "bun run --filter lolo-and-lili-storybook storybook",
+    "build-storybook": "bun run --filter lolo-and-lili-storybook build-storybook"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
