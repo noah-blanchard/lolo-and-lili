@@ -66,6 +66,10 @@ export async function redeemCoupon(
   if (coupon.status !== "available") {
     throw new ApiError(ErrorCode.CONFLICT, "This coupon was already redeemed");
   }
+  // A coupon is a gift to the partner — its creator can never redeem it.
+  if (coupon.created_by && coupon.created_by === user.id) {
+    throw fail.forbidden("You can't redeem your own coupon");
+  }
 
   // Costed coupons draw from the shared treats wallet.
   await spendTreats(supabase, user, coupon.cost_treats);

@@ -186,8 +186,15 @@
     "redeemed": "Bon utilisé ! 🎉",
     "used": "Utilisé",
     "usedTitle": "Déjà utilisés",
+    "received": "Reçus",
+    "sent": "Envoyés",
+    "sentLabel": "Envoyé à ton amour",
     "empty": "Aucun bon pour l'instant",
     "emptyHint": "Crée un premier bon pour ton amour 🎟️",
+    "emptyReceived": "Aucun bon reçu",
+    "emptyReceivedHint": "Ton amour n'a pas encore envoyé de bons 🎟️",
+    "emptySent": "Aucun bon envoyé",
+    "emptySentHint": "Crée un bon pour gâter ton amour 🎟️",
     "delete": "Supprimer"
   },
   "pet": {

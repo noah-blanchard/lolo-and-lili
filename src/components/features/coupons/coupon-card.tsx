@@ -50,6 +50,10 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
         <span className="mt-1 self-start rounded-full bg-surface-muted px-3 py-1 text-xs font-semibold text-muted">
           {t("used")}
         </span>
+      ) : mine ? (
+        <span className="mt-1 self-start rounded-full bg-surface-muted px-3 py-1 text-xs font-semibold text-muted">
+          {t("sentLabel")}
+        </span>
       ) : (
         <Button
           size="sm"

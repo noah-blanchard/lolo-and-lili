@@ -186,8 +186,15 @@
     "redeemed": "券已使用！🎉",
     "used": "已使用",
     "usedTitle": "已使用的券",
+    "received": "收到的",
+    "sent": "发出的",
+    "sentLabel": "已送给你的另一半",
     "empty": "还没有券",
     "emptyHint": "给你的另一半做第一张券吧 🎟️",
+    "emptyReceived": "还没有收到的券",
+    "emptyReceivedHint": "你的另一半还没送你券 🎟️",
+    "emptySent": "还没有发出的券",
+    "emptySentHint": "做一张券宠宠你的另一半吧 🎟️",
     "delete": "删除"
   },
   "pet": {
