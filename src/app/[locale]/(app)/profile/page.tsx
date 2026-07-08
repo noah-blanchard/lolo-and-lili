@@ -2,7 +2,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getProfile, getSession } from "@/lib/auth";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/nav/theme-toggle";
 import { LocaleSwitcher } from "@/components/nav/locale-switcher";
 import { ProfileEditor } from "@/components/features/profile/profile-editor";
 import { ThemeColorPicker } from "@/components/features/profile/theme-color-picker";
@@ -64,11 +63,6 @@ export default async function ProfilePage({
       )}
 
       <ThemeColorPicker />
-
-      <Card className="flex items-center justify-between">
-        <CardDescription>{t("profile.appearance")}</CardDescription>
-        <ThemeToggle />
-      </Card>
 
       <Card className="flex items-center justify-between">
         <CardDescription>{t("profile.language")}</CardDescription>

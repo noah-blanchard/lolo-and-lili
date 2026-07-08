@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import {
+  COLOR_THEMES,
   DEFAULT_COLOR_THEME,
   resolveColorTheme,
   type ColorThemeKey,
@@ -24,7 +25,11 @@ const ColorThemeContext = createContext<ColorThemeContextValue | null>(null);
 /** Apply the chosen color theme to <html> so CSS variables cascade. */
 function applyTheme(theme: ColorThemeKey) {
   if (typeof document === "undefined") return;
-  document.documentElement.setAttribute("data-color-theme", theme);
+  const root = document.documentElement;
+  root.setAttribute("data-color-theme", theme);
+  // Tell the browser the scheme so native controls/scrollbars match.
+  const mode = COLOR_THEMES.find((t) => t.key === theme)?.mode ?? "light";
+  root.style.colorScheme = mode;
 }
 
 export function ColorThemeProvider({

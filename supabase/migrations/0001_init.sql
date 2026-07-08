@@ -19,7 +19,7 @@ create table if not exists public.profiles (
   couple_id    uuid references public.couples (id) on delete set null,
   display_name text,
   avatar_emoji text default '🐣',
-  theme_pref   text default 'system',
+  theme_pref   text default 'peach',
   created_at   timestamptz not null default now()
 );
 

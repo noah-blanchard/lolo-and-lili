@@ -7,7 +7,6 @@ import { Toaster } from "sonner";
 import { routing } from "@/i18n/routing";
 import { fontVariables } from "@/lib/fonts";
 import { QueryProvider } from "@/components/providers/query-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import "../globals.css";
 
@@ -31,10 +30,7 @@ export async function generateMetadata({
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fff7f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#211a1d" },
-  ],
+  themeColor: "#fff7f0",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -55,14 +51,12 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={fontVariables} suppressHydrationWarning>
+    <html lang={locale} className={fontVariables}>
       <body>
         <NextIntlClientProvider>
-          <ThemeProvider>
-            <QueryProvider>{children}</QueryProvider>
-            <Toaster position="top-center" richColors />
-            <ServiceWorkerRegister />
-          </ThemeProvider>
+          <QueryProvider>{children}</QueryProvider>
+          <Toaster position="top-center" richColors />
+          <ServiceWorkerRegister />
         </NextIntlClientProvider>
       </body>
     </html>

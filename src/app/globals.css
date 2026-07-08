@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-/* next-themes toggles a `.dark` class on <html>; make Tailwind's dark: variant follow it. */
-@custom-variant dark (&:where(.dark, .dark *));
-
 /* ------------------------------------------------------------------ *
- * Peachy Pastel palette — light (default)
+ * Pastel color themes — each is a *complete* palette (background included).
+ * Applied via [data-color-theme="..."] on <html>. There is a single control:
+ * pick a theme, get its full look. Some are light, some are dark; all stay
+ * soft and coherent. The default (peach) is the :root block below.
  * ------------------------------------------------------------------ */
-:root {
+:root,
+[data-color-theme="peach"] {
   --background: #fff7f0; /* warm cream */
   --surface: #ffffff; /* cards */
   --surface-muted: #fdeee6;
@@ -32,18 +33,114 @@
   --radius: 1.25rem;
 }
 
-.dark {
-  --background: #211a1d; /* warm near-black */
-  --surface: #2c2327;
-  --surface-muted: #35292e;
-  --foreground: #f7ece9;
+[data-color-theme="blue"] {
+  --background: #f2f7ff; /* icy white */
+  --surface: #ffffff;
+  --surface-muted: #e8f0ff;
+  --foreground: #2f3a4a; /* deep slate */
+  --muted: #7e8aa0;
+
+  --primary: #6fa8ff; /* sky */
+  --primary-foreground: #ffffff;
+  --secondary: #9fe3da; /* aqua */
+  --secondary-foreground: #1c4a44;
+  --accent: #bcd0ff; /* periwinkle */
+  --accent-foreground: #2a3a6b;
+  --lavender: #b3c2ff;
+  --lavender-foreground: #2f3a6b;
+
+  --busy: #ff7a8a;
+  --free: #4fc7a0;
+
+  --border: #dde7f5;
+  --input: #e8f0ff;
+  --ring: #6fa8ff;
+}
+
+[data-color-theme="lilac"] {
+  --background: #faf5ff; /* soft lilac white */
+  --surface: #ffffff;
+  --surface-muted: #f1e9fb;
+  --foreground: #3f3550; /* deep mauve */
+  --muted: #8a7e9c;
+
+  --primary: #b48cff; /* lavender */
+  --primary-foreground: #ffffff;
+  --secondary: #ffb3e6; /* pink */
+  --secondary-foreground: #5a2a4d;
+  --accent: #c9b8ff; /* light violet */
+  --accent-foreground: #3a2f5a;
+  --lavender: #d4b8ff;
+  --lavender-foreground: #3f2f5a;
+
+  --busy: #ff7a9c;
+  --free: #5cc79a;
+
+  --border: #ece2f7;
+  --input: #f1e9fb;
+  --ring: #b48cff;
+}
+
+[data-color-theme="mint"] {
+  --background: #f1fbf5; /* mint white */
+  --surface: #ffffff;
+  --surface-muted: #e6f6ec;
+  --foreground: #2f4a3a; /* deep green */
+  --muted: #7a8e82;
+
+  --primary: #5fcfa6; /* mint */
+  --primary-foreground: #ffffff;
+  --secondary: #b6e89a; /* sage */
+  --secondary-foreground: #2f4a1f;
+  --accent: #9fe3d6; /* aqua */
+  --accent-foreground: #1c4a44;
+  --lavender: #b3c8ff;
+  --lavender-foreground: #2f3a6b;
+
+  --busy: #ff7a8a;
+  --free: #4fc77f;
+
+  --border: #dcefe4;
+  --input: #e6f6ec;
+  --ring: #5fcfa6;
+}
+
+[data-color-theme="midnight"] {
+  --background: #161a2e; /* deep indigo */
+  --surface: #1f2440;
+  --surface-muted: #272d4d;
+  --foreground: #e8ebff; /* soft white */
+  --muted: #9aa3c7;
+
+  --primary: #8fa8ff; /* periwinkle */
+  --primary-foreground: #141a30;
+  --secondary: #7fd6cd; /* teal */
+  --secondary-foreground: #07312c;
+  --accent: #b3c2ff; /* light blue */
+  --accent-foreground: #1c2547;
+  --lavender: #c3b8ff;
+  --lavender-foreground: #e7ebff;
+
+  --busy: #ff7b8a;
+  --free: #6ed6a0;
+
+  --border: #2c3358;
+  --input: #2c3358;
+  --ring: #8fa8ff;
+}
+
+[data-color-theme="cocoa"] {
+  --background: #241c1f; /* warm dark brown */
+  --surface: #2e2429;
+  --surface-muted: #382b31;
+  --foreground: #f7ece9; /* warm white */
   --muted: #b7a6ac;
 
-  --primary: #ff9db0;
+  --primary: #ff9db0; /* coral */
   --primary-foreground: #2a1418;
-  --secondary: #7fd9be;
+  --secondary: #7fd9be; /* mint */
   --secondary-foreground: #08312a;
-  --accent: #ffd98a;
+  --accent: #ffd98a; /* butter */
   --accent-foreground: #3a2c07;
   --lavender: #cbb9e9;
   --lavender-foreground: #efe9f8;
@@ -54,80 +151,6 @@
   --border: #3a2e33;
   --input: #3a2e33;
   --ring: #ff9db0;
-}
-
-/* ------------------------------------------------------------------ *
- * Pastel color themes — override the palette while keeping the soft look.
- * Applied via [data-color-theme="..."] on <html>. Default (peach) is the
- * :root block above, so it needs no override.
- * ------------------------------------------------------------------ */
-[data-color-theme="blue"] {
-  --primary: #8fb8ff; /* sky */
-  --primary-foreground: #ffffff;
-  --secondary: #a7e8e0; /* aqua */
-  --secondary-foreground: #1f4a47;
-  --accent: #cdd7ff; /* periwinkle */
-  --accent-foreground: #2c356b;
-  --lavender: #b8c4ff;
-  --lavender-foreground: #2f3a6b;
-  --ring: #8fb8ff;
-}
-[data-color-theme="blue"].dark {
-  --primary: #a3c4ff;
-  --primary-foreground: #14203f;
-  --secondary: #7fd6cd;
-  --secondary-foreground: #07312c;
-  --accent: #d6ddff;
-  --accent-foreground: #1c2547;
-  --lavender: #c3ccff;
-  --lavender-foreground: #e7ebff;
-  --ring: #a3c4ff;
-}
-
-[data-color-theme="lilac"] {
-  --primary: #c3a3ff; /* lavender */
-  --primary-foreground: #ffffff;
-  --secondary: #ffb3e6; /* pink */
-  --secondary-foreground: #5a2a4d;
-  --accent: #b8c4ff; /* periwinkle */
-  --accent-foreground: #2f3a6b;
-  --lavender: #d9b8ff;
-  --lavender-foreground: #3f2f5a;
-  --ring: #c3a3ff;
-}
-[data-color-theme="lilac"].dark {
-  --primary: #cbb3ff;
-  --primary-foreground: #2a1f47;
-  --secondary: #ff9fdc;
-  --secondary-foreground: #4a1438;
-  --accent: #c3ccff;
-  --accent-foreground: #1c2547;
-  --lavender: #d9c4ff;
-  --lavender-foreground: #efe9f8;
-  --ring: #cbb3ff;
-}
-
-[data-color-theme="mint"] {
-  --primary: #8fe0c0; /* mint */
-  --primary-foreground: #ffffff;
-  --secondary: #bde8a0; /* sage */
-  --secondary-foreground: #2f4a1f;
-  --accent: #a7e8e0; /* aqua */
-  --accent-foreground: #1f4a47;
-  --lavender: #b8c4ff;
-  --lavender-foreground: #2f3a6b;
-  --ring: #8fe0c0;
-}
-[data-color-theme="mint"].dark {
-  --primary: #9fe8cd;
-  --primary-foreground: #0f3329;
-  --secondary: #c4ecab;
-  --secondary-foreground: #1f3a12;
-  --accent: #7fd6cd;
-  --accent-foreground: #07312c;
-  --lavender: #c3ccff;
-  --lavender-foreground: #e7ebff;
-  --ring: #9fe8cd;
 }
 
 /* ------------------------------------------------------------------ *

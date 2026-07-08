@@ -1,43 +1,69 @@
 /**
- * Pastel color themes for the app. Each theme overrides the palette CSS
- * variables (see globals.css `[data-color-theme="..."]` blocks) while keeping
- * the same soft, rounded, pillowy look. The `key` is persisted in
+ * Pastel color themes for the app. Each theme is a *complete* palette — it
+ * overrides every CSS variable (background, surface, text, accents…) so there
+ * is a single control: pick a theme, get its full look. Some themes are light,
+ * some are dark; all stay soft and coherent. The `key` is persisted in
  * profiles.theme_pref and applied as a `data-color-theme` attribute on <html>.
  *
- * Keep the keys in sync with the SQL default in supabase/migrations/0001_init.sql
- * (`theme_pref text default 'peach'`) and the CSS selectors in globals.css.
+ * Keep the keys in sync with the CSS selectors in globals.css and the SQL
+ * default in supabase/migrations/0001_init.sql (`theme_pref text default 'peach'`).
  */
+
+export type ThemeMode = "light" | "dark";
+
+export interface ThemePalette {
+  key: string;
+  label: string;
+  emoji: string;
+  mode: ThemeMode;
+  /** Three representative colors for the picker swatch: [bg, primary, secondary]. */
+  swatch: [string, string, string];
+}
 
 export const COLOR_THEMES = [
   {
     key: "peach",
     label: "Peach",
     emoji: "🍑",
-    // soft coral / cream
-    swatch: ["#ff8fa3", "#9ee6cf", "#ffd670"],
+    mode: "light",
+    swatch: ["#fff7f0", "#ff8fa3", "#9ee6cf"],
   },
   {
     key: "blue",
     label: "Blue",
     emoji: "💙",
-    // soft sky / periwinkle
-    swatch: ["#8fb8ff", "#a7e8e0", "#cdd7ff"],
+    mode: "light",
+    swatch: ["#f2f7ff", "#6fa8ff", "#9fe3da"],
   },
   {
     key: "lilac",
     label: "Lilac",
     emoji: "💜",
-    // soft lavender / mauve
-    swatch: ["#c3a3ff", "#ffb3e6", "#b8c4ff"],
+    mode: "light",
+    swatch: ["#faf5ff", "#b48cff", "#ffb3e6"],
   },
   {
     key: "mint",
     label: "Mint",
     emoji: "🌿",
-    // soft mint / sage
-    swatch: ["#8fe0c0", "#bde8a0", "#a7e8e0"],
+    mode: "light",
+    swatch: ["#f1fbf5", "#5fcfa6", "#b6e89a"],
   },
-] as const;
+  {
+    key: "midnight",
+    label: "Midnight",
+    emoji: "🌌",
+    mode: "dark",
+    swatch: ["#161a2e", "#8fa8ff", "#7fd6cd"],
+  },
+  {
+    key: "cocoa",
+    label: "Cocoa",
+    emoji: "🍫",
+    mode: "dark",
+    swatch: ["#241c1f", "#ff9db0", "#7fd9be"],
+  },
+] as const satisfies readonly ThemePalette[];
 
 export type ColorThemeKey = (typeof COLOR_THEMES)[number]["key"];
 

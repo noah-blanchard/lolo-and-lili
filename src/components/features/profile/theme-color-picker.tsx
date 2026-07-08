@@ -95,12 +95,13 @@ export function ThemeColorPicker() {
                 type="button"
                 onClick={() => preview(opt.key)}
                 className={cn(
-                  "flex items-center gap-3 rounded-cute bg-surface-muted p-3 text-left transition",
-                  active && "ring-2 ring-primary",
+                  "flex items-center gap-3 rounded-cute p-3 text-left transition",
+                  active ? "ring-2 ring-primary" : "ring-1 ring-border",
                 )}
+                style={{ backgroundColor: opt.swatch[0] }}
               >
                 <span className="flex shrink-0 -space-x-1.5">
-                  {opt.swatch.map((c, i) => (
+                  {opt.swatch.slice(1).map((c, i) => (
                     <span
                       key={i}
                       className="size-6 rounded-full ring-2 ring-surface"
