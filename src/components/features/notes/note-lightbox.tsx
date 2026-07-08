@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 import { accentHex } from "@/lib/avatars";
@@ -11,7 +11,7 @@ import { vibrate } from "@/lib/feedback";
 import type { LoveNote } from "@/lib/supabase/types";
 
 interface NoteLightboxProps {
-  note: LoveNote;
+  note: LoveNote | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -23,6 +23,13 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   const [flipped, setFlipped] = useState(false);
   const [archiving, setArchiving] = useState(false);
 
+  useEffect(() => {
+    setFlipped(false);
+    setArchiving(false);
+  }, [note?.id]);
+
+  if (!note) return null;
+
   const authorName =
     note.author_id === me.id ? me.display_name : partner?.display_name;
 
@@ -33,7 +40,7 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   }
 
   function handleArchive() {
-    if (archiving) return;
+    if (archiving || !note) return;
     setArchiving(true);
     vibrate(20);
     openNote.mutate(
@@ -50,7 +57,6 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        /* Full-screen black overlay — "lights out" */
         <motion.div
           key="lightbox-overlay"
           initial={{ opacity: 0 }}
@@ -73,7 +79,7 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
             onClick={(e) => e.stopPropagation()}
             className="flex w-full max-w-sm flex-col items-center"
           >
-            {/* Card with flip — fixed height so button space is reserved */}
+            {/* Card with flip */}
             <div
               className="relative h-72 w-full cursor-pointer"
               style={{ perspective: 1200 }}
@@ -86,7 +92,9 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
                 style={{ transformStyle: "preserve-3d" }}
               >
                 {/* Front face — sealed envelope */}
-                <div
+                <motion.div
+                  animate={{ opacity: flipped ? 0 : 1 }}
+                  transition={{ duration: 0.15 }}
                   className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-cute shadow-soft"
                   style={{
                     backgroundColor: `${accentHex(note.accent)}55`,
@@ -101,10 +109,12 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
                       : t("partnerWroteNote", { name: authorName ?? "💕" })}
                   </p>
                   <p className="text-xs text-white/40">{t("tapToReveal")}</p>
-                </div>
+                </motion.div>
 
                 {/* Back face — revealed message */}
-                <div
+                <motion.div
+                  animate={{ opacity: flipped ? 1 : 0 }}
+                  transition={{ duration: 0.15, delay: flipped ? 0.2 : 0 }}
                   className="absolute inset-0 flex flex-col gap-3 rounded-cute p-5 shadow-soft"
                   style={{
                     backgroundColor: `${accentHex(note.accent)}55`,
@@ -119,7 +129,7 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
                   <div className="flex items-center justify-between text-xs text-white/50">
                     <span>{authorName ?? "💕"}</span>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             </div>
 

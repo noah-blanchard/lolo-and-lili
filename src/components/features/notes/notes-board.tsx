@@ -70,13 +70,11 @@ export function NotesBoard() {
 
       <NotesGrid filter={tabFilters[tab]} onSelect={setSelectedNoteId} />
 
-      {selectedNote && (
-        <NoteLightbox
-          note={selectedNote}
-          isOpen={!!selectedNoteId}
-          onClose={() => setSelectedNoteId(null)}
-        />
-      )}
+      <NoteLightbox
+        note={selectedNote}
+        isOpen={!!selectedNoteId}
+        onClose={() => setSelectedNoteId(null)}
+      />
 
       <FloatingHearts ref={heartsRef} />
     </div>
