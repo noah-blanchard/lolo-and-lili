@@ -333,6 +333,25 @@ type ExpenseSettlementsTable = {
   Relationships: [];
 };
 
+type NudgesTable = {
+  Row: {
+    id: string;
+    couple_id: string;
+    from_user: string | null;
+    kind: string;
+    created_at: string;
+  };
+  Insert: {
+    id?: string;
+    couple_id: string;
+    from_user?: string | null;
+    kind: string;
+    created_at?: string;
+  };
+  Update: Partial<NudgesTable["Insert"]>;
+  Relationships: [];
+};
+
 export type Database = Omit<GeneratedDatabase, "public"> & {
   public: Omit<GeneratedDatabase["public"], "Tables"> & {
     Tables: Omit<
@@ -378,6 +397,7 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
       meals: MealsTable;
       expenses: ExpensesTable;
       expense_settlements: ExpenseSettlementsTable;
+      nudges: NudgesTable;
     };
   };
 };
@@ -408,3 +428,4 @@ export type GroceryItem = Tables["grocery_items"]["Row"];
 export type Meal = Tables["meals"]["Row"];
 export type Expense = Tables["expenses"]["Row"];
 export type ExpenseSettlement = Tables["expense_settlements"]["Row"];
+export type Nudge = Tables["nudges"]["Row"];

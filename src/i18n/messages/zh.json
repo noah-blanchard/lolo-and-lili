@@ -16,7 +16,25 @@
     "greeting": "你好呀 {name} 👋",
     "todayTitle": "今天",
     "statusTitle": "我们的状态",
-    "empty": "暂时没有安排哦 🌷"
+    "empty": "暂时没有安排哦 🌷",
+    "money": {
+      "label": "狗粮",
+      "hint": "做家务、答每日问题、记心情都能赚"
+    },
+    "nudge": {
+      "title": "悄悄示爱 💌",
+      "subtitle": "给你的爱人送去一份思念",
+      "sent": "已送出 💌",
+      "cooldown": "{min} 分钟",
+      "received": "{emoji} 你的爱人在想你",
+      "kinds": {
+        "miss": "我想你了",
+        "love": "我爱你",
+        "think": "在想你",
+        "kiss": "亲一个",
+        "hug": "抱抱"
+      }
+    }
   },
   "status": {
     "title": "我们的状态",

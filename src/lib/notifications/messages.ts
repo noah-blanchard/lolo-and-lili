@@ -10,6 +10,11 @@ export type NotifyKey =
   | "pet_callback"
   | "love_note"
   | "love_nudge"
+  | "nudge_miss"
+  | "nudge_love"
+  | "nudge_think"
+  | "nudge_kiss"
+  | "nudge_hug"
   | "coupon_gifted"
   | "coupon_redeemed"
   | "question_answered"
@@ -109,6 +114,26 @@ export const NOTIFY: Record<NotifyKey, Record<Loc, (v: Vars) => Built>> = {
       url: "/notes",
     }),
   },
+  nudge_miss: {
+    fr: (v) => ({ title: "Tu lui manques 🥺", body: `${v.actor} pense fort à toi`, url: "/" }),
+    zh: (v) => ({ title: "有人想你了 🥺", body: `${v.actor} 很想你`, url: "/" }),
+  },
+  nudge_love: {
+    fr: (v) => ({ title: "Je t'aime ❤️", body: `${v.actor} t'envoie tout son amour`, url: "/" }),
+    zh: (v) => ({ title: "我爱你 ❤️", body: `${v.actor} 给你满满的爱`, url: "/" }),
+  },
+  nudge_think: {
+    fr: (v) => ({ title: "Dans ses pensées 💭", body: `${v.actor} pense à toi`, url: "/" }),
+    zh: (v) => ({ title: "在想你 💭", body: `${v.actor} 正在想你`, url: "/" }),
+  },
+  nudge_kiss: {
+    fr: (v) => ({ title: "Un bisou 😘", body: `${v.actor} t'envoie un bisou`, url: "/" }),
+    zh: (v) => ({ title: "亲一个 😘", body: `${v.actor} 给你一个吻`, url: "/" }),
+  },
+  nudge_hug: {
+    fr: (v) => ({ title: "Un câlin 🤗", body: `${v.actor} t'envoie un gros câlin`, url: "/" }),
+    zh: (v) => ({ title: "抱抱 🤗", body: `${v.actor} 给你一个大大的拥抱`, url: "/" }),
+  },
   coupon_gifted: {
     fr: (v) => ({
       title: "Un bon pour toi 🎟️",
@@ -201,6 +226,11 @@ export const CATEGORY_OF: Record<NotifyKey, NotifyCategory> = {
   pet_callback: "pet",
   love_note: "love",
   love_nudge: "love",
+  nudge_miss: "love",
+  nudge_love: "love",
+  nudge_think: "love",
+  nudge_kiss: "love",
+  nudge_hug: "love",
   coupon_gifted: "love",
   coupon_redeemed: "love",
   question_answered: "love",

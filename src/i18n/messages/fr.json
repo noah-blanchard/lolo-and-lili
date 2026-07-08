@@ -16,7 +16,25 @@
     "greeting": "Coucou {name} 👋",
     "todayTitle": "Aujourd'hui",
     "statusTitle": "Nos statuts",
-    "empty": "Rien de prévu pour l'instant 🌷"
+    "empty": "Rien de prévu pour l'instant 🌷",
+    "money": {
+      "label": "croquettes",
+      "hint": "Gagne-en avec les tâches, la question du jour et ton humeur"
+    },
+    "nudge": {
+      "title": "Un petit signe 💌",
+      "subtitle": "Envoie une pensée à ton amour",
+      "sent": "Envoyé 💌",
+      "cooldown": "{min} min",
+      "received": "{emoji} ton amour pense à toi",
+      "kinds": {
+        "miss": "Tu me manques",
+        "love": "Je t'aime",
+        "think": "Je pense à toi",
+        "kiss": "Bisou",
+        "hug": "Câlin"
+      }
+    }
   },
   "status": {
     "title": "Nos statuts",

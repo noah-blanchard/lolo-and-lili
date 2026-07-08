@@ -6,6 +6,7 @@ import { questionForDate, type QuestionView } from "@/lib/questions";
 import type { SubmitAnswerInput } from "@/lib/schemas/question";
 import { requireCoupleId } from "./couples";
 import { notifyPartner } from "./notifications";
+import { awardTreats } from "./pets";
 
 type DB = SupabaseClient<Database>;
 
@@ -48,6 +49,16 @@ export async function submitAnswer(
   const date = today();
   const q = questionForDate(date);
 
+  // First answer for today earns a treat (upsert is idempotent, so only the
+  // first submit — not edits — should pay out).
+  const { data: existingMine } = await supabase
+    .from("question_answers")
+    .select("id")
+    .eq("couple_id", coupleId)
+    .eq("question_date", date)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
   const { error } = await supabase.from("question_answers").upsert(
     {
       couple_id: coupleId,
@@ -60,6 +71,7 @@ export async function submitAnswer(
   );
   if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
 
+  if (!existingMine) await awardTreats(supabase, user, 1);
   await notifyPartner({ actorId: user.id, coupleId, message: "question_answered" });
   return getTodayQuestion(supabase, user);
 }

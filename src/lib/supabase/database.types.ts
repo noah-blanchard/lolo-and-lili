@@ -14,6 +14,64 @@ export type Database = {
   }
   public: {
     Tables: {
+      bucket_items: {
+        Row: {
+          couple_id: string
+          created_at: string
+          created_by: string | null
+          done: boolean
+          done_at: string | null
+          done_by: string | null
+          id: string
+          note: string | null
+          title: string
+        }
+        Insert: {
+          couple_id: string
+          created_at?: string
+          created_by?: string | null
+          done?: boolean
+          done_at?: string | null
+          done_by?: string | null
+          id?: string
+          note?: string | null
+          title: string
+        }
+        Update: {
+          couple_id?: string
+          created_at?: string
+          created_by?: string | null
+          done?: boolean
+          done_at?: string | null
+          done_by?: string | null
+          id?: string
+          note?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bucket_items_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bucket_items_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bucket_items_done_by_fkey"
+            columns: ["done_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chore_completions: {
         Row: {
           chore_id: string
@@ -132,6 +190,316 @@ export type Database = {
         }
         Relationships: []
       }
+      coupons: {
+        Row: {
+          cost_treats: number
+          couple_id: string
+          created_at: string
+          created_by: string | null
+          emoji: string
+          id: string
+          redeemed_at: string | null
+          redeemed_by: string | null
+          status: string
+          title: string
+        }
+        Insert: {
+          cost_treats?: number
+          couple_id: string
+          created_at?: string
+          created_by?: string | null
+          emoji?: string
+          id?: string
+          redeemed_at?: string | null
+          redeemed_by?: string | null
+          status?: string
+          title: string
+        }
+        Update: {
+          cost_treats?: number
+          couple_id?: string
+          created_at?: string
+          created_by?: string | null
+          emoji?: string
+          id?: string
+          redeemed_at?: string | null
+          redeemed_by?: string | null
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupons_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coupons_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coupons_redeemed_by_fkey"
+            columns: ["redeemed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      expense_settlements: {
+        Row: {
+          amount_cents: number
+          couple_id: string
+          created_at: string
+          from_id: string | null
+          id: string
+          to_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          couple_id: string
+          created_at?: string
+          from_id?: string | null
+          id?: string
+          to_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          couple_id?: string
+          created_at?: string
+          from_id?: string | null
+          id?: string
+          to_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expense_settlements_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expense_settlements_from_id_fkey"
+            columns: ["from_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expense_settlements_to_id_fkey"
+            columns: ["to_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      expenses: {
+        Row: {
+          amount_cents: number
+          couple_id: string
+          created_at: string
+          currency: string
+          description: string
+          id: string
+          payer_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          couple_id: string
+          created_at?: string
+          currency?: string
+          description: string
+          id?: string
+          payer_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          couple_id?: string
+          created_at?: string
+          currency?: string
+          description?: string
+          id?: string
+          payer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expenses_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expenses_payer_id_fkey"
+            columns: ["payer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      grocery_items: {
+        Row: {
+          checked: boolean
+          checked_by: string | null
+          couple_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          quantity: string | null
+        }
+        Insert: {
+          checked?: boolean
+          checked_by?: string | null
+          couple_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          quantity?: string | null
+        }
+        Update: {
+          checked?: boolean
+          checked_by?: string | null
+          couple_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          quantity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "grocery_items_checked_by_fkey"
+            columns: ["checked_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "grocery_items_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "grocery_items_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      love_notes: {
+        Row: {
+          accent: string | null
+          author_id: string | null
+          body: string
+          couple_id: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          accent?: string | null
+          author_id?: string | null
+          body: string
+          couple_id: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          accent?: string | null
+          author_id?: string | null
+          body?: string
+          couple_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "love_notes_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "love_notes_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      meals: {
+        Row: {
+          cook_id: string | null
+          couple_id: string
+          created_at: string
+          created_by: string | null
+          date: string
+          id: string
+          notes: string | null
+          slot: string
+          title: string
+        }
+        Insert: {
+          cook_id?: string | null
+          couple_id: string
+          created_at?: string
+          created_by?: string | null
+          date: string
+          id?: string
+          notes?: string | null
+          slot: string
+          title: string
+        }
+        Update: {
+          cook_id?: string | null
+          couple_id?: string
+          created_at?: string
+          created_by?: string | null
+          date?: string
+          id?: string
+          notes?: string | null
+          slot?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meals_cook_id_fkey"
+            columns: ["cook_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "meals_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "meals_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       moods: {
         Row: {
           couple_id: string
@@ -168,6 +536,45 @@ export type Database = {
           {
             foreignKeyName: "moods_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nudges: {
+        Row: {
+          couple_id: string
+          created_at: string
+          from_user: string | null
+          id: string
+          kind: string
+        }
+        Insert: {
+          couple_id: string
+          created_at?: string
+          from_user?: string | null
+          id?: string
+          kind: string
+        }
+        Update: {
+          couple_id?: string
+          created_at?: string
+          from_user?: string | null
+          id?: string
+          kind?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nudges_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "nudges_from_user_fkey"
+            columns: ["from_user"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -428,6 +835,102 @@ export type Database = {
           {
             foreignKeyName: "push_subscriptions_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      question_answers: {
+        Row: {
+          answer: string
+          couple_id: string
+          created_at: string
+          id: string
+          question_date: string
+          question_key: string
+          user_id: string
+        }
+        Insert: {
+          answer: string
+          couple_id: string
+          created_at?: string
+          id?: string
+          question_date?: string
+          question_key: string
+          user_id: string
+        }
+        Update: {
+          answer?: string
+          couple_id?: string
+          created_at?: string
+          id?: string
+          question_date?: string
+          question_key?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "question_answers_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_answers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      special_dates: {
+        Row: {
+          couple_id: string
+          created_at: string
+          created_by: string | null
+          date: string
+          emoji: string
+          id: string
+          kind: string
+          recurring: boolean
+          title: string
+        }
+        Insert: {
+          couple_id: string
+          created_at?: string
+          created_by?: string | null
+          date: string
+          emoji?: string
+          id?: string
+          kind?: string
+          recurring?: boolean
+          title: string
+        }
+        Update: {
+          couple_id?: string
+          created_at?: string
+          created_by?: string | null
+          date?: string
+          emoji?: string
+          id?: string
+          kind?: string
+          recurring?: boolean
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "special_dates_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "special_dates_created_by_fkey"
+            columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]

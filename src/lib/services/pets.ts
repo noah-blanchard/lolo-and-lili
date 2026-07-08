@@ -321,6 +321,27 @@ export async function spendTreats(
   await supabase.from("pets").update({ treats: pet.treats - amount }).eq("id", pet.id);
 }
 
+/**
+ * Add treats to the shared wallet (e.g. answering the question of the day or a
+ * daily mood check-in). No-op when the couple hasn't adopted a pet yet — the
+ * wallet lives on the pet row, so there's nowhere to bank them.
+ */
+export async function awardTreats(
+  supabase: DB,
+  user: User,
+  amount: number,
+): Promise<void> {
+  if (amount <= 0) return;
+  const coupleId = await requireCoupleId(supabase, user).catch(() => null);
+  if (!coupleId) return;
+  const pet = await fetchPetRow(supabase, coupleId);
+  if (!pet) return;
+  await supabase
+    .from("pets")
+    .update({ treats: pet.treats + Math.round(amount) })
+    .eq("id", pet.id);
+}
+
 /** Chores award/refund treats (the economy) + a small energy nudge on complete. */
 export async function rewardFromChore(
   supabase: DB,

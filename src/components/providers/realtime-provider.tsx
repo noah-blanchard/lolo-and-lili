@@ -98,6 +98,11 @@ export function RealtimeProvider({
         )
         .on(
           "postgres_changes",
+          { event: "*", schema: "public", table: "nudges", filter: `couple_id=eq.${coupleId}` },
+          () => invalidate(queryKeys.nudges()),
+        )
+        .on(
+          "postgres_changes",
           { event: "*", schema: "public", table: "love_notes", filter: `couple_id=eq.${coupleId}` },
           () => invalidate(queryKeys.loveNotes()),
         )

@@ -3,6 +3,8 @@ import { getProfile, getSession } from "@/lib/auth";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
 import { StatusCard } from "@/components/features/status/status-card";
 import { PetWidget } from "@/components/features/pet/pet-widget";
+import { TreatsCard } from "@/components/features/pet/treats-card";
+import { NudgeButtons } from "@/components/features/nudge/nudge-buttons";
 
 export default async function HomePage({
   params,
@@ -37,7 +39,11 @@ export default async function HomePage({
 
       <StatusCard />
 
+      <NudgeButtons />
+
       <PetWidget />
+
+      <TreatsCard />
 
       <Card>
         <CardTitle>{t("home.todayTitle")}</CardTitle>

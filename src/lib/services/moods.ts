@@ -3,9 +3,10 @@ import type { Database, Mood } from "@/lib/supabase/types";
 import { ApiError, ErrorCode } from "@/lib/api/result";
 import type { AddMoodInput } from "@/lib/schemas/mood";
 import { moodEmoji } from "@/lib/moods";
+import { today } from "@/lib/chores";
 import { requireCoupleId } from "./couples";
 import { notifyPartner } from "./notifications";
-import { nourishFromMood } from "./pets";
+import { awardTreats, nourishFromMood } from "./pets";
 
 type DB = SupabaseClient<Database>;
 
@@ -28,6 +29,13 @@ export async function addMood(
 ): Promise<Mood> {
   const coupleId = await requireCoupleId(supabase, user);
 
+  // First check-in of the day earns a treat.
+  const { count: earlierToday } = await supabase
+    .from("moods")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", user.id)
+    .gte("created_at", `${today()}T00:00:00.000Z`);
+
   const { data, error } = await supabase
     .from("moods")
     .insert({
@@ -45,6 +53,7 @@ export async function addMood(
   }
   // Emotional check-ins nourish the cat's heart.
   await nourishFromMood(supabase, user);
+  if ((earlierToday ?? 0) === 0) await awardTreats(supabase, user, 1);
   // Let the partner know (best-effort).
   await notifyPartner({
     actorId: user.id,
