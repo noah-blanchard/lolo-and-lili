@@ -58,7 +58,9 @@ export function PetAvatar({
   size?: number;
 }) {
   const state = baseState(pet);
-  const lottie = useLottie(`${pet.stage}-${state}`);
+  // Per-skin, per-stage, per-state slot (e.g. "classic-2-happy"). Missing slots
+  // (e.g. the "away" basket) fall back to the animated emoji pet below.
+  const lottie = useLottie(`${pet.skin}-${pet.stage}-${state}`);
   const equipped = (pet.equipped ?? {}) as Record<string, string | null>;
   const hat = accessoryEmoji(equipped.hat);
   const collar = accessoryEmoji(equipped.collar);
