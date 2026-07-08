@@ -55,7 +55,12 @@ and `build-storybook` pass.
 
 ---
 
-## Phase 2 — UI primitives ⬜
+## Phase 2 — UI primitives ✅ (committed)
+
+All seven already had basic stories (created earlier). This phase added useful variations:
+Button (variant × size **Matrix** + **IconOnly**), Card (**WithAction** composing
+CardTitle/Description/Button), SegmentedToggle (**TwoOptions** free/busy, **FourOptions**).
+EmptyState / HubCard / Sheet / Switch already had solid coverage. Verified: typecheck + build pass.
 
 All seven already have basic stories (created earlier). This phase = verify they render
 under the new providers and add a few useful variations.
@@ -133,7 +138,7 @@ These read from `src/hooks/*`; mock the matching hook(s) per domain.
 ## Progress tracker
 
 - [x] Phase 1 — Shared infrastructure
-- [ ] Phase 2 — UI primitives
+- [x] Phase 2 — UI primitives
 - [ ] Phase 3 — Presentational feature components
 - [ ] Phase 4 — Container feature components
 - [ ] Phase 5 — nav

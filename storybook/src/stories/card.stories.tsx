@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const meta = {
   title: "UI/Card",
@@ -53,4 +54,21 @@ export const Grid: Story = {
       </Card>
     </div>
   ),
+};
+
+export const WithAction: Story = {
+  args: {
+    className: "max-w-sm",
+    children: (
+      <>
+        <CardTitle>Surprise scheduled</CardTitle>
+        <CardDescription>A cozy movie night is set for Friday.</CardDescription>
+        <div className="pt-4">
+          <Button size="sm" variant="accent">
+            View details
+          </Button>
+        </div>
+      </>
+    ),
+  },
 };

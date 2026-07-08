@@ -48,3 +48,45 @@ export const WithActiveColor: Story = {
     );
   },
 };
+
+type Mood = "free" | "busy";
+
+export const TwoOptions: Story = {
+  render: () => {
+    const [value, setValue] = useState<Mood>("free");
+    return (
+      <div className="w-72">
+        <SegmentedToggle<Mood>
+          value={value}
+          onChange={setValue}
+          options={[
+            { value: "free", label: <>🌿 Free</>, activeClassName: "bg-free/25" },
+            { value: "busy", label: <>⏳ Busy</>, activeClassName: "bg-busy/25" },
+          ]}
+        />
+      </div>
+    );
+  },
+};
+
+type Day = "mon" | "tue" | "wed" | "thu";
+
+export const FourOptions: Story = {
+  render: () => {
+    const [value, setValue] = useState<Day>("mon");
+    return (
+      <div className="w-96">
+        <SegmentedToggle<Day>
+          value={value}
+          onChange={setValue}
+          options={[
+            { value: "mon", label: "Mon" },
+            { value: "tue", label: "Tue" },
+            { value: "wed", label: "Wed" },
+            { value: "thu", label: "Thu" },
+          ]}
+        />
+      </div>
+    );
+  },
+};

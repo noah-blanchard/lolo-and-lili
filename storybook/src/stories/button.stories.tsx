@@ -66,3 +66,39 @@ export const AllVariants: Story = {
     </div>
   ),
 };
+
+const VARIANTS = ["primary", "secondary", "accent", "ghost", "outline"] as const;
+const SIZES = ["sm", "md", "lg"] as const;
+
+export const Matrix: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {VARIANTS.map((variant) => (
+        <div key={variant} className="flex items-center gap-3">
+          <span className="w-20 text-xs text-muted">{variant}</span>
+          {SIZES.map((size) => (
+            <Button key={size} variant={variant} size={size}>
+              {size.toUpperCase()}
+            </Button>
+          ))}
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+export const IconOnly: Story = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      <Button size="icon" variant="primary" aria-label="Add">
+        <Plus />
+      </Button>
+      <Button size="icon" variant="secondary" aria-label="Favorite">
+        <Heart />
+      </Button>
+      <Button size="icon" variant="ghost" aria-label="Sparkle">
+        <Sparkles />
+      </Button>
+    </div>
+  ),
+};
