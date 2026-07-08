@@ -79,7 +79,10 @@ export function useOpenLoveNote() {
 
   return useMutation({
     mutationFn: ({ noteId, input }: { noteId: string; input: OpenLoveNoteInput }) =>
-      apiFetch<LoveNote>(`/api/notes/${noteId}/open`, jsonBody(input)),
+      apiFetch<LoveNote>(`/api/notes/${noteId}/open`, {
+        method: "PATCH",
+        body: JSON.stringify(input),
+      }),
 
     onMutate: async ({ noteId, input }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.loveNotes() });

@@ -27,7 +27,7 @@ export function NoteCard({ note, onClick }: NoteCardProps) {
       whileTap={{ scale: 0.95 }}
       transition={springBouncy}
       onClick={onClick}
-      className="relative flex flex-col gap-2 rounded-cute p-4 text-left shadow-soft"
+      className="relative flex w-full flex-col gap-2 rounded-cute p-4 text-left shadow-soft"
       style={{ backgroundColor: `${accentHex(note.accent)}33` }}
     >
       <span className="text-2xl">💌</span>

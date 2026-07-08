@@ -23,8 +23,8 @@ export function NotesGrid({ filter, onSelect }: NotesGridProps) {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 gap-3">
-        {Array.from({ length: 4 }).map((_, i) => (
+      <div className="flex flex-col gap-3">
+        {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="flex flex-col gap-2 rounded-cute bg-surface p-4 shadow-soft">
             <Skeleton className="h-3 w-full" />
             <Skeleton className="h-3 w-3/4" />
@@ -55,7 +55,7 @@ export function NotesGrid({ filter, onSelect }: NotesGridProps) {
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      className="grid grid-cols-2 gap-3"
+      className="flex flex-col gap-3"
     >
       {filtered.map((note) => (
         <motion.div key={note.id} variants={popIn}>

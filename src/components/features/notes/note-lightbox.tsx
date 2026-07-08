@@ -50,14 +50,15 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   return (
     <AnimatePresence>
       {isOpen && (
+        /* Full-screen black overlay — "lights out" */
         <motion.div
           key="lightbox-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
           onClick={handleOverlayClick}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black p-6"
         >
           <motion.div
             key="lightbox-card"
@@ -70,12 +71,12 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={archiving ? { duration: 0.4, ease: "easeIn" } : springBouncy}
             onClick={(e) => e.stopPropagation()}
-            className="flex w-full max-w-sm flex-col items-center gap-4"
+            className="flex w-full max-w-sm flex-col items-center"
           >
-            {/* Card with flip */}
+            {/* Card with flip — fixed height so button space is reserved */}
             <div
               className="relative h-72 w-full cursor-pointer"
-              style={{ perspective: 1000 }}
+              style={{ perspective: 1200 }}
               onClick={handleFlip}
             >
               <motion.div
@@ -88,55 +89,57 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
                 <div
                   className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-cute shadow-soft"
                   style={{
-                    backgroundColor: `${accentHex(note.accent)}33`,
+                    backgroundColor: `${accentHex(note.accent)}55`,
                     backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
                   }}
                 >
                   <span className="text-6xl">💌</span>
-                  <p className="px-6 text-center text-sm font-semibold text-muted">
+                  <p className="px-6 text-center text-sm font-semibold text-white/80">
                     {note.author_id === me.id
                       ? t("youWroteNote")
                       : t("partnerWroteNote", { name: authorName ?? "💕" })}
                   </p>
-                  <p className="text-xs text-muted/60">{t("tapToReveal")}</p>
+                  <p className="text-xs text-white/40">{t("tapToReveal")}</p>
                 </div>
 
                 {/* Back face — revealed message */}
                 <div
                   className="absolute inset-0 flex flex-col gap-3 rounded-cute p-5 shadow-soft"
                   style={{
-                    backgroundColor: `${accentHex(note.accent)}33`,
+                    backgroundColor: `${accentHex(note.accent)}55`,
                     backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
                     transform: "rotateY(180deg)",
                   }}
                 >
-                  <p className="flex-1 whitespace-pre-wrap break-words text-sm leading-relaxed">
+                  <p className="flex-1 whitespace-pre-wrap break-words text-sm leading-relaxed text-white/90">
                     {note.body}
                   </p>
-                  <div className="flex items-center justify-between text-xs text-muted">
+                  <div className="flex items-center justify-between text-xs text-white/50">
                     <span>{authorName ?? "💕"}</span>
-                    <span>{note.created_at}</span>
                   </div>
                 </div>
               </motion.div>
             </div>
 
-            {/* Archive button — only visible after flip */}
-            <AnimatePresence>
-              {flipped && !archiving && (
-                <motion.button
-                  type="button"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 12 }}
-                  transition={springBouncy}
-                  onClick={handleArchive}
-                  className="rounded-full bg-surface px-6 py-3 text-sm font-semibold shadow-soft transition-colors hover:bg-surface-muted"
-                >
-                  {t("archive")}
-                </motion.button>
-              )}
-            </AnimatePresence>
+            {/* Archive button — always in DOM, visibility toggled to avoid layout shift */}
+            <div className="mt-4 flex h-12 items-center justify-center">
+              <motion.button
+                type="button"
+                initial={false}
+                animate={{
+                  opacity: flipped && !archiving ? 1 : 0,
+                  y: flipped && !archiving ? 0 : 8,
+                  pointerEvents: flipped && !archiving ? "auto" : "none",
+                }}
+                transition={springBouncy}
+                onClick={handleArchive}
+                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black shadow-soft"
+              >
+                {t("archive")}
+              </motion.button>
+            </div>
           </motion.div>
         </motion.div>
       )}
