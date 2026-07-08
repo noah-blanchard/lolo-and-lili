@@ -7,3 +7,8 @@ export const addLoveNoteSchema = z.object({
   accent: z.enum(ACCENT_KEYS),
 });
 export type AddLoveNoteInput = z.infer<typeof addLoveNoteSchema>;
+
+export const openLoveNoteSchema = z.object({
+  opened_at: z.string().datetime(),
+});
+export type OpenLoveNoteInput = z.infer<typeof openLoveNoteSchema>;

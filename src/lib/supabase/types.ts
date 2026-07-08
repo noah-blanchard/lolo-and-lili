@@ -120,6 +120,7 @@ type LoveNotesTable = {
     body: string;
     accent: string | null;
     created_at: string;
+    opened_at: string | null;
   };
   Insert: {
     id?: string;
@@ -128,6 +129,7 @@ type LoveNotesTable = {
     body: string;
     accent?: string | null;
     created_at?: string;
+    opened_at?: string | null;
   };
   Update: Partial<LoveNotesTable["Insert"]>;
   Relationships: [];

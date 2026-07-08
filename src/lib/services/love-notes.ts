@@ -1,7 +1,7 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Database, LoveNote } from "@/lib/supabase/types";
 import { ApiError, ErrorCode } from "@/lib/api/result";
-import type { AddLoveNoteInput } from "@/lib/schemas/love-note";
+import type { AddLoveNoteInput, OpenLoveNoteInput } from "@/lib/schemas/love-note";
 import { requireCoupleId } from "./couples";
 import { notifyPartner } from "./notifications";
 
@@ -52,6 +52,24 @@ export async function deleteLoveNote(
   const { error } = await supabase.from("love_notes").delete().eq("id", noteId);
   if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
   return { id: noteId };
+}
+
+/** Mark a love note as opened (shared state — both partners see it as opened). */
+export async function openLoveNote(
+  supabase: DB,
+  noteId: string,
+  input: OpenLoveNoteInput,
+): Promise<LoveNote> {
+  const { data, error } = await supabase
+    .from("love_notes")
+    .update({ opened_at: input.opened_at })
+    .eq("id", noteId)
+    .select("*")
+    .single();
+  if (error || !data) {
+    throw new ApiError(ErrorCode.INTERNAL, error?.message ?? "Failed to open note");
+  }
+  return data;
 }
 
 /** Send a "thinking of you" push (the in-app hearts ride Broadcast separately). */

@@ -408,6 +408,7 @@ export type Database = {
           couple_id: string
           created_at: string
           id: string
+          opened_at: string | null
         }
         Insert: {
           accent?: string | null
@@ -416,6 +417,7 @@ export type Database = {
           couple_id: string
           created_at?: string
           id?: string
+          opened_at?: string | null
         }
         Update: {
           accent?: string | null
@@ -424,6 +426,7 @@ export type Database = {
           couple_id?: string
           created_at?: string
           id?: string
+          opened_at?: string | null
         }
         Relationships: [
           {
