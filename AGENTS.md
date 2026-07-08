@@ -12,6 +12,10 @@ Read it before implementing anything — it documents the non-negotiable rules (
 on every server entry point, `defineRoute`/`defineAction`, couple-scoped RLS, centralized
 query keys, `next-intl` copy, `@/*` imports, etc.).
 
+Also read [`docs/UI_ANIMATION_GOTCHAS.md`](./docs/UI_ANIMATION_GOTCHAS.md) whenever you build
+modals, lightboxes, drawers, or any animated mount/unmount UI with `motion/react` — it covers
+the common `AnimatePresence` early-return footgun that silently kills exit animations.
+
 # Package manager
 
 Always use **bun** and **bunx** — never `npm` or `npx`. The project uses `bun.lock`.
