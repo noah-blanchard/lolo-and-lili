@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { Trash2 } from "lucide-react";
 import { ApiError } from "@/lib/api/result";
 import { celebrate } from "@/lib/confetti";
@@ -38,9 +38,9 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
       layout
       className="coupon-ticket relative bg-surface px-5 py-4"
     >
-      <div className="flex items-start gap-2">
+      <div className="flex h-16 items-center gap-2">
         <span className="text-3xl">{coupon.emoji}</span>
-        <p className="flex-1 font-display font-semibold leading-tight">
+        <p className="flex-1 line-clamp-1 font-display font-semibold leading-tight">
           {coupon.title}
         </p>
         {mine && !used && (
@@ -57,34 +57,25 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
 
       <div className="my-3 border-t border-dashed border-border" />
 
-      <AnimatePresence initial={false}>
-        {!used && (
-          <motion.div
-            layout
-            exit={{ y: 24, scale: 0.9, opacity: 0 }}
-            transition={springSoft}
-            className="flex items-center justify-between gap-2"
-          >
-            {coupon.cost_treats > 0 && (
-              <span className="text-xs text-muted">🪙 {coupon.cost_treats}</span>
-            )}
-            {mine ? (
-              <span className="self-start rounded-full bg-surface-muted px-3 py-1 text-xs font-semibold text-muted">
-                {t("sentLabel")}
-              </span>
-            ) : (
-              <Button
-                size="sm"
-                onClick={onRedeem}
-                disabled={redeem.isPending}
-                className="ml-auto"
-              >
-                {t("redeem")}
-              </Button>
-            )}
-          </motion.div>
+      <div className="h-12 flex items-center justify-between gap-2">
+        {coupon.cost_treats > 0 && (
+          <span className="text-xs text-muted">🪙 {coupon.cost_treats}</span>
         )}
-      </AnimatePresence>
+        {mine ? (
+          <span className="self-start rounded-full bg-surface-muted px-3 py-1 text-xs font-semibold text-muted">
+            {t("sentLabel")}
+          </span>
+        ) : (
+          <Button
+            size="sm"
+            onClick={onRedeem}
+            disabled={redeem.isPending}
+            className="ml-auto"
+          >
+            {t("redeem")}
+          </Button>
+        )}
+      </div>
 
       {used && (
         <motion.div

@@ -11,3 +11,7 @@ step-by-step "how to add a feature" checklist live in [`docs/REPO_MAP.md`](./doc
 Read it before implementing anything — it documents the non-negotiable rules (zod validation
 on every server entry point, `defineRoute`/`defineAction`, couple-scoped RLS, centralized
 query keys, `next-intl` copy, `@/*` imports, etc.).
+
+# Package manager
+
+Always use **bun** and **bunx** — never `npm` or `npx`. The project uses `bun.lock`.
