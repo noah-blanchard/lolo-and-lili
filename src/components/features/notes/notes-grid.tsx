@@ -8,10 +8,11 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { staggerContainer, popIn } from "@/lib/motion";
 import { NoteCard } from "./note-card";
+import type { LoveNote } from "@/lib/supabase/types";
 
 interface NotesGridProps {
   /** Filter function applied to the full notes list. */
-  filter: (note: { author_id: string | null; opened_at: string | null }) => boolean;
+  filter: (note: LoveNote) => boolean;
   onSelect: (noteId: string) => void;
 }
 

@@ -32,6 +32,7 @@ export function useAddLoveNote() {
         body: input.body,
         accent: input.accent,
         created_at: new Date().toISOString(),
+        opened_at: null,
       };
       queryClient.setQueryData<LoveNote[]>(queryKeys.loveNotes(), (old) => [
         optimistic,
