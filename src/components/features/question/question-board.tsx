@@ -8,6 +8,7 @@ import { vibrate } from "@/lib/feedback";
 import { questionByKey, questionText } from "@/lib/questions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCouple } from "@/components/providers/couple-provider";
 import { useQuestion, useSubmitAnswer } from "@/hooks/use-question";
 
@@ -36,7 +37,22 @@ export function QuestionBoard() {
   const submit = useSubmitAnswer();
   const [draft, setDraft] = useState("");
 
-  if (isLoading || !view) return null;
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-5">
+        <div className="rounded-cute bg-surface p-5 shadow-soft bg-primary/10">
+          <Skeleton className="mb-2 size-8 rounded-full" />
+          <Skeleton className="h-5 w-3/4" />
+        </div>
+        <div className="rounded-cute bg-surface p-5 shadow-soft">
+          <Skeleton className="mb-3 h-24 w-full rounded-cute" />
+          <Skeleton className="h-10 w-full rounded-cute" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!view) return null;
 
   const q = questionByKey(view.questionKey);
   const prompt = q ? questionText(q, locale) : "";

@@ -8,6 +8,7 @@ import { usePet, useCarePet } from "@/hooks/use-pet";
 import { reactionEmoji, type PetActionType } from "@/lib/pets";
 import { playSound, vibrate } from "@/lib/feedback";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PetAvatar } from "./pet-avatar";
 import { usePartnerCare } from "./use-pet-realtime";
 
@@ -23,7 +24,21 @@ export function PetWidget() {
     setReaction({ id: Date.now(), emoji: reactionEmoji(type as PetActionType) }),
   );
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return (
+      <Card className="flex items-center gap-3">
+        <Skeleton className="size-[72px] shrink-0 rounded-full" />
+        <div className="min-w-0 flex-1 space-y-2">
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="h-3 w-32" />
+        </div>
+        <div className="flex shrink-0 gap-1.5">
+          <Skeleton className="size-11 rounded-cute" />
+          <Skeleton className="size-11 rounded-cute" />
+        </div>
+      </Card>
+    );
+  }
 
   if (!pet) {
     return (
