@@ -90,7 +90,16 @@
     "typing": "对方正在输入… 💭",
     "empty": "还没有留言",
     "emptyHint": "留下第一句情话吧 💌",
-    "delete": "删除"
+    "delete": "删除",
+    "tabNew": "新消息",
+    "tabSent": "已发送",
+    "tabArchive": "情话盒",
+    "youWrote": "你写的",
+    "wrote": "写了",
+    "youWroteNote": "你写的情话 💕",
+    "partnerWroteNote": "{name} 写给你的情话 💕",
+    "tapToReveal": "点击揭晓",
+    "archive": "放入情话盒 💌"
   },
   "expenses": {
     "title": "共同开销",

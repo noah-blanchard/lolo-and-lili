@@ -90,7 +90,16 @@
     "typing": "Ton amour écrit… 💭",
     "empty": "Aucun mot pour l'instant",
     "emptyHint": "Laisse le premier petit mot 💌",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "tabNew": "Nouveau",
+    "tabSent": "Envoyés",
+    "tabArchive": "Boîte à mots",
+    "youWrote": "Tu as écrit",
+    "wrote": "a écrit",
+    "youWroteNote": "Un mot de toi 💕",
+    "partnerWroteNote": "{name} a écrit pour toi 💕",
+    "tapToReveal": "Appuie pour révéler",
+    "archive": "Boîte à mots 💌"
   },
   "expenses": {
     "title": "Dépenses partagées",
