@@ -542,6 +542,59 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          actor_id: string | null
+          body: string
+          category: string
+          couple_id: string
+          created_at: string
+          id: string
+          key: string
+          read: boolean
+          recipient_id: string
+          target: string
+          target_id: string | null
+          title: string
+        }
+        Insert: {
+          actor_id?: string | null
+          body: string
+          category: string
+          couple_id: string
+          created_at?: string
+          id?: string
+          key: string
+          read?: boolean
+          recipient_id: string
+          target: string
+          target_id?: string | null
+          title: string
+        }
+        Update: {
+          actor_id?: string | null
+          body?: string
+          category?: string
+          couple_id?: string
+          created_at?: string
+          id?: string
+          key?: string
+          read?: boolean
+          recipient_id?: string
+          target?: string
+          target_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_couple_id_fkey"
+            columns: ["couple_id"]
+            isOneToOne: false
+            referencedRelation: "couples"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       nudges: {
         Row: {
           couple_id: string
