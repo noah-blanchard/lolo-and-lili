@@ -22,29 +22,14 @@ Legend: ✅ done · 🚧 in progress · ⬜ pending
 - The `@` alias resolves to the **app** `src` (`../../src`), and `@/i18n/navigation`
   is aliased to a plain-anchor mock (`storybook/.storybook/src/mocks/navigation.tsx`).
 
-### Mocking data hooks (for container components)
-Feature "container" components read data from `src/hooks/use-*.ts`. In a story file we
-mock the hook module so it returns static fixtures + a `mutate: fn()` (from
-`storybook/test`), e.g.:
-
-```ts
-import { fn } from "storybook/test";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StatusCard } from "@/components/features/status/status-card";
-
-vi.mock("@/hooks/use-statuses", () => ({
-  useStatuses: () => ({ data: [{ user_id: "me-storybook", state: "free" }] }),
-  useSetStatus: () => ({ mutate: fn() }),
-}));
-
-const meta = { title: "Features/Status/StatusCard", component: StatusCard } satisfies Meta<typeof StatusCard>;
-export default meta;
-type Story = StoryObj<typeof meta>;
-export const Free: Story = {};
-export const Busy: Story = { /* override the mock with vi.mocked */ };
-```
-
-`vi` is available from `storybook/test` (Vitest under the hood).
+### Mocking data hooks (Vite alias approach)
+`vi.mock` is NOT reliably transformed in a plain Storybook build (no Vitest plugin),
+and `storybook/test` doesn't export `vi` here. Instead, `main.ts` `viteFinal` aliases
+each data hook module to a mock under `storybook/src/mocks/hooks/`, plus stubs for
+`@/lib/supabase/client` and `@/app/actions/profiles` (the latter avoids bundling the
+server-only `next/cache`). The mocks return static fixtures (see `mocks/fixtures.ts`)
+and no-op mutations. This covers BOTH phase 3 and phase 4 globally — stories just pass
+props and don't need per-file mocking. New domains: add an alias + a mock hook file.
 
 ---
 
@@ -77,7 +62,17 @@ under the new providers and add a few useful variations.
 
 ---
 
-## Phase 3 — Presentational feature components (pass mock props) ⬜
+## Phase 3 — Presentational feature components (pass mock props) ✅ (committed)
+
+18 components got stories (moods: MoodPicker, MoodTimeline; notes: FloatingHearts;
+notifications: NotificationItem, NotificationGlyph; pet: PetAvatar, PetMeters,
+PetActions, PetMemories; nudge: NudgeButtons; profile: ThemeColorPicker; coupons:
+CouponCard; bucket: BucketItem; chores: ChoreCard; grocery: GroceryItem; expenses:
+BalanceCard; dates: CountdownCard; meals: MealSlot).
+
+Note: several planned as "presentational" actually call hooks (MoodPicker→useAddMood,
+PetActions→useCarePet, NudgeButtons→useNudgeState + Supabase channel, ThemeColorPicker→
+server action). All handled by the global Vite-alias mocks. Verified: typecheck + build pass.
 
 These take explicit props, so stories just feed mock data.
 
@@ -139,6 +134,6 @@ These read from `src/hooks/*`; mock the matching hook(s) per domain.
 
 - [x] Phase 1 — Shared infrastructure
 - [x] Phase 2 — UI primitives
-- [ ] Phase 3 — Presentational feature components
+- [x] Phase 3 — Presentational feature components
 - [ ] Phase 4 — Container feature components
 - [ ] Phase 5 — nav

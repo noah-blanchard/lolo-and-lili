@@ -23,6 +23,21 @@ const config: StorybookConfig = {
       // in a plain Vite runtime. Mock it so HubCard (and future Link-based
       // components) render as a plain anchor without touching app source.
       "@/i18n/navigation": path.resolve(here, "./src/mocks/navigation.tsx"),
+      // Feature components read data from these hooks; alias them to mock
+      // modules so stories render with static fixtures (no Supabase/network).
+      "@/hooks/use-moods": path.resolve(here, "./src/mocks/hooks/use-moods.ts"),
+      "@/hooks/use-pet": path.resolve(here, "./src/mocks/hooks/use-pet.ts"),
+      "@/hooks/use-nudge": path.resolve(here, "./src/mocks/hooks/use-nudge.ts"),
+      "@/hooks/use-coupons": path.resolve(here, "./src/mocks/hooks/use-coupons.ts"),
+      "@/hooks/use-bucket": path.resolve(here, "./src/mocks/hooks/use-bucket.ts"),
+      "@/hooks/use-chores": path.resolve(here, "./src/mocks/hooks/use-chores.ts"),
+      "@/hooks/use-grocery": path.resolve(here, "./src/mocks/hooks/use-grocery.ts"),
+      "@/hooks/use-expenses": path.resolve(here, "./src/mocks/hooks/use-expenses.ts"),
+      "@/hooks/use-special-dates": path.resolve(here, "./src/mocks/hooks/use-special-dates.ts"),
+      "@/hooks/use-meals": path.resolve(here, "./src/mocks/hooks/use-meals.ts"),
+      // Stub Supabase client + server action (server-only `next/cache`).
+      "@/lib/supabase/client": path.resolve(here, "./src/mocks/supabase-client.ts"),
+      "@/app/actions/profiles": path.resolve(here, "./src/mocks/actions-profiles.ts"),
     };
     return cfg;
   },
