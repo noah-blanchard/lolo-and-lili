@@ -362,14 +362,17 @@ export type Database = Omit<GeneratedDatabase, "public"> & {
         Row: GeneratedDatabase["public"]["Tables"]["profiles"]["Row"] & {
           accent_color: string | null;
           notification_prefs: Json;
+          theme_pref: string | null;
         };
         Insert: GeneratedDatabase["public"]["Tables"]["profiles"]["Insert"] & {
           accent_color?: string | null;
           notification_prefs?: Json;
+          theme_pref?: string | null;
         };
         Update: GeneratedDatabase["public"]["Tables"]["profiles"]["Update"] & {
           accent_color?: string | null;
           notification_prefs?: Json;
+          theme_pref?: string | null;
         };
         Relationships: GeneratedDatabase["public"]["Tables"]["profiles"]["Relationships"];
       };

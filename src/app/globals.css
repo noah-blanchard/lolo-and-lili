@@ -57,6 +57,80 @@
 }
 
 /* ------------------------------------------------------------------ *
+ * Pastel color themes — override the palette while keeping the soft look.
+ * Applied via [data-color-theme="..."] on <html>. Default (peach) is the
+ * :root block above, so it needs no override.
+ * ------------------------------------------------------------------ */
+[data-color-theme="blue"] {
+  --primary: #8fb8ff; /* sky */
+  --primary-foreground: #ffffff;
+  --secondary: #a7e8e0; /* aqua */
+  --secondary-foreground: #1f4a47;
+  --accent: #cdd7ff; /* periwinkle */
+  --accent-foreground: #2c356b;
+  --lavender: #b8c4ff;
+  --lavender-foreground: #2f3a6b;
+  --ring: #8fb8ff;
+}
+[data-color-theme="blue"].dark {
+  --primary: #a3c4ff;
+  --primary-foreground: #14203f;
+  --secondary: #7fd6cd;
+  --secondary-foreground: #07312c;
+  --accent: #d6ddff;
+  --accent-foreground: #1c2547;
+  --lavender: #c3ccff;
+  --lavender-foreground: #e7ebff;
+  --ring: #a3c4ff;
+}
+
+[data-color-theme="lilac"] {
+  --primary: #c3a3ff; /* lavender */
+  --primary-foreground: #ffffff;
+  --secondary: #ffb3e6; /* pink */
+  --secondary-foreground: #5a2a4d;
+  --accent: #b8c4ff; /* periwinkle */
+  --accent-foreground: #2f3a6b;
+  --lavender: #d9b8ff;
+  --lavender-foreground: #3f2f5a;
+  --ring: #c3a3ff;
+}
+[data-color-theme="lilac"].dark {
+  --primary: #cbb3ff;
+  --primary-foreground: #2a1f47;
+  --secondary: #ff9fdc;
+  --secondary-foreground: #4a1438;
+  --accent: #c3ccff;
+  --accent-foreground: #1c2547;
+  --lavender: #d9c4ff;
+  --lavender-foreground: #efe9f8;
+  --ring: #cbb3ff;
+}
+
+[data-color-theme="mint"] {
+  --primary: #8fe0c0; /* mint */
+  --primary-foreground: #ffffff;
+  --secondary: #bde8a0; /* sage */
+  --secondary-foreground: #2f4a1f;
+  --accent: #a7e8e0; /* aqua */
+  --accent-foreground: #1f4a47;
+  --lavender: #b8c4ff;
+  --lavender-foreground: #2f3a6b;
+  --ring: #8fe0c0;
+}
+[data-color-theme="mint"].dark {
+  --primary: #9fe8cd;
+  --primary-foreground: #0f3329;
+  --secondary: #c4ecab;
+  --secondary-foreground: #1f3a12;
+  --accent: #7fd6cd;
+  --accent-foreground: #07312c;
+  --lavender: #c3ccff;
+  --lavender-foreground: #e7ebff;
+  --ring: #9fe8cd;
+}
+
+/* ------------------------------------------------------------------ *
  * Map CSS variables to Tailwind tokens (utilities: bg-primary, etc.)
  * ------------------------------------------------------------------ */
 @theme inline {

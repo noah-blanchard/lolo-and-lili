@@ -1,11 +1,13 @@
 import { z } from "zod";
 import { AVATAR_EMOJIS, ACCENT_KEYS } from "@/lib/avatars";
+import { COLOR_THEME_KEYS } from "@/lib/themes";
 
 export const updateProfileSchema = z
   .object({
     display_name: z.string().trim().min(1).max(24).nullish(),
     avatar_emoji: z.enum(AVATAR_EMOJIS),
     accent_color: z.enum(ACCENT_KEYS),
+    theme_pref: z.enum(COLOR_THEME_KEYS),
   })
   .partial();
 

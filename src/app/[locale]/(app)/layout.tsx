@@ -5,6 +5,7 @@ import { getCoupleMembers } from "@/lib/services/couples";
 import { BottomNav } from "@/components/nav/bottom-nav";
 import { Onboarding } from "@/components/features/onboarding/onboarding";
 import { CoupleProvider } from "@/components/providers/couple-provider";
+import { ColorThemeProvider } from "@/components/providers/color-theme-provider";
 import { RealtimeProvider } from "@/components/providers/realtime-provider";
 
 export default async function AppLayout({
@@ -31,13 +32,15 @@ export default async function AppLayout({
 
   return (
     <CoupleProvider value={{ coupleId: profile.couple_id, me, partner }}>
-      <RealtimeProvider coupleId={profile.couple_id} userId={user.id}>
-        <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col">
-          {/* Bottom padding clears the floating nav (~5.5rem) + safe area */}
-          <main className="flex-1 px-4 pb-28 pt-4">{children}</main>
-          <BottomNav />
-        </div>
-      </RealtimeProvider>
+      <ColorThemeProvider initialTheme={me.theme_pref}>
+        <RealtimeProvider coupleId={profile.couple_id} userId={user.id}>
+          <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col">
+            {/* Bottom padding clears the floating nav (~5.5rem) + safe area */}
+            <main className="flex-1 px-4 pb-28 pt-4">{children}</main>
+            <BottomNav />
+          </div>
+        </RealtimeProvider>
+      </ColorThemeProvider>
     </CoupleProvider>
   );
 }

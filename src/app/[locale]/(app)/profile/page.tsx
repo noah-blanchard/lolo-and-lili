@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/nav/theme-toggle";
 import { LocaleSwitcher } from "@/components/nav/locale-switcher";
 import { ProfileEditor } from "@/components/features/profile/profile-editor";
+import { ThemeColorPicker } from "@/components/features/profile/theme-color-picker";
 import { CoupleNameEditor } from "@/components/features/profile/couple-name-editor";
 import { NotificationsCard } from "@/components/features/notifications/notifications-card";
 import {
@@ -62,8 +63,10 @@ export default async function ProfilePage({
         </Card>
       )}
 
+      <ThemeColorPicker />
+
       <Card className="flex items-center justify-between">
-        <CardDescription>{t("profile.theme")}</CardDescription>
+        <CardDescription>{t("profile.appearance")}</CardDescription>
         <ThemeToggle />
       </Card>
 
