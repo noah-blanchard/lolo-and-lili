@@ -15,14 +15,20 @@ export function redirect(_href: string): never {
   throw new Error("redirect is not available in Storybook");
 }
 
+/** Storybook-only mutable pathname so nav components can show an active tab. */
+let mockPathname = "/";
+export function setMockPathname(value: string): void {
+  mockPathname = value;
+}
+
 export function usePathname(): string {
-  return "/";
+  return mockPathname;
 }
 
 export function useRouter() {
   return {
-    push(_href: string) {},
-    replace(_href: string) {},
+    push(_href: string, _opts?: unknown) {},
+    replace(_href: string, _opts?: unknown) {},
     back() {},
     forward() {},
     refresh() {},

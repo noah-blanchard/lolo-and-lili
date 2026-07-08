@@ -18,10 +18,10 @@ const config: StorybookConfig = {
     cfg.resolve = cfg.resolve ?? {};
     cfg.resolve.alias = {
       ...(cfg.resolve.alias ?? {}),
-      "@": path.resolve(here, "../../src"),
+      // Specific aliases MUST come before the catch-all `@` so they win.
       // next-intl navigation relies on the Next.js router, which does not exist
-      // in a plain Vite runtime. Mock it so HubCard (and future Link-based
-      // components) render as a plain anchor without touching app source.
+      // in a plain Vite runtime. Mock it so Link-based components render as a
+      // plain anchor without touching app source.
       "@/i18n/navigation": path.resolve(here, "../src/mocks/navigation.tsx"),
       "next-intl/navigation": path.resolve(here, "../src/mocks/navigation.tsx"),
       // Feature components read data from these hooks; alias them to mock
@@ -49,6 +49,8 @@ const config: StorybookConfig = {
       "@/lib/supabase/client": path.resolve(here, "../src/mocks/supabase-client.ts"),
       "@/app/actions/profiles": path.resolve(here, "../src/mocks/actions-profiles.ts"),
       "@/app/actions/couples": path.resolve(here, "../src/mocks/actions-couples.ts"),
+      // Catch-all: map `@` → the app `src`. Keep last so specific aliases win.
+      "@": path.resolve(here, "../../src"),
     };
 
     cfg.define = {

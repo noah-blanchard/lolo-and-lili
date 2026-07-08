@@ -116,10 +116,14 @@ These read from `src/hooks/*`; mock the matching hook(s) per domain.
 | question | `question-board.tsx` | `use-question` |
 | status | `status-card.tsx` | `use-statuses` + `use-set-status` |
 
-## Phase 5 — nav ⬜
+## Phase 5 — nav ✅ (committed)
 
-- `bottom-nav.tsx` — wrap with mock couple + router; default + active route
-- `locale-switcher.tsx` — mock `next-intl` locale
+- `bottom-nav.tsx` — `HomeActive` / `MaisonActive` / `NousActive` / `ProfileActive`
+  (active tab driven by `setMockPathname` in `mocks/navigation.tsx`).
+- `locale-switcher.tsx` — `Default` (fr active; toggling switches the mocked locale).
+
+Note: `main.ts` alias ordering matters — the catch-all `@` alias is kept **last** so
+specific aliases (notably `@/i18n/navigation` and the `@/hooks/*` mocks) win.
 
 ---
 
@@ -137,4 +141,4 @@ These read from `src/hooks/*`; mock the matching hook(s) per domain.
 - [x] Phase 2 — UI primitives
 - [x] Phase 3 — Presentational feature components
 - [x] Phase 4 — Container feature components
-- [ ] Phase 5 — nav
+- [x] Phase 5 — nav
