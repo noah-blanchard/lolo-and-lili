@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useCoupons } from "@/hooks/use-coupons";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SegmentedToggle } from "@/components/ui/segmented-toggle";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CouponCard } from "./coupon-card";
 import { MintCoupon } from "./mint-coupon";
 import { useCouple } from "@/components/providers/couple-provider";
@@ -30,7 +31,19 @@ export function CouponsBoard() {
     <div className="flex flex-col gap-5">
       <MintCoupon />
 
-      {isLoading ? null : !all.length ? (
+      {isLoading ? (
+        <>
+          <Skeleton className="h-10 w-full rounded-full" />
+          <div className="flex flex-col gap-3">
+            {Array.from({ length: 2 }).map((_, i) => (
+              <div key={i} className="rounded-cute bg-surface p-5 shadow-soft">
+                <Skeleton className="mb-2 h-5 w-2/3" />
+                <Skeleton className="h-4 w-1/3" />
+              </div>
+            ))}
+          </div>
+        </>
+      ) : !all.length ? (
         <EmptyState emoji="🎟️" title={t("empty")} description={t("emptyHint")} />
       ) : (
         <>

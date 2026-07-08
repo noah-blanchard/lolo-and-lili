@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { celebrate } from "@/lib/confetti";
 import { useClearChecked, useGrocery } from "@/hooks/use-grocery";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AddGrocery } from "./add-grocery";
 import { GroceryItem } from "./grocery-item";
 
@@ -23,7 +24,16 @@ export function GroceryList() {
     <div className="flex flex-col gap-5">
       <AddGrocery />
 
-      {isLoading ? null : !data?.length ? (
+      {isLoading ? (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-3 rounded-cute bg-surface p-5 shadow-soft">
+              <Skeleton className="size-5 shrink-0 rounded-full" />
+              <Skeleton className="h-4 flex-1" />
+            </div>
+          ))}
+        </div>
+      ) : !data?.length ? (
         <EmptyState emoji="🛒" title={t("empty")} description={t("emptyHint")} />
       ) : (
         <div className="flex flex-col gap-3">

@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useBucket } from "@/hooks/use-bucket";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AddBucket } from "./add-bucket";
 import { SpinJar } from "./spin-jar";
 import { BucketItem } from "./bucket-item";
@@ -18,7 +19,16 @@ export function BucketList() {
       <AddBucket />
       {(data?.length ?? 0) > 0 && <SpinJar />}
 
-      {isLoading ? null : !data?.length ? (
+      {isLoading ? (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-3 rounded-cute bg-surface p-5 shadow-soft">
+              <Skeleton className="size-5 shrink-0 rounded-full" />
+              <Skeleton className="h-4 flex-1" />
+            </div>
+          ))}
+        </div>
+      ) : !data?.length ? (
         <EmptyState emoji="🪣" title={t("empty")} description={t("emptyHint")} />
       ) : (
         <div className="flex flex-col gap-3">

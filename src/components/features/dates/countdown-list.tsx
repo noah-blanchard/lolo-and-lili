@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { daysUntil, nextOccurrence } from "@/lib/countdowns";
 import { useSpecialDates } from "@/hooks/use-special-dates";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CountdownCard } from "./countdown-card";
 import { AddDate } from "./add-date";
 
@@ -18,7 +19,16 @@ export function CountdownList() {
   return (
     <div className="flex flex-col gap-5">
       <AddDate />
-      {isLoading ? null : items.length === 0 ? (
+      {isLoading ? (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="rounded-cute bg-surface p-5 shadow-soft">
+              <Skeleton className="mb-2 h-5 w-1/3" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
+          ))}
+        </div>
+      ) : items.length === 0 ? (
         <EmptyState emoji="🗓️" title={t("empty")} description={t("emptyHint")} />
       ) : (
         <div className="flex flex-col gap-3">

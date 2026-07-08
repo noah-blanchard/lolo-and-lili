@@ -6,6 +6,7 @@ import { Trash2 } from "lucide-react";
 import { formatMoney } from "@/lib/expenses";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCouple } from "@/components/providers/couple-provider";
 import { useDeleteExpense, useExpenses } from "@/hooks/use-expenses";
 import { BalanceCard } from "./balance-card";
@@ -24,9 +25,21 @@ export function ExpensesBoard() {
   return (
     <div className="flex flex-col gap-5">
       <AddExpense />
-      {!isLoading && <BalanceCard balance={data?.balance ?? null} />}
+      <BalanceCard balance={data?.balance ?? null} />
 
-      {isLoading ? null : !data?.expenses.length ? (
+      {isLoading ? (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-3 rounded-cute bg-surface p-5 shadow-soft">
+              <div className="min-w-0 flex-1 space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+              </div>
+              <Skeleton className="h-5 w-16" />
+            </div>
+          ))}
+        </div>
+      ) : !data?.expenses.length ? (
         <EmptyState emoji="💸" title={t("empty")} description={t("emptyHint")} />
       ) : (
         <div className="flex flex-col gap-3">
