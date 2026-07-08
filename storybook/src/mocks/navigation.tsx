@@ -20,7 +20,14 @@ export function usePathname(): string {
 }
 
 export function useRouter() {
-  return { push() {}, replace() {}, back() {}, forward() {}, refresh() {} };
+  return {
+    push(_href: string) {},
+    replace(_href: string) {},
+    back() {},
+    forward() {},
+    refresh() {},
+    prefetch() {},
+  };
 }
 
 export function getPathname(_params?: { href: string }): string {

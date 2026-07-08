@@ -17,17 +17,18 @@ Legend: ✅ done · 🚧 in progress · ⬜ pending
   - `QueryClientProvider` — one shared mock `QueryClient` (retry off).
   - `CoupleProvider` — static `me`/`partner` (`Profile` mocks).
   - `ColorThemeProvider` — `initialTheme="peach"`.
-- `RealtimeProvider` is **not** mocked: it is only mounted in the app shell, and
-  `useOnlineUsers()` safely falls back to an empty `Set`.
+- `RealtimeProvider` is aliased to a pass-through mock (`realtime-provider.tsx`)
+  whose `useOnlineUsers()` returns both partners as "online".
 - The `@` alias resolves to the **app** `src` (`../../src`), and `@/i18n/navigation`
-  is aliased to a plain-anchor mock (`storybook/.storybook/src/mocks/navigation.tsx`).
+  is aliased to a plain-anchor mock (`storybook/src/mocks/navigation.tsx`).
 
 ### Mocking data hooks (Vite alias approach)
 `vi.mock` is NOT reliably transformed in a plain Storybook build (no Vitest plugin),
 and `storybook/test` doesn't export `vi` here. Instead, `main.ts` `viteFinal` aliases
 each data hook module to a mock under `storybook/src/mocks/hooks/`, plus stubs for
-`@/lib/supabase/client` and `@/app/actions/profiles` (the latter avoids bundling the
-server-only `next/cache`). The mocks return static fixtures (see `mocks/fixtures.ts`)
+`@/lib/supabase/client`, `@/app/actions/profiles`, and `@/app/actions/couples`. The
+`server-only` package guard is aliased to a no-op (`mocks/empty.ts`) so server actions
+never break the Vite build. The mocks return static fixtures (see `mocks/fixtures.ts`)
 and no-op mutations. This covers BOTH phase 3 and phase 4 globally — stories just pass
 props and don't need per-file mocking. New domains: add an alias + a mock hook file.
 
@@ -91,7 +92,7 @@ These take explicit props, so stories just feed mock data.
 - **meals** — `meal-slot.tsx`
 - **pet** — `pet-memories.tsx`
 
-## Phase 4 — Container feature components (mock hooks) ⬜
+## Phase 4 — Container feature components (mock hooks) ✅ (committed)
 
 These read from `src/hooks/*`; mock the matching hook(s) per domain.
 
@@ -135,5 +136,5 @@ These read from `src/hooks/*`; mock the matching hook(s) per domain.
 - [x] Phase 1 — Shared infrastructure
 - [x] Phase 2 — UI primitives
 - [x] Phase 3 — Presentational feature components
-- [ ] Phase 4 — Container feature components
+- [x] Phase 4 — Container feature components
 - [ ] Phase 5 — nav

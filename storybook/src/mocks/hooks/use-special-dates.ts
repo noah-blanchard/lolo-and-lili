@@ -1,9 +1,11 @@
-export function useDeleteSpecialDate() {
-  return { mutate: () => {} };
+import { mockSpecialDate } from "../fixtures";
+
+export function useSpecialDates() {
+  return { data: [mockSpecialDate] };
 }
 export function useAddSpecialDate() {
   return { mutate: () => {}, isPending: false };
 }
-export function useSpecialDates() {
-  return { data: [] };
+export function useDeleteSpecialDate() {
+  return { mutate: () => {} };
 }

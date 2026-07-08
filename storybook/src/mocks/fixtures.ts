@@ -3,6 +3,9 @@ import type { Coupon, BucketItem, GroceryItem, SpecialDate, Meal, PetMemory } fr
 import type { ChoreWithStatus } from "@/lib/chores";
 import type { Balance } from "@/lib/expenses";
 import type { AppNotification } from "@/lib/schemas/notification";
+import type { Status } from "@/lib/supabase/types";
+import type { LoveNote } from "@/lib/supabase/types";
+import type { QuestionView } from "@/lib/questions";
 
 export const ME_ID = "me-storybook";
 export const PARTNER_ID = "partner-storybook";
@@ -167,3 +170,64 @@ export const mockNotificationRead = {
   id: "n2",
   read: true,
 } as unknown as AppNotification;
+
+export const mockNotifications = [mockNotification, mockNotificationRead];
+
+// --- Statuses ----------------------------------------------------------
+export const mockStatusMe = {
+  user_id: ME_ID,
+  couple_id: "couple-storybook",
+  state: "free",
+  emoji: "🌞",
+  note: "",
+  updated_at: new Date().toISOString(),
+} as unknown as Status;
+
+export const mockStatusPartner = {
+  user_id: PARTNER_ID,
+  couple_id: "couple-storybook",
+  state: "busy",
+  emoji: "💻",
+  note: "En réunion",
+  updated_at: new Date().toISOString(),
+} as unknown as Status;
+
+export const mockStatuses = [mockStatusMe, mockStatusPartner];
+
+// --- Love notes --------------------------------------------------------
+export const mockLoveNoteMine = {
+  id: "ln1",
+  couple_id: "couple-storybook",
+  author_id: ME_ID,
+  body: "Tu es mon soleil ☀️",
+  accent: "#ff8fa3",
+  created_at: new Date(Date.now() - 3_600_000).toISOString(),
+} as unknown as LoveNote;
+
+export const mockLoveNoteTheirs = {
+  id: "ln2",
+  couple_id: "couple-storybook",
+  author_id: PARTNER_ID,
+  body: "Merci pour ce matin 💕",
+  accent: "#9ee6cf",
+  created_at: new Date().toISOString(),
+} as unknown as LoveNote;
+
+export const mockLoveNotes = [mockLoveNoteMine, mockLoveNoteTheirs];
+
+// --- Question ----------------------------------------------------------
+export const mockQuestionView = {
+  date: new Date().toISOString().slice(0, 10),
+  questionKey: "fav_memory",
+  myAnswer: null,
+  partnerAnswer: null,
+  revealed: false,
+} as unknown as QuestionView;
+
+export const mockQuestionViewRevealed = {
+  date: new Date().toISOString().slice(0, 10),
+  questionKey: "dream_trip",
+  myAnswer: "Le Japon 🗾",
+  partnerAnswer: "La Norvège 🏔️",
+  revealed: true,
+} as unknown as QuestionView;
