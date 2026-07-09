@@ -1,6 +1,6 @@
 "use client";
 
-import { HeartHandshake, HouseHeart as House, Heart, Dog, UserRound } from "lucide-react";
+import { HeartHandshake, HouseHeart as House, MessageCircleHeart as Heart, Dog, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { Link, usePathname } from "@/i18n/navigation";
