@@ -9,6 +9,12 @@ export function useOnlineUsers() {
   return online;
 }
 
+const lastSeen = new Map<string, string>();
+
+export function useLastSeen() {
+  return lastSeen;
+}
+
 export function RealtimeProvider({ children }: { coupleId?: string; userId?: string; children: ReactNode }) {
   return <>{children}</>;
 }

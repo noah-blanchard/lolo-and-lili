@@ -46,6 +46,7 @@
     "setSieste": "Je fais la sieste",
     "online": "en ligne",
     "offline": "hors ligne",
+    "lastOnline": "Dernière connexion {time}",
     "me": "Moi",
     "partner": "Mon amour"
   },

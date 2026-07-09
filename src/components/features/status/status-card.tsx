@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useCouple } from "@/components/providers/couple-provider";
-import { useOnlineUsers } from "@/components/providers/realtime-provider";
+import { useOnlineUsers, useLastSeen } from "@/components/providers/realtime-provider";
 import { useSetStatus, useStatuses } from "@/hooks/use-statuses";
 import { useMoods } from "@/hooks/use-moods";
 import { Card, CardTitle } from "@/components/ui/card";
 import { SegmentedToggle } from "@/components/ui/segmented-toggle";
 import { MoodDrawer } from "@/components/features/moods/mood-drawer";
 import { moodEmoji } from "@/lib/moods";
+import { lastSeenLabel } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import { accentHex } from "@/lib/avatars";
 import type { Profile } from "@/lib/supabase/types";
@@ -18,8 +19,10 @@ type State = "free" | "busy" | "sieste";
 
 export function StatusCard() {
   const t = useTranslations("status");
+  const locale = useLocale();
   const { me, partner } = useCouple();
   const online = useOnlineUsers();
+  const lastSeenMap = useLastSeen();
   const { data: statuses } = useStatuses();
   const { data: moods } = useMoods();
   const setStatus = useSetStatus();
@@ -50,6 +53,7 @@ export function StatusCard() {
             online={online.has(me.id)}
             onlineLabel={t("online")}
             offlineLabel={t("offline")}
+            lastSeen={lastSeenMap.get(me.id)}
             stateLabel={t(myState)}
             currentMood={currentMoodOf(me.id)}
             onMoodClick={() => setDrawerOpen(true)}
@@ -62,6 +66,7 @@ export function StatusCard() {
               online={online.has(partner.id)}
               onlineLabel={t("online")}
               offlineLabel={t("offline")}
+              lastSeen={lastSeenMap.get(partner.id)}
               stateLabel={t(stateOf(partner.id))}
               currentMood={currentMoodOf(partner.id)}
             />
@@ -91,6 +96,7 @@ function PersonRow({
   online,
   onlineLabel,
   offlineLabel,
+  lastSeen,
   stateLabel,
   currentMood,
   onMoodClick,
@@ -101,10 +107,16 @@ function PersonRow({
   online: boolean;
   onlineLabel: string;
   offlineLabel: string;
+  lastSeen?: string;
   stateLabel: string;
   currentMood: string | null;
   onMoodClick?: () => void;
 }) {
+  const t = useTranslations("status");
+  const locale = useLocale();
+  const statusText = !online && lastSeen
+    ? t("lastOnline", { time: lastSeenLabel(lastSeen, locale) })
+    : online ? onlineLabel : offlineLabel;
   return (
     <div className="flex items-center gap-3">
       <div
@@ -132,7 +144,7 @@ function PersonRow({
         <p className="truncate font-semibold">
           {profile.display_name ?? fallbackName}
         </p>
-        <p className="text-sm text-muted">{online ? onlineLabel : offlineLabel}</p>
+        <p className="text-sm text-muted">{statusText}</p>
       </div>
       <span
         className={cn(

@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -17,6 +18,12 @@ import { queryKeys } from "@/lib/query/keys";
 const PresenceContext = createContext<Set<string>>(new Set());
 export function useOnlineUsers() {
   return useContext(PresenceContext);
+}
+
+/** Map of userId → ISO timestamp of when they last went offline. */
+const LastSeenContext = createContext<Map<string, string>>(new Map());
+export function useLastSeen() {
+  return useContext(LastSeenContext);
 }
 
 /**
@@ -35,6 +42,8 @@ export function RealtimeProvider({
   const queryClient = useQueryClient();
   const router = useRouter();
   const [online, setOnline] = useState<Set<string>>(new Set());
+  const [lastSeen, setLastSeen] = useState<Map<string, string>>(new Map());
+  const prevPresenceRef = useRef<Record<string, { online_at: string }[]>>({});
 
   useEffect(() => {
     const supabase = createClient();
@@ -152,7 +161,24 @@ export function RealtimeProvider({
           () => invalidate(queryKeys.notifications()),
         )
         .on("presence", { event: "sync" }, () => {
-          setOnline(new Set(Object.keys(channel!.presenceState())));
+          const raw = channel!.presenceState() as Record<string, { online_at: string }[]>;
+          const nextIds = new Set(Object.keys(raw));
+          const prevIds = new Set(Object.keys(prevPresenceRef.current));
+
+          // Capture last-seen timestamp for users who just went offline
+          setLastSeen((prev) => {
+            const updated = new Map(prev);
+            for (const id of prevIds) {
+              if (!nextIds.has(id)) {
+                const entry = prevPresenceRef.current[id]?.[0];
+                updated.set(id, entry?.online_at ?? new Date().toISOString());
+              }
+            }
+            return updated;
+          });
+
+          prevPresenceRef.current = raw;
+          setOnline(nextIds);
         })
         .subscribe((status) => {
           if (status === "SUBSCRIBED") {
@@ -168,7 +194,9 @@ export function RealtimeProvider({
 
   return (
     <PresenceContext.Provider value={online}>
-      {children}
+      <LastSeenContext.Provider value={lastSeen}>
+        {children}
+      </LastSeenContext.Provider>
     </PresenceContext.Provider>
   );
 }

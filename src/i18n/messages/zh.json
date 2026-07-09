@@ -46,6 +46,7 @@
     "setSieste": "我在小睡",
     "online": "在线",
     "offline": "离线",
+    "lastOnline": "最后在线于 {time}",
     "me": "我",
     "partner": "我的另一半"
   },
