@@ -51,12 +51,12 @@ export const NOTIFY: Record<NotifyKey, Record<Loc, (v: Vars) => Built>> = {
     fr: (v) => ({
       title: "Nouvelle humeur 💭",
       body: `${v.actor} partage son humeur ${v.extra ?? ""}`.trim(),
-      url: "/moods",
+      url: "/",
     }),
     zh: (v) => ({
       title: "新的心情 💭",
       body: `${v.actor} 分享了心情 ${v.extra ?? ""}`.trim(),
-      url: "/moods",
+      url: "/",
     }),
   },
   status_busy: {

@@ -71,6 +71,7 @@
     "empty": "今天还没有记录心情",
     "recent": "最近",
     "logged": "心情已记录 💖",
+    "error": "哎呀，出错了",
     "faces": {
       "happy": "开心",
       "loved": "被爱",

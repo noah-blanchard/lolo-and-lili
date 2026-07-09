@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
-  Smile,
   NotebookPen,
   Ticket,
   MessageCircleQuestion,
@@ -26,12 +25,6 @@ export default async function NousPage({
       </header>
 
       <div className="grid grid-cols-2 gap-3">
-        <HubCard
-          href="/moods"
-          label={t("nav.moods")}
-          description={t("hub.moodsDesc")}
-          icon={Smile}
-        />
         <HubCard
           href="/notes"
           label={t("notes.title")}

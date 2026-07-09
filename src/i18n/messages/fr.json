@@ -71,6 +71,7 @@
     "empty": "Pas encore d'humeur aujourd'hui",
     "recent": "Récemment",
     "logged": "Humeur enregistrée 💖",
+    "error": "Oups, une erreur est survenue",
     "faces": {
       "happy": "Heureux·se",
       "loved": "Aimé·e",

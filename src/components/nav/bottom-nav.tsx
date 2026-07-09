@@ -11,7 +11,6 @@ import { springBouncy } from "@/lib/motion";
 const MAISON_ROUTES = ["/maison", "/chores", "/grocery", "/meals", "/expenses"];
 const NOUS_ROUTES = [
   "/nous",
-  "/moods",
   "/notes",
   "/coupons",
   "/question",

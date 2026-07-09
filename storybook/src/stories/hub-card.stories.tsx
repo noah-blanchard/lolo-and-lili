@@ -33,7 +33,7 @@ export const Grid: Story = {
       <HubCard href="/pet" label="Pet" description="Companion" icon={PawPrint} />
       <HubCard href="/meals" label="Meals" description="Plan dinner" icon={Utensils} />
       <HubCard href="/dates" label="Dates" description="Moments" icon={CalendarDays} />
-      <HubCard href="/moods" label="Moods" description="How we feel" icon={Heart} />
+      <HubCard href="/notes" label="Notes" description="Love notes" icon={Heart} />
     </div>
   ),
 };
