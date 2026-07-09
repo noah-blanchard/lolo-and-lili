@@ -353,5 +353,10 @@
     "save": "Enregistrer",
     "cancel": "Annuler",
     "error": "Oups, une erreur est survenue"
+  },
+  "errorBoundary": {
+    "title": "Oups, un petit couac 💔",
+    "description": "Quelque chose s'est mal passé de notre côté. On peut réessayer tout de suite.",
+    "retry": "Réessayer"
   }
 }

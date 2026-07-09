@@ -1,9 +1,9 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/types";
-import { ApiError, ErrorCode } from "@/lib/api/result";
+import { ApiError, ErrorCode, fail } from "@/lib/api/result";
 import type { CreateChoreInput } from "@/lib/schemas/chore";
 import { type ChoreWithStatus, today } from "@/lib/chores";
-import { requireCoupleId } from "./couples";
+import { getCoupleMembers, requireCoupleId } from "./couples";
 import { notifyPartner } from "./notifications";
 import { rewardFromChore } from "./pets";
 
@@ -39,6 +39,15 @@ export async function createChore(
   input: CreateChoreInput,
 ): Promise<ChoreWithStatus> {
   const coupleId = await requireCoupleId(supabase, user);
+
+  // An assignee must belong to this couple. The FK only guarantees the id is a
+  // real profile, not that it's one of the two members (see F-004).
+  if (input.assignee_id) {
+    const members = await getCoupleMembers(supabase, coupleId);
+    if (!members.some((m) => m.id === input.assignee_id)) {
+      throw fail.forbidden("Assignee must be a member of your couple");
+    }
+  }
 
   const { data, error } = await supabase
     .from("chores")

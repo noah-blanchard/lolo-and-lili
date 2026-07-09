@@ -179,7 +179,16 @@ export async function care(
     throw new ApiError(ErrorCode.FORBIDDEN, "Not enough treats — do a chore together 🪙");
   }
 
-  // Record the action first (drives realtime, cooldowns, co-op detection).
+  // Cuddle is once per day per person — validate BEFORE recording the action so
+  // a rejected cuddle leaves no orphan pet_actions row (F-009).
+  if (type === "cuddle") {
+    const already = await hasActionToday(supabase, pet.id, "cuddle", user.id);
+    if (already) {
+      throw new ApiError(ErrorCode.CONFLICT, "Already cuddled today 💕");
+    }
+  }
+
+  // Record the action (drives realtime, cooldowns, co-op detection).
   await supabase.from("pet_actions").insert({
     couple_id: coupleId,
     pet_id: pet.id,
@@ -192,11 +201,7 @@ export async function care(
   let notify: NotifyKey | null = null;
 
   if (type === "cuddle") {
-    // Once per day per person; the co-op day completes when BOTH have cuddled.
-    const already = await hasActionToday(supabase, pet.id, "cuddle", user.id, now);
-    if (already) {
-      throw new ApiError(ErrorCode.CONFLICT, "Already cuddled today 💕");
-    }
+    // The co-op day completes when BOTH have cuddled.
     const partnerCuddled = await partnerActedToday(
       supabase,
       pet.id,
@@ -318,7 +323,8 @@ export async function spendTreats(
   if (!pet || pet.treats < amount) {
     throw new ApiError(ErrorCode.CONFLICT, "Not enough treats — do a chore together 🪙");
   }
-  await supabase.from("pets").update({ treats: pet.treats - amount }).eq("id", pet.id);
+  // Atomic decrement (clamped ≥ 0) so simultaneous spends can't lose updates.
+  await supabase.rpc("adjust_treats", { p_pet_id: pet.id, p_delta: -amount });
 }
 
 /**
@@ -336,10 +342,10 @@ export async function awardTreats(
   if (!coupleId) return;
   const pet = await fetchPetRow(supabase, coupleId);
   if (!pet) return;
-  await supabase
-    .from("pets")
-    .update({ treats: pet.treats + Math.round(amount) })
-    .eq("id", pet.id);
+  await supabase.rpc("adjust_treats", {
+    p_pet_id: pet.id,
+    p_delta: Math.round(amount),
+  });
 }
 
 /** Chores award/refund treats (the economy) + a small energy nudge on complete. */
@@ -354,8 +360,11 @@ export async function rewardFromChore(
   const pet = await fetchPetRow(supabase, coupleId);
   if (!pet) return;
 
-  const treats = Math.max(0, pet.treats + (undo ? -points : points));
-  await supabase.from("pets").update({ treats }).eq("id", pet.id);
+  // Atomic (clamped ≥ 0) so concurrent chore completions never lose treats.
+  await supabase.rpc("adjust_treats", {
+    p_pet_id: pet.id,
+    p_delta: undo ? -points : points,
+  });
   if (!undo) await nourish(supabase, pet, { energy: 5, cleanliness: 3 });
 }
 
@@ -405,17 +414,15 @@ async function hasActionToday(
   petId: string,
   type: PetActionType,
   userId: string,
-  now: Date,
 ): Promise<boolean> {
+  // Called BEFORE the action is recorded, so no self-row exclusion is needed.
   const { count } = await supabase
     .from("pet_actions")
     .select("id", { count: "exact", head: true })
     .eq("pet_id", petId)
     .eq("type", type)
     .eq("performed_by", userId)
-    .gte("created_at", `${today()}T00:00:00.000Z`)
-    // exclude the row we just inserted (this call happens after insert)
-    .lt("created_at", now.toISOString());
+    .gte("created_at", `${today()}T00:00:00.000Z`);
   return (count ?? 0) > 0;
 }
 

@@ -225,7 +225,7 @@ export async function markAllNotificationsRead(
 ): Promise<{ updated: number }> {
   const { error, count } = await supabase
     .from("notifications")
-    .update({ read: true })
+    .update({ read: true }, { count: "exact" })
     .eq("recipient_id", userId)
     .eq("read", false);
   if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);

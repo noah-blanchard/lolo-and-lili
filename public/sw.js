@@ -1,7 +1,7 @@
 /* Lolo & Lili service worker — dependency-free, Turbopack-safe.
  * Handles: offline shell caching, static asset SWR, and Web Push (P4). */
 
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = `lolo-lili-${VERSION}`;
 const OFFLINE_URL = "/offline.html";
 const PRECACHE = [OFFLINE_URL, "/icon.svg", "/manifest.webmanifest"];
@@ -86,8 +86,22 @@ self.addEventListener("notificationclick", (event) => {
   const target = event.notification.data?.url || "/";
   event.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
-      const existing = clients.find((c) => "focus" in c);
-      if (existing) return existing.focus();
+      // Prefer an already-open same-origin app window and NAVIGATE it to the
+      // target, so the tap deep-links instead of just focusing whatever page was
+      // last open (F-043). Fall back to opening a fresh window.
+      const appClients = clients.filter((c) => {
+        try {
+          return new URL(c.url).origin === self.location.origin && "focus" in c;
+        } catch {
+          return false;
+        }
+      });
+      const existing = appClients[0] || clients.find((c) => "focus" in c);
+      if (existing) {
+        return Promise.resolve(existing.navigate(target))
+          .then((w) => (w || existing).focus())
+          .catch(() => self.clients.openWindow(target));
+      }
       return self.clients.openWindow(target);
     }),
   );

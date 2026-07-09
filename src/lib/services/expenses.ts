@@ -1,6 +1,6 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Database, Expense } from "@/lib/supabase/types";
-import { ApiError, ErrorCode } from "@/lib/api/result";
+import { ApiError, ErrorCode, fail } from "@/lib/api/result";
 import { computeBalance, type ExpensesView } from "@/lib/expenses";
 import type { AddExpenseInput } from "@/lib/schemas/expense";
 import { getCoupleMembers, requireCoupleId } from "./couples";
@@ -39,6 +39,20 @@ export async function addExpense(
   input: AddExpenseInput,
 ): Promise<Expense> {
   const coupleId = await requireCoupleId(supabase, user);
+  const currency = input.currency ?? "EUR";
+
+  // Keep the ledger single-currency: computeBalance sums cents across every row
+  // regardless of currency, so a second currency yields a meaningless balance
+  // (see F-011). Reject an expense that doesn't match the existing ledger.
+  const { data: mismatch } = await supabase
+    .from("expenses")
+    .select("id")
+    .neq("currency", currency)
+    .limit(1);
+  if (mismatch && mismatch.length > 0) {
+    throw fail.conflict("All expenses must use the same currency");
+  }
+
   const { data, error } = await supabase
     .from("expenses")
     .insert({
@@ -46,7 +60,7 @@ export async function addExpense(
       couple_id: coupleId,
       payer_id: user.id,
       amount_cents: Math.round(input.amount * 100),
-      currency: input.currency ?? "EUR",
+      currency,
       description: input.description,
     })
     .select("*")
@@ -82,6 +96,22 @@ export async function settleUp(
   if (!view.balance) return { settled: false };
 
   const { debtorId, creditorId, amountCents } = view.balance;
+
+  // Guard against a double-submit (or both partners tapping at once) racing two
+  // identical settlement rows (F-008): if the same settlement was just recorded,
+  // treat this call as a no-op instead of inserting a duplicate that would flip
+  // the balance into a phantom debt.
+  const recentSince = new Date(Date.now() - 30_000).toISOString();
+  const { data: dup } = await supabase
+    .from("expense_settlements")
+    .select("id")
+    .eq("from_id", debtorId)
+    .eq("to_id", creditorId)
+    .eq("amount_cents", amountCents)
+    .gte("created_at", recentSince)
+    .limit(1);
+  if (dup && dup.length > 0) return { settled: false };
+
   const { error } = await supabase.from("expense_settlements").insert({
     couple_id: coupleId,
     from_id: debtorId,

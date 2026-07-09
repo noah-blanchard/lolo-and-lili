@@ -9,6 +9,8 @@ export const addLoveNoteSchema = z.object({
 export type AddLoveNoteInput = z.infer<typeof addLoveNoteSchema>;
 
 export const openLoveNoteSchema = z.object({
-  opened_at: z.string().datetime(),
+  // Accepted for backwards-compat but ignored: the server stamps opened_at
+  // itself so shared state can't be back-dated by a client (see F-003).
+  opened_at: z.string().datetime().optional(),
 });
 export type OpenLoveNoteInput = z.infer<typeof openLoveNoteSchema>;

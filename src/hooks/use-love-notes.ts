@@ -89,7 +89,9 @@ export function useOpenLoveNote() {
       const previous = queryClient.getQueryData<LoveNote[]>(queryKeys.loveNotes());
       queryClient.setQueryData<LoveNote[]>(queryKeys.loveNotes(), (old) =>
         (old ?? []).map((n) =>
-          n.id === noteId ? { ...n, opened_at: input.opened_at } : n,
+          n.id === noteId
+            ? { ...n, opened_at: input.opened_at ?? new Date().toISOString() }
+            : n,
         ),
       );
       return { previous };

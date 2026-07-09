@@ -4,5 +4,5 @@ import { openLoveNote } from "@/lib/services/love-notes";
 
 export const PATCH = defineRoute({
   input: openLoveNoteSchema,
-  handler: ({ supabase, params, input }) => openLoveNote(supabase, params.id, input),
+  handler: ({ supabase, params }) => openLoveNote(supabase, params.id),
 });

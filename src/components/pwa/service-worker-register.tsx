@@ -21,6 +21,14 @@ export function ServiceWorkerRegister() {
           /* registration failures are non-fatal */
         });
     };
+
+    // If hydration finishes after `window.load` already fired (slow JS / fast
+    // cached page), the listener would never run and the SW would silently never
+    // register (F-027). Register immediately in that case.
+    if (document.readyState === "complete") {
+      onLoad();
+      return;
+    }
     window.addEventListener("load", onLoad);
     return () => window.removeEventListener("load", onLoad);
   }, []);

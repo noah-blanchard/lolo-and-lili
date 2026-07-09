@@ -353,5 +353,10 @@
     "save": "保存",
     "cancel": "取消",
     "error": "哎呀，出错了"
+  },
+  "errorBoundary": {
+    "title": "哎呀，出了点小状况 💔",
+    "description": "我们这边出了点问题。可以马上再试一次。",
+    "retry": "重试"
   }
 }

@@ -1,7 +1,7 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Database, LoveNote } from "@/lib/supabase/types";
 import { ApiError, ErrorCode } from "@/lib/api/result";
-import type { AddLoveNoteInput, OpenLoveNoteInput } from "@/lib/schemas/love-note";
+import type { AddLoveNoteInput } from "@/lib/schemas/love-note";
 import { requireCoupleId } from "./couples";
 import { notifyPartner } from "./notifications";
 
@@ -58,11 +58,10 @@ export async function deleteLoveNote(
 export async function openLoveNote(
   supabase: DB,
   noteId: string,
-  input: OpenLoveNoteInput,
 ): Promise<LoveNote> {
   const { data, error } = await supabase
     .from("love_notes")
-    .update({ opened_at: input.opened_at })
+    .update({ opened_at: new Date().toISOString() })
     .eq("id", noteId)
     .select("*")
     .single();
