@@ -22,22 +22,29 @@ function accessoryEmoji(id: string | null | undefined): string | null {
   return ACCESSORIES.find((a) => a.id === id)?.emoji ?? null;
 }
 
+// Module-level cache so switching pet states (which changes the slot) reuses
+// already-fetched JSON instead of re-fetching every flip/remount (F-025).
+const lottieCache = new Map<string, object>();
+
 /** Fetch a Lottie JSON for the current slot; null until/if present. */
 function useLottie(slot: string): object | null {
-  const [entry, setEntry] = useState<{ slot: string; data: object } | null>(null);
+  const [, bump] = useState(0);
   useEffect(() => {
+    if (lottieCache.has(slot)) return;
     let alive = true;
     fetch(`/lottie/pet/${slot}.json`)
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
-        if (alive && json) setEntry({ slot, data: json as object });
+        if (!json) return;
+        lottieCache.set(slot, json as object);
+        if (alive) bump((n) => n + 1);
       })
       .catch(() => {});
     return () => {
       alive = false;
     };
   }, [slot]);
-  return entry && entry.slot === slot ? entry.data : null;
+  return lottieCache.get(slot) ?? null;
 }
 
 const idleAnim: Record<Base, { y: number | number[]; rotate: number | number[] }> = {

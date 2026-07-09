@@ -44,6 +44,7 @@ export function RealtimeProvider({
   const [online, setOnline] = useState<Set<string>>(new Set());
   const [lastSeen, setLastSeen] = useState<Map<string, string>>(new Map());
   const prevPresenceRef = useRef<Record<string, { online_at: string }[]>>({});
+  const profileRefreshTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
@@ -88,7 +89,20 @@ export function RealtimeProvider({
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "profiles", filter: `couple_id=eq.${coupleId}` },
-          () => router.refresh(),
+          (payload) => {
+            // A profile change affects server-rendered layout data (partner
+            // name/avatar/theme), so it needs a router.refresh() rather than a
+            // query invalidation. But: (1) our OWN edits are already reflected
+            // optimistically + via the action's revalidatePath, so only the
+            // partner's changes need this; (2) debounce so a burst coalesces into
+            // one refresh instead of re-running every RSC repeatedly (F-023).
+            const changedId =
+              (payload.new as { id?: string })?.id ??
+              (payload.old as { id?: string })?.id;
+            if (changedId === userId) return;
+            if (profileRefreshTimer.current) clearTimeout(profileRefreshTimer.current);
+            profileRefreshTimer.current = setTimeout(() => router.refresh(), 300);
+          },
         )
         .on(
           "postgres_changes",
@@ -188,6 +202,7 @@ export function RealtimeProvider({
 
     return () => {
       cancelled = true;
+      if (profileRefreshTimer.current) clearTimeout(profileRefreshTimer.current);
       if (channel) supabase.removeChannel(channel);
     };
   }, [coupleId, userId, queryClient, router]);

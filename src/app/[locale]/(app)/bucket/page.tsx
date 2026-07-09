@@ -1,4 +1,9 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { getSession } from "@/lib/auth";
+import { makeServerQueryClient } from "@/lib/query/server";
+import { queryKeys } from "@/lib/query/keys";
+import { listBucket } from "@/lib/services/bucket";
 import { BucketList } from "@/components/features/bucket/bucket-list";
 
 export default async function BucketPage({
@@ -10,10 +15,19 @@ export default async function BucketPage({
   setRequestLocale(locale);
   const t = await getTranslations("bucket");
 
+  const { supabase } = await getSession();
+  const qc = makeServerQueryClient();
+  await qc.prefetchQuery({
+    queryKey: queryKeys.bucket(),
+    queryFn: () => listBucket(supabase),
+  });
+
   return (
-    <div className="flex flex-col gap-5">
-      <h1 className="px-1 pt-2 font-display text-3xl font-bold">{t("title")}</h1>
-      <BucketList />
-    </div>
+    <HydrationBoundary state={dehydrate(qc)}>
+      <div className="flex flex-col gap-5">
+        <h1 className="px-1 pt-2 font-display text-3xl font-bold">{t("title")}</h1>
+        <BucketList />
+      </div>
+    </HydrationBoundary>
   );
 }

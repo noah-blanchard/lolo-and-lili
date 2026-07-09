@@ -1,7 +1,7 @@
 /* Lolo & Lili service worker — dependency-free, Turbopack-safe.
  * Handles: offline shell caching, static asset SWR, and Web Push (P4). */
 
-const VERSION = "v2";
+const VERSION = "v3";
 const CACHE = `lolo-lili-${VERSION}`;
 const OFFLINE_URL = "/offline.html";
 const PRECACHE = [OFFLINE_URL, "/icon.svg", "/manifest.webmanifest"];
@@ -45,6 +45,8 @@ self.addEventListener("fetch", (event) => {
   if (
     url.pathname.startsWith("/_next/static/") ||
     url.pathname.startsWith("/icon") ||
+    url.pathname.startsWith("/lottie/") ||
+    url.pathname.startsWith("/sounds/") ||
     url.pathname === "/manifest.webmanifest"
   ) {
     event.respondWith(

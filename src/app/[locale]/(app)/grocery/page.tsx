@@ -1,4 +1,9 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { getSession } from "@/lib/auth";
+import { makeServerQueryClient } from "@/lib/query/server";
+import { queryKeys } from "@/lib/query/keys";
+import { listGrocery } from "@/lib/services/grocery";
 import { GroceryList } from "@/components/features/grocery/grocery-list";
 
 export default async function GroceryPage({
@@ -10,10 +15,19 @@ export default async function GroceryPage({
   setRequestLocale(locale);
   const t = await getTranslations("grocery");
 
+  const { supabase } = await getSession();
+  const qc = makeServerQueryClient();
+  await qc.prefetchQuery({
+    queryKey: queryKeys.grocery(),
+    queryFn: () => listGrocery(supabase),
+  });
+
   return (
-    <div className="flex flex-col gap-5">
-      <h1 className="px-1 pt-2 font-display text-3xl font-bold">{t("title")}</h1>
-      <GroceryList />
-    </div>
+    <HydrationBoundary state={dehydrate(qc)}>
+      <div className="flex flex-col gap-5">
+        <h1 className="px-1 pt-2 font-display text-3xl font-bold">{t("title")}</h1>
+        <GroceryList />
+      </div>
+    </HydrationBoundary>
   );
 }

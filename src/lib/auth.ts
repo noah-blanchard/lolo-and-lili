@@ -14,8 +14,12 @@ export const getSession = cache(async () => {
   return { supabase, user };
 });
 
-/** Current user's profile row (or null). */
-export async function getProfile(): Promise<Profile | null> {
+/**
+ * Current user's profile row (or null). Memoized per request like `getSession`
+ * so pages that also read the profile (e.g. the home page) don't re-query it
+ * after the layout already did (F-022).
+ */
+export const getProfile = cache(async (): Promise<Profile | null> => {
   const { supabase, user } = await getSession();
   if (!user) return null;
   const { data } = await supabase
@@ -24,4 +28,4 @@ export async function getProfile(): Promise<Profile | null> {
     .eq("id", user.id)
     .maybeSingle();
   return data;
-}
+});
