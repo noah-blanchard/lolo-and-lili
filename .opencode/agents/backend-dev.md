@@ -1,6 +1,7 @@
 ---
 description: Implements API routes, server actions, services, schemas, migrations, and notifications
 mode: subagent
+model: opencode/mimo-v2.5-free
 permission:
   read: allow
   edit: allow

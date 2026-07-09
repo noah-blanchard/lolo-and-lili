@@ -1,6 +1,7 @@
 ---
 description: Read-only codebase exploration, library research, and pattern discovery
 mode: subagent
+model: opencode/mimo-v2.5-free
 permission:
   read: allow
   edit: deny

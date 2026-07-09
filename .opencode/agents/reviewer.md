@@ -1,6 +1,7 @@
 ---
 description: Code review for conventions, security, performance, and correctness
 mode: subagent
+model: opencode/mimo-v2.5-free
 permission:
   read: allow
   edit: deny

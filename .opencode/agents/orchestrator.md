@@ -1,6 +1,7 @@
 ---
 description: Routes tasks to the right specialist, sequences work, collects results
 mode: primary
+model: opencode/mimo-v2.5-free
 permission:
   read: allow
   grep: allow

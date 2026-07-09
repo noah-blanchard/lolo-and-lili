@@ -1,6 +1,7 @@
 ---
 description: Builds React components, hooks, pages, animations, i18n, and styling
 mode: subagent
+model: opencode/mimo-v2.5-free
 permission:
   read: allow
   edit: allow
