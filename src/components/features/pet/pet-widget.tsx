@@ -9,6 +9,7 @@ import { reactionEmoji, type PetActionType } from "@/lib/pets";
 import { playSound, vibrate } from "@/lib/feedback";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/ui/spinner";
 import { PetAvatar } from "./pet-avatar";
 import { usePartnerCare } from "./use-pet-realtime";
 
@@ -86,18 +87,20 @@ export function PetWidget() {
           <button
             onClick={() => quick("feed")}
             disabled={care.isPending}
+            aria-busy={care.isPending || undefined}
             className="flex size-11 items-center justify-center rounded-cute bg-surface-muted text-xl disabled:opacity-40"
             aria-label={t("actions.feed")}
           >
-            🍚
+            {care.isPending ? <Spinner size="sm" /> : "🍚"}
           </button>
           <button
             onClick={() => quick("pet")}
             disabled={care.isPending}
+            aria-busy={care.isPending || undefined}
             className="flex size-11 items-center justify-center rounded-cute bg-surface-muted text-xl disabled:opacity-40"
             aria-label={t("actions.pet")}
           >
-            ❤️
+            {care.isPending ? <Spinner size="sm" /> : "❤️"}
           </button>
         </div>
       )}

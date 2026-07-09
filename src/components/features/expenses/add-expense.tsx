@@ -79,7 +79,7 @@ export function AddExpense() {
             ))}
           </div>
         </div>
-        <Button onClick={save} disabled={!valid || add.isPending} className="w-full">
+        <Button onClick={save} disabled={!valid} loading={add.isPending} className="w-full">
           {tc("save")}
         </Button>
       </div>

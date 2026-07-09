@@ -102,7 +102,7 @@ export function MealEditor({
           placeholder={t("notesPlaceholder")}
           className="w-full resize-none rounded-cute bg-surface-muted p-3 outline-none placeholder:text-muted/60"
         />
-        <Button onClick={save} disabled={!title.trim() || upsert.isPending} className="w-full">
+        <Button onClick={save} disabled={!title.trim()} loading={upsert.isPending} className="w-full">
           {tc("save")}
         </Button>
         {meal && (
@@ -130,7 +130,8 @@ export function MealEditor({
           <Button
             variant="secondary"
             onClick={pushIngredients}
-            disabled={!ingredients.trim() || addIng.isPending}
+            disabled={!ingredients.trim()}
+            loading={addIng.isPending}
             className="w-full"
           >
             {t("addIngredients")}

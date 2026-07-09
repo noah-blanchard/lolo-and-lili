@@ -12,7 +12,6 @@ const EMOJIS = ["🎟️", "☕", "🍫", "🎬", "💆", "🛁", "🍳", "🧹"
 
 export function MintCoupon() {
   const t = useTranslations("coupons");
-  const tc = useTranslations("common");
   const mint = useMintCoupon();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -76,8 +75,8 @@ export function MintCoupon() {
             className="h-11 w-24 rounded-cute bg-surface-muted px-3 text-right outline-none"
           />
         </label>
-        <Button onClick={save} disabled={!title.trim() || mint.isPending} className="w-full">
-          {mint.isPending ? tc("loading") : t("mint")}
+        <Button onClick={save} disabled={!title.trim()} loading={mint.isPending} className="w-full">
+          {t("mint")}
         </Button>
       </div>
     </Sheet>

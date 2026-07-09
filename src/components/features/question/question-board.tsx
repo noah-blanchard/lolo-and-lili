@@ -92,7 +92,8 @@ export function QuestionBoard() {
           />
           <Button
             onClick={send}
-            disabled={!draft.trim() || submit.isPending}
+            disabled={!draft.trim()}
+            loading={submit.isPending}
             className="w-full"
           >
             {t("submit")}

@@ -1,9 +1,10 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type ReactNode, forwardRef } from "react";
 import { motion, type HTMLMotionProps } from "motion/react";
 import { cn } from "@/lib/utils";
 import { springBouncy, tapScale } from "@/lib/motion";
+import { Spinner } from "./spinner";
 
 type Variant = "primary" | "secondary" | "accent" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg" | "icon";
@@ -28,26 +29,55 @@ const sizes: Record<Size, string> = {
 export interface ButtonProps extends HTMLMotionProps<"button"> {
   variant?: Variant;
   size?: Size;
+  loading?: boolean;
+  children?: ReactNode;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", disabled, ...props }, ref) => {
+  (
+    {
+      className,
+      variant = "primary",
+      size = "md",
+      disabled,
+      loading = false,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const isDisabled = disabled || loading;
+
     return (
       <motion.button
         ref={ref}
-        disabled={disabled}
-        whileTap={disabled ? undefined : tapScale}
+        disabled={isDisabled}
+        aria-busy={loading || undefined}
+        whileTap={isDisabled ? undefined : tapScale}
         transition={springBouncy}
         className={cn(
-          "inline-flex select-none items-center justify-center rounded-cute font-display font-semibold",
+          "relative inline-flex select-none items-center justify-center rounded-cute font-display font-semibold",
           "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/40",
           "disabled:pointer-events-none disabled:opacity-50",
+          "aria-busy:pointer-events-none",
           variants[variant],
           sizes[size],
           className,
         )}
         {...props}
-      />
+      >
+        <span
+          className={cn("inline-flex items-center gap-2", loading && "invisible")}
+          aria-hidden={loading || undefined}
+        >
+          {children}
+        </span>
+        {loading && (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <Spinner size="sm" />
+          </span>
+        )}
+      </motion.button>
     );
   },
 );

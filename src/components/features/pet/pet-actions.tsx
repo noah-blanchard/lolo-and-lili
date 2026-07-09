@@ -9,6 +9,7 @@ import { celebrate } from "@/lib/confetti";
 import { playSound, vibrate } from "@/lib/feedback";
 import { tapScale, springBouncy } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 /** The six actions surfaced in the grid (cuddle/callback live elsewhere). */
 type CareActionType = "feed" | "pet" | "play" | "groom" | "gift" | "heal";
@@ -87,7 +88,11 @@ export function PetActions({
               "disabled:opacity-40",
             )}
           >
-            <span className="text-2xl">{def.emoji}</span>
+            {care.isPending ? (
+              <Spinner size="sm" />
+            ) : (
+              <span className="text-2xl">{def.emoji}</span>
+            )}
             <span className="text-[0.7rem] font-semibold text-muted">
               {t(`actions.${def.type}`)}
             </span>

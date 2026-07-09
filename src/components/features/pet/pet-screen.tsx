@@ -109,7 +109,7 @@ export function PetScreen() {
         <Card className="flex flex-col items-center gap-3 text-center">
           <CardTitle>{t("awayTitle")}</CardTitle>
           <CardDescription>{t("awaySubtitle")}</CardDescription>
-          <Button onClick={callBack} disabled={care.isPending} className="w-full">
+          <Button onClick={callBack} loading={care.isPending} className="w-full">
             {t("callBack")}
           </Button>
         </Card>
@@ -134,7 +134,8 @@ export function PetScreen() {
             </div>
             <Button
               onClick={cuddle}
-              disabled={care.isPending || petData.cuddledToday}
+              disabled={petData.cuddledToday}
+              loading={care.isPending}
               variant="secondary"
               size="icon"
               aria-label={t("cuddleTitle")}

@@ -85,8 +85,8 @@ export function AddDate() {
             </button>
           ))}
         </div>
-        <Button onClick={save} disabled={!title.trim() || !date || add.isPending} className="w-full">
-          {add.isPending ? tc("loading") : tc("save")}
+        <Button onClick={save} disabled={!title.trim() || !date} loading={add.isPending} className="w-full">
+          {tc("save")}
         </Button>
       </div>
     </Sheet>

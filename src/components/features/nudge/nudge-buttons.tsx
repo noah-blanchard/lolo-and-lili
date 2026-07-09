@@ -12,6 +12,7 @@ import { Card, CardTitle, CardDescription } from "@/components/ui/card";
 import { vibrate } from "@/lib/feedback";
 import { tapScale, springBouncy } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 /** Quick one-tap affection pings ("I miss you", "I love you", …) with cooldown. */
 export function NudgeButtons() {
@@ -67,13 +68,14 @@ export function NudgeButtons() {
               whileTap={onCooldown ? undefined : tapScale}
               transition={springBouncy}
               disabled={onCooldown || send.isPending}
+              aria-busy={send.isPending || undefined}
               onClick={() => fire(kind)}
               className={cn(
                 "flex flex-col items-center gap-1 rounded-cute bg-surface-muted py-3",
                 "disabled:opacity-40",
               )}
             >
-              <span className="text-2xl">{NUDGE_EMOJI[kind]}</span>
+              {send.isPending ? <Spinner size="sm" /> : <span className="text-2xl">{NUDGE_EMOJI[kind]}</span>}
               <span className="text-[0.7rem] font-semibold text-muted">
                 {t(`kinds.${kind}`)}
               </span>

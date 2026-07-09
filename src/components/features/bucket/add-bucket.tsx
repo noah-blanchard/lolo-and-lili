@@ -55,8 +55,8 @@ export function AddBucket() {
           placeholder={t("notePlaceholder")}
           className="w-full resize-none rounded-cute bg-surface-muted p-3 outline-none placeholder:text-muted/60"
         />
-        <Button onClick={save} disabled={!title.trim() || add.isPending} className="w-full">
-          {add.isPending ? tc("loading") : tc("save")}
+        <Button onClick={save} disabled={!title.trim()} loading={add.isPending} className="w-full">
+          {tc("save")}
         </Button>
       </div>
     </Sheet>

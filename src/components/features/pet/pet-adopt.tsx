@@ -14,7 +14,6 @@ import { cn } from "@/lib/utils";
 
 export function PetAdopt() {
   const t = useTranslations("pet");
-  const tc = useTranslations("common");
   const adopt = useAdoptPet();
 
   const [name, setName] = useState("");
@@ -72,10 +71,11 @@ export function PetAdopt() {
 
       <Button
         onClick={submit}
-        disabled={!name.trim() || adopt.isPending}
+        disabled={!name.trim()}
+        loading={adopt.isPending}
         className="w-full"
       >
-        {adopt.isPending ? tc("loading") : t("adoptCta")}
+        {t("adoptCta")}
       </Button>
     </Card>
   );

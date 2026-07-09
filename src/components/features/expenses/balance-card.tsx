@@ -46,7 +46,7 @@ export function BalanceCard({ balance }: { balance: Balance | null }) {
           {formatMoney(balance.amountCents, balance.currency, locale)}
         </p>
       </div>
-      <Button onClick={onSettle} disabled={settle.isPending} className="w-full">
+      <Button onClick={onSettle} loading={settle.isPending} className="w-full">
         {t("settleUp")}
       </Button>
     </Card>

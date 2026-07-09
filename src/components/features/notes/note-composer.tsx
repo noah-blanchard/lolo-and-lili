@@ -54,7 +54,7 @@ export function NoteComposer({ onTyping }: { onTyping?: (t: boolean) => void }) 
             />
           ))}
         </div>
-        <Button size="sm" onClick={send} disabled={!body.trim() || add.isPending}>
+        <Button size="sm" onClick={send} disabled={!body.trim()} loading={add.isPending}>
           {t("send")}
         </Button>
       </div>

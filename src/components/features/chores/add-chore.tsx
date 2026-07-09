@@ -113,7 +113,7 @@ export function AddChore() {
           </div>
         </div>
 
-        <Button onClick={submit} disabled={!title.trim()} className="w-full">
+        <Button onClick={submit} disabled={!title.trim()} loading={create.isPending} className="w-full">
           {t("save")}
         </Button>
       </div>

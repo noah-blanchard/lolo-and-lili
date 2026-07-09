@@ -69,7 +69,7 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
           <Button
             size="sm"
             onClick={onRedeem}
-            disabled={redeem.isPending}
+            loading={redeem.isPending}
             className="ml-auto"
           >
             {t("redeem")}
