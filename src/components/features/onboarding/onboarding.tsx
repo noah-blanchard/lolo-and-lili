@@ -26,7 +26,11 @@ export function Onboarding() {
       if (isOk(res)) {
         router.refresh();
       } else {
-        toast.error(res.error.message || tc("error"));
+        const message =
+          res.error.code === "CONFLICT"
+            ? t("joinFull")
+            : res.error.message || tc("error");
+        toast.error(message);
       }
     });
   }

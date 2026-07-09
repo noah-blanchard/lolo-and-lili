@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 import { accentHex } from "@/lib/avatars";
@@ -23,16 +23,19 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   const [flipped, setFlipped] = useState(false);
   const [archiving, setArchiving] = useState(false);
 
-  // Keep a reference to the note we're currently animating so the exit
-  // animation still has content even after the parent sets note=null.
-  const noteRef = useRef(note);
-  if (note) noteRef.current = note;
-  const renderedNote = note ?? noteRef.current;
-
-  useEffect(() => {
+  // Keep the note we're currently animating so the exit animation still has
+  // content even after the parent sets note=null (see docs/UI_ANIMATION_GOTCHAS.md).
+  // Storing it in state and adjusting during render (React's supported pattern for
+  // deriving state from props) keeps this lint-clean while preserving exit content.
+  const [renderedNote, setRenderedNote] = useState(note);
+  const [prevNoteId, setPrevNoteId] = useState(note?.id ?? null);
+  const currentNoteId = note?.id ?? null;
+  if (currentNoteId !== prevNoteId) {
+    setPrevNoteId(currentNoteId);
     setFlipped(false);
     setArchiving(false);
-  }, [note?.id]);
+    if (note) setRenderedNote(note);
+  }
 
   if (!renderedNote) return null;
 

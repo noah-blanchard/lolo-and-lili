@@ -47,6 +47,12 @@ export function defineAction<
       return ok(data);
     } catch (error) {
       if (error instanceof ApiError) {
+        // INTERNAL errors often wrap Postgres/PostgREST strings — log them
+        // server-side but return the generic message with no leaked details.
+        if (error.code === ErrorCode.INTERNAL) {
+          console.error("[action] internal error:", error.message, error.details);
+          return err(ErrorCode.INTERNAL, "Something went wrong");
+        }
         return err(error.code, error.message, error.details);
       }
       console.error("[action] unhandled error:", error);

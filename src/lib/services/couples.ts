@@ -63,6 +63,18 @@ export async function joinCouple(
   if (error) throw new ApiError(ErrorCode.INTERNAL, error.message);
   if (!couple) throw fail.notFound("Invite code not found");
 
+  // A couple is exactly two people. Count current members with the admin client
+  // (RLS would hide a couple the caller doesn't yet belong to) and reject a third
+  // joiner unless they're already linked to this couple (idempotent re-join).
+  const { data: members } = await admin
+    .from("profiles")
+    .select("id")
+    .eq("couple_id", couple.id);
+  const memberIds = (members ?? []).map((m) => m.id);
+  if (memberIds.length >= 2 && !memberIds.includes(user.id)) {
+    throw fail.conflict("This couple is already full");
+  }
+
   await linkProfileToCouple(supabase, user.id, couple.id);
   return couple;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { toast } from "sonner";
@@ -21,9 +21,14 @@ export function MoodDrawer({ open, onOpenChange }: MoodDrawerProps) {
   const { mutate: addMood } = useAddMood();
   const [selecting, setSelecting] = useState(false);
 
-  useEffect(() => {
+  // Reset the submitting guard whenever the drawer closes. Adjusting state during
+  // render (tracking the previous `open`) is React's supported alternative to a
+  // setState-in-effect here.
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
     if (!open) setSelecting(false);
-  }, [open]);
+  }
 
   const handleSelectMood = (key: MoodKey) => {
     if (selecting) return;

@@ -282,7 +282,8 @@
     "or": "— ou —",
     "joinTitle": "Rejoindre mon amour",
     "joinPlaceholder": "Code d'invitation",
-    "joinCta": "Nous rejoindre"
+    "joinCta": "Nous rejoindre",
+    "joinFull": "Cet espace est déjà complet — il est réservé à deux 💕"
   },
   "profile": {
     "editProfile": "Mon profil",

@@ -19,7 +19,6 @@ type State = "free" | "busy" | "sieste";
 
 export function StatusCard() {
   const t = useTranslations("status");
-  const locale = useLocale();
   const { me, partner } = useCouple();
   const online = useOnlineUsers();
   const lastSeenMap = useLastSeen();

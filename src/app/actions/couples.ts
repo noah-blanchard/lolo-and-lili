@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { defineAction } from "@/lib/api/define-action";
+import { rateLimit } from "@/lib/api/rate-limit";
 import { renameCoupleSchema } from "@/lib/schemas/profile";
 import {
   createCouple as createCoupleSvc,
@@ -26,6 +27,8 @@ const joinSchema = z.object({
 export const joinCoupleAction = defineAction(
   joinSchema,
   async ({ input, supabase, user }) => {
+    // Throttle invite-code guessing: 5 join attempts per hour per user.
+    rateLimit(user.id, "couple-join", { limit: 5, windowMs: 60 * 60 * 1000 });
     const couple = await joinCoupleSvc(supabase, user, input.inviteCode);
     revalidatePath("/", "layout");
     return couple;

@@ -26,6 +26,16 @@ export function jsonError(error: ApiErrorShape) {
  */
 export function toErrorResponse(error: unknown) {
   if (error instanceof ApiError) {
+    // INTERNAL errors frequently wrap Postgres/PostgREST strings (constraint
+    // names, column names, internals). Log them server-side but return the
+    // generic message with no details so nothing leaks to the client.
+    if (error.code === ErrorCode.INTERNAL) {
+      console.error("[api] internal error:", error.message, error.details);
+      return jsonError({
+        code: ErrorCode.INTERNAL,
+        message: "Something went wrong",
+      });
+    }
     return jsonError({
       code: error.code,
       message: error.message,

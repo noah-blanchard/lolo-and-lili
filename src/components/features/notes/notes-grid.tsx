@@ -2,8 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
-import { useCouple } from "@/components/providers/couple-provider";
-import { useDeleteLoveNote, useLoveNotes } from "@/hooks/use-love-notes";
+import { useLoveNotes } from "@/hooks/use-love-notes";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { staggerContainer, popIn } from "@/lib/motion";
@@ -19,7 +18,6 @@ interface NotesGridProps {
 export function NotesGrid({ filter, onSelect }: NotesGridProps) {
   const t = useTranslations("notes");
   const { data: notes, isLoading } = useLoveNotes();
-  const del = useDeleteLoveNote();
 
   if (isLoading) {
     return (

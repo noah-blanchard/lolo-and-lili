@@ -36,9 +36,8 @@ export function BottomNav() {
   return (
     <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center pb-safe">
       <div className="pointer-events-auto m-3 flex w-full max-w-md items-stretch justify-around gap-1 rounded-cute border border-border bg-surface/90 p-1.5 shadow-cute backdrop-blur-lg">
-        {items.map(({ href, key, icon: Icon, match }, index) => {
+        {items.map(({ href, key, icon: Icon, match }) => {
           const active = match(pathname);
-          const isCenter = index === 2;
           return (
             <Link
               key={key}

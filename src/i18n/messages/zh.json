@@ -282,7 +282,8 @@
     "or": "— 或 —",
     "joinTitle": "加入另一半",
     "joinPlaceholder": "邀请码",
-    "joinCta": "加入"
+    "joinCta": "加入",
+    "joinFull": "这个空间已经满了——只属于你们俩 💕"
   },
   "profile": {
     "editProfile": "我的资料",
