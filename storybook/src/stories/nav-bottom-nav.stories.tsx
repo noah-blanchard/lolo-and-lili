@@ -10,7 +10,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const HomeActive: Story = {
+export const HomeCenterActive: Story = {
   render: () => {
     setMockPathname("/");
     return <BottomNav />;
@@ -34,6 +34,13 @@ export const NousActive: Story = {
 export const ProfileActive: Story = {
   render: () => {
     setMockPathname("/profile");
+    return <BottomNav />;
+  },
+};
+
+export const PetActive: Story = {
+  render: () => {
+    setMockPathname("/pet");
     return <BottomNav />;
   },
 };

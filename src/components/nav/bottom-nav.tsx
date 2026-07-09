@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, House, Heart, Dog, UserRound } from "lucide-react";
+import { Star, House, Heart, Dog, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -23,10 +23,10 @@ const inGroup = (pathname: string, routes: string[]) =>
   routes.some((r) => pathname === r || pathname.startsWith(`${r}/`));
 
 const items = [
-  { href: "/", key: "home", icon: Home, match: (p: string) => p === "/" },
   { href: "/maison", key: "maison", icon: House, match: (p: string) => inGroup(p, MAISON_ROUTES) },
-  { href: "/pet", key: "pet", icon: Dog, match: (p: string) => p === "/pet" || p.startsWith("/pet/") },
   { href: "/nous", key: "nous", icon: Heart, match: (p: string) => inGroup(p, NOUS_ROUTES) },
+  { href: "/", key: "home", icon: Star, match: (p: string) => p === "/" },
+  { href: "/pet", key: "pet", icon: Dog, match: (p: string) => p === "/pet" || p.startsWith("/pet/") },
   { href: "/profile", key: "profile", icon: UserRound, match: (p: string) => p.startsWith("/profile") },
 ] as const;
 
@@ -37,13 +37,17 @@ export function BottomNav() {
   return (
     <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center pb-safe">
       <div className="pointer-events-auto m-3 flex w-full max-w-md items-stretch justify-around gap-1 rounded-cute border border-border bg-surface/90 p-1.5 shadow-cute backdrop-blur-lg">
-        {items.map(({ href, key, icon: Icon, match }) => {
+        {items.map(({ href, key, icon: Icon, match }, index) => {
           const active = match(pathname);
+          const isCenter = index === 2;
           return (
             <Link
               key={key}
               href={href}
-              className="relative flex flex-1 flex-col items-center gap-0.5 rounded-[1.25rem] px-2 py-2"
+              className={cn(
+                "relative flex flex-1 flex-col items-center gap-0.5 rounded-[1.25rem] px-2",
+                isCenter ? "py-3" : "py-2",
+              )}
             >
               {active && (
                 <motion.span
@@ -54,14 +58,16 @@ export function BottomNav() {
               )}
               <Icon
                 className={cn(
-                  "relative z-10 size-6 transition-colors",
+                  "relative z-10 transition-colors",
+                  isCenter ? "size-8" : "size-6",
                   active ? "text-primary" : "text-muted",
                 )}
                 strokeWidth={active ? 2.5 : 2}
               />
               <span
                 className={cn(
-                  "relative z-10 text-[0.65rem] font-semibold transition-colors",
+                  "relative z-10 font-semibold transition-colors",
+                  isCenter ? "text-[0.7rem]" : "text-[0.65rem]",
                   active ? "text-primary" : "text-muted",
                 )}
               >
