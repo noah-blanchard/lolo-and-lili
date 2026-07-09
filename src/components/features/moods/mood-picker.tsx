@@ -22,7 +22,7 @@ export function MoodPicker() {
   return (
     <Card className="flex flex-col gap-4">
       <CardTitle>{t("question")}</CardTitle>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         {MOODS.map(({ key, emoji }) => (
           <motion.button
             key={key}
