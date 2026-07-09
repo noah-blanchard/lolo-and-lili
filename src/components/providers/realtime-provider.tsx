@@ -47,6 +47,7 @@ export function RealtimeProvider({
 
   useEffect(() => {
     const supabase = createClient();
+    let cancelled = false;
     let channel: RealtimeChannel | undefined;
 
     const invalidate = (key: readonly unknown[]) =>
@@ -57,6 +58,7 @@ export function RealtimeProvider({
       const {
         data: { session },
       } = await supabase.auth.getSession();
+      if (cancelled) return;
       if (session) supabase.realtime.setAuth(session.access_token);
 
       channel = supabase
@@ -86,8 +88,6 @@ export function RealtimeProvider({
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "profiles", filter: `couple_id=eq.${coupleId}` },
-          // Identity (name/emoji/color) lives in the server-rendered layout,
-          // not a query — refresh so a partner's edits appear live.
           () => router.refresh(),
         )
         .on(
@@ -165,7 +165,6 @@ export function RealtimeProvider({
           const nextIds = new Set(Object.keys(raw));
           const prevIds = new Set(Object.keys(prevPresenceRef.current));
 
-          // Capture last-seen timestamp for users who just went offline
           setLastSeen((prev) => {
             const updated = new Map(prev);
             for (const id of prevIds) {
@@ -181,13 +180,14 @@ export function RealtimeProvider({
           setOnline(nextIds);
         })
         .subscribe((status) => {
-          if (status === "SUBSCRIBED") {
+          if (status === "SUBSCRIBED" && !cancelled) {
             channel?.track({ online_at: new Date().toISOString() });
           }
         });
     })();
 
     return () => {
+      cancelled = true;
       if (channel) supabase.removeChannel(channel);
     };
   }, [coupleId, userId, queryClient, router]);
