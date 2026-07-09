@@ -48,7 +48,7 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
   function handleArchive() {
     if (archiving || !renderedNote) return;
     setArchiving(true);
-    vibrate(20);
+    vibrate(10);
     openNote.mutate(
       { noteId: renderedNote.id, input: { opened_at: new Date().toISOString() } },
       { onSettled: () => onClose() },
@@ -69,7 +69,7 @@ export function NoteLightbox({ note, isOpen, onClose }: NoteLightboxProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.9, ease: "easeInOut" }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
           onClick={handleOverlayClick}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black p-6"
         >

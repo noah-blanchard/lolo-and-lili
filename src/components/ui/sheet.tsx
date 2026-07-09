@@ -31,13 +31,13 @@ export function Sheet({
         <Drawer.Overlay className="fixed inset-0 z-40 bg-black/40" />
         <Drawer.Content
           className={cn(
-            "fixed inset-x-0 bottom-0 z-50 mt-24 flex flex-col rounded-t-[2rem] bg-background",
+            "fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[80vh] flex-col rounded-t-[2rem] bg-background",
             "pb-safe outline-none",
             className,
           )}
         >
-          <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-border" />
-          <div className="flex flex-col gap-1 p-6">
+          <div className="mx-auto mt-3 h-1.5 w-12 shrink-0 rounded-full bg-border" />
+          <div className="flex flex-1 flex-col gap-1 overflow-y-auto overscroll-contain p-6">
             {title ? (
               <Drawer.Title className="font-display text-xl font-semibold">
                 {title}
