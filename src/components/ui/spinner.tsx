@@ -3,7 +3,7 @@
 import { type HTMLAttributes } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { springBouncy } from "@/lib/motion";
+import { spinLinear } from "@/lib/motion";
 
 type SpinnerSize = "sm" | "md" | "lg";
 
@@ -38,7 +38,7 @@ export const Spinner = ({ size = "md", className, ...props }: SpinnerProps) => {
           borderRadius: "9999px",
         }}
         animate={{ rotate: 360 }}
-        transition={{ ...springBouncy, repeat: Infinity }}
+        transition={spinLinear}
       />
     </div>
   );

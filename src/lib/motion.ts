@@ -15,6 +15,14 @@ export const springSoft: Transition = {
   damping: 26,
 };
 
+/** Steady infinite rotation for spinners. */
+export const spinLinear: Transition = {
+  type: "tween",
+  duration: 0.8,
+  ease: "linear",
+  repeat: Infinity,
+};
+
 /** Tap/press feedback for interactive elements. */
 export const tapScale = { scale: 0.94 } as const;
 export const hoverScale = { scale: 1.03 } as const;

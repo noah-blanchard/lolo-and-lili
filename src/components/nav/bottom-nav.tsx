@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, House, Heart, Dog, UserRound } from "lucide-react";
+import { HeartHandshake, House, Heart, Dog, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -24,7 +24,7 @@ const inGroup = (pathname: string, routes: string[]) =>
 const items = [
   { href: "/maison", key: "maison", icon: House, match: (p: string) => inGroup(p, MAISON_ROUTES) },
   { href: "/nous", key: "nous", icon: Heart, match: (p: string) => inGroup(p, NOUS_ROUTES) },
-  { href: "/", key: "home", icon: Star, match: (p: string) => p === "/" },
+  { href: "/", key: "home", icon: HeartHandshake, match: (p: string) => p === "/" },
   { href: "/pet", key: "pet", icon: Dog, match: (p: string) => p === "/pet" || p.startsWith("/pet/") },
   { href: "/profile", key: "profile", icon: UserRound, match: (p: string) => p.startsWith("/profile") },
 ] as const;
@@ -45,20 +45,20 @@ export function BottomNav() {
               href={href}
               className={cn(
                 "relative flex flex-1 flex-col items-center gap-0.5 rounded-[1.25rem] px-2",
-                isCenter ? "py-3" : "py-2",
+                "py-2",
               )}
             >
               {active && (
                 <motion.span
                   layoutId="nav-active"
                   transition={springBouncy}
-                  className="absolute inset-0 rounded-[1.25rem] bg-primary/15"
+                  className="absolute inset-0 rounded-2xl bg-primary/15"
                 />
               )}
               <Icon
                 className={cn(
                   "relative z-10 transition-colors",
-                  isCenter ? "size-8" : "size-6",
+                  "size-6",
                   active ? "text-primary" : "text-muted",
                 )}
                 strokeWidth={active ? 2.5 : 2}
@@ -66,7 +66,7 @@ export function BottomNav() {
               <span
                 className={cn(
                   "relative z-10 font-semibold transition-colors",
-                  isCenter ? "text-[0.7rem]" : "text-[0.65rem]",
+                  "text-[0.65rem]",
                   active ? "text-primary" : "text-muted",
                 )}
               >
