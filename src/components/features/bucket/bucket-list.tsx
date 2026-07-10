@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useBucket } from "@/hooks/use-bucket";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -34,21 +34,25 @@ export function BucketList() {
         <EmptyState emoji="🪣" title={t("empty")} description={t("emptyHint")} />
       ) : (
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3">
-          {todo.map((i) => (
-            <motion.div key={i.id} variants={popIn}>
-              <BucketItem item={i} />
-            </motion.div>
-          ))}
+          <AnimatePresence initial={false} mode="popLayout">
+            {todo.map((i) => (
+              <motion.div key={i.id} variants={popIn} exit="exit" layout>
+                <BucketItem item={i} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
           {done.length > 0 && (
             <>
               <h2 className="px-1 pt-2 text-sm font-semibold text-muted">
                 {t("doneTitle")}
               </h2>
-              {done.map((i) => (
-                <motion.div key={i.id} variants={popIn}>
-                  <BucketItem item={i} />
-                </motion.div>
-              ))}
+              <AnimatePresence initial={false} mode="popLayout">
+                {done.map((i) => (
+                  <motion.div key={i.id} variants={popIn} exit="exit" layout>
+                    <BucketItem item={i} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </>
           )}
         </motion.div>

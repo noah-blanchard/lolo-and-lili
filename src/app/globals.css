@@ -267,4 +267,10 @@
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
   filter: drop-shadow(0 6px 14px rgb(74 63 68 / 0.12));
+  /* Isolate the expensive mask + drop-shadow paint: `contain` stops a coupon
+   * repaint from invalidating ancestors. Critical because drop-shadow over a
+   * composed mask is one of the costliest paints in CSS — without containment
+   * (and previously with a per-frame `layout` animation on this node) it janked
+   * the whole app while the list mounted/reordered. */
+  contain: layout paint;
 }

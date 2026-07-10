@@ -34,10 +34,7 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
   }
 
   return (
-    <motion.div
-      layout
-      className="coupon-ticket relative bg-surface px-5 py-4"
-    >
+    <div className="coupon-ticket relative bg-surface px-5 py-4">
       <div className="flex h-16 items-center gap-2">
         <span className="text-3xl">{coupon.emoji}</span>
         <p className="flex-1 line-clamp-1 font-display font-semibold leading-tight">
@@ -89,6 +86,6 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
           </span>
         </motion.div>
       )}
-    </motion.div>
+    </div>
   );
 }

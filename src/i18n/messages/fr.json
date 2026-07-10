@@ -298,6 +298,8 @@
     "language": "Langue",
     "inviteCode": "Code d'invitation",
     "inviteHint": "Partage ce code avec ton amour 💞",
+    "motion": "Animations",
+    "motionHint": "Forcer les animations complètes, même si ton téléphone demande de les réduire ✨",
     "signOut": "Se déconnecter"
   },
   "hub": {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { celebrate } from "@/lib/confetti";
 import { useClearChecked, useGrocery } from "@/hooks/use-grocery";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -39,11 +39,13 @@ export function GroceryList() {
         <EmptyState emoji="🛒" title={t("empty")} description={t("emptyHint")} />
       ) : (
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3">
-          {unchecked.map((i) => (
-            <motion.div key={i.id} variants={popIn}>
-              <GroceryItem item={i} />
-            </motion.div>
-          ))}
+          <AnimatePresence initial={false} mode="popLayout">
+            {unchecked.map((i) => (
+              <motion.div key={i.id} variants={popIn} exit="exit" layout>
+                <GroceryItem item={i} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
           {checked.length > 0 && (
             <>
               <div className="flex items-center justify-between px-1 pt-2">
@@ -56,11 +58,13 @@ export function GroceryList() {
                   {t("clear")}
                 </button>
               </div>
-              {checked.map((i) => (
-                <motion.div key={i.id} variants={popIn}>
-                  <GroceryItem item={i} />
-                </motion.div>
-              ))}
+              <AnimatePresence initial={false} mode="popLayout">
+                {checked.map((i) => (
+                  <motion.div key={i.id} variants={popIn} exit="exit" layout>
+                    <GroceryItem item={i} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </>
           )}
         </motion.div>

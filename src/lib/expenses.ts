@@ -51,6 +51,40 @@ export function computeBalance(
     : { debtorId: a, creditorId: b, amountCents: -diff, currency };
 }
 
+/**
+ * Incrementally adjust the 50/50 balance when a single expense is added
+ * (`sign = 1`) or removed (`sign = -1`), without needing the full settlement
+ * history (which the client cache doesn't hold). Used for optimistic updates;
+ * the authoritative value reconciles on the next refetch. `meNet` is what the
+ * partner owes me (positive) or I owe the partner (negative).
+ */
+export function adjustBalance(
+  current: Balance | null,
+  meId: string,
+  partnerId: string,
+  payerId: string | null,
+  amountCents: number,
+  currency: string,
+  sign: 1 | -1,
+): Balance | null {
+  let meNet = 0;
+  let cur = currency;
+  if (current) {
+    meNet = current.creditorId === meId ? current.amountCents : -current.amountCents;
+    cur = current.currency;
+  }
+  const half = amountCents / 2;
+  // The payer is owed `half` by the other member.
+  const delta = payerId === meId ? half : -half;
+  meNet += sign * delta;
+
+  const rounded = Math.round(meNet);
+  if (Math.abs(rounded) < 1) return null;
+  return rounded > 0
+    ? { debtorId: partnerId, creditorId: meId, amountCents: rounded, currency: cur }
+    : { debtorId: meId, creditorId: partnerId, amountCents: -rounded, currency: cur };
+}
+
 export function formatMoney(cents: number, currency: string, locale: string): string {
   return (cents / 100).toLocaleString(locale === "zh" ? "zh-CN" : "fr-FR", {
     style: "currency",

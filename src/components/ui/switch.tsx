@@ -1,6 +1,8 @@
 "use client";
 
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { springBouncy } from "@/lib/motion";
 
 /** A cute pill toggle. Controlled via `checked` / `onChange`. */
 export function Switch({
@@ -29,11 +31,10 @@ export function Switch({
         checked ? "bg-primary" : "bg-surface-muted",
       )}
     >
-      <span
-        className={cn(
-          "absolute left-1 top-1 size-5 rounded-full bg-white shadow-soft transition-transform",
-          checked ? "translate-x-5" : "translate-x-0",
-        )}
+      <motion.span
+        className="absolute left-1 top-1 size-5 rounded-full bg-white shadow-soft"
+        animate={{ x: checked ? 20 : 0 }}
+        transition={springBouncy}
       />
     </button>
   );

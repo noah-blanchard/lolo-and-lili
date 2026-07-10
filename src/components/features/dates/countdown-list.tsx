@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { daysUntil, nextOccurrence } from "@/lib/countdowns";
 import { useSpecialDates } from "@/hooks/use-special-dates";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -34,11 +34,13 @@ export function CountdownList() {
         <EmptyState emoji="🗓️" title={t("empty")} description={t("emptyHint")} />
       ) : (
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3">
-          {items.map(({ item, days }) => (
-            <motion.div key={item.id} variants={popIn}>
-              <CountdownCard item={item} days={days} />
-            </motion.div>
-          ))}
+          <AnimatePresence initial={false} mode="popLayout">
+            {items.map(({ item, days }) => (
+              <motion.div key={item.id} variants={popIn} exit="exit" layout>
+                <CountdownCard item={item} days={days} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </motion.div>
       )}
     </div>

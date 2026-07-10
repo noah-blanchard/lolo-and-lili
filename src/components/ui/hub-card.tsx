@@ -1,6 +1,12 @@
+"use client";
+
 import type { LucideIcon } from "lucide-react";
+import { motion } from "motion/react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { hoverScale, springBouncy, tapScale } from "@/lib/motion";
+
+const MotionLink = motion.create(Link);
 
 /** A tappable grid tile linking to a feature, used by the Maison/Nous hubs. */
 export function HubCard({
@@ -17,10 +23,13 @@ export function HubCard({
   className?: string;
 }) {
   return (
-    <Link
+    <MotionLink
       href={href}
+      whileTap={tapScale}
+      whileHover={hoverScale}
+      transition={springBouncy}
       className={cn(
-        "flex flex-col gap-2 rounded-cute bg-surface p-4 shadow-soft transition-transform active:scale-95",
+        "flex flex-col gap-2 rounded-cute bg-surface p-4 shadow-soft",
         className,
       )}
     >
@@ -31,6 +40,6 @@ export function HubCard({
       {description && (
         <span className="text-xs text-muted leading-snug">{description}</span>
       )}
-    </Link>
+    </MotionLink>
   );
 }

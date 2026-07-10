@@ -1,11 +1,14 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
+import { motion } from "motion/react";
 import { toast } from "sonner";
-import { celebrate } from "@/lib/confetti";
+import { celebrateBig } from "@/lib/confetti";
 import { formatMoney, type Balance } from "@/lib/expenses";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { AnimatedNumber } from "@/components/ui/animated-number";
+import { celebratePop } from "@/lib/motion";
 import { useCouple } from "@/components/providers/couple-provider";
 import { useSettleUp } from "@/hooks/use-expenses";
 
@@ -22,7 +25,7 @@ export function BalanceCard({ balance }: { balance: Balance | null }) {
   async function onSettle() {
     try {
       await settle.mutateAsync();
-      celebrate();
+      celebrateBig();
       toast.success(t("settled"));
     } catch {
       toast.error(tc("error"));
@@ -31,10 +34,12 @@ export function BalanceCard({ balance }: { balance: Balance | null }) {
 
   if (!balance) {
     return (
-      <Card className="flex flex-col items-center gap-1 bg-mint/15 py-6 text-center">
-        <span className="text-3xl">🤝</span>
-        <p className="font-display font-semibold">{t("even")}</p>
-      </Card>
+      <motion.div variants={celebratePop} initial="hidden" animate="visible">
+        <Card className="flex flex-col items-center gap-1 bg-mint/15 py-6 text-center">
+          <span className="text-3xl">🤝</span>
+          <p className="font-display font-semibold">{t("even")}</p>
+        </Card>
+      </motion.div>
     );
   }
 
@@ -42,9 +47,11 @@ export function BalanceCard({ balance }: { balance: Balance | null }) {
     <Card className="flex flex-col gap-3 bg-primary/10">
       <div className="text-center">
         <p className="text-sm text-muted">{t("owes", { debtor: nameOf(balance.debtorId), creditor: nameOf(balance.creditorId) })}</p>
-        <p className="pt-1 font-display text-3xl font-bold text-primary">
-          {formatMoney(balance.amountCents, balance.currency, locale)}
-        </p>
+        <AnimatedNumber
+          value={balance.amountCents}
+          format={(n) => formatMoney(Math.round(n), balance.currency, locale)}
+          className="block pt-1 font-display text-3xl font-bold text-primary"
+        />
       </div>
       <Button onClick={onSettle} loading={settle.isPending} className="w-full">
         {t("settleUp")}

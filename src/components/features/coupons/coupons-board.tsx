@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useCoupons } from "@/hooks/use-coupons";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SegmentedToggle } from "@/components/ui/segmented-toggle";
@@ -67,21 +67,25 @@ export function CouponsBoard() {
           ) : (
             <>
               <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3">
-                {available.map((c: Coupon) => (
-                  <motion.div key={c.id} variants={popIn}>
-                    <CouponCard coupon={c} />
-                  </motion.div>
-                ))}
+                <AnimatePresence initial={false} mode="popLayout">
+                  {available.map((c: Coupon) => (
+                    <motion.div key={c.id} variants={popIn} exit="exit">
+                      <CouponCard coupon={c} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </motion.div>
               {used.length > 0 && (
                 <div className="flex flex-col gap-2">
                   <h2 className="px-1 text-sm font-semibold text-muted">{t("usedTitle")}</h2>
                   <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3 opacity-70">
-                    {used.map((c: Coupon) => (
-                      <motion.div key={c.id} variants={popIn}>
-                        <CouponCard coupon={c} />
-                      </motion.div>
-                    ))}
+                    <AnimatePresence initial={false} mode="popLayout">
+                      {used.map((c: Coupon) => (
+                        <motion.div key={c.id} variants={popIn} exit="exit">
+                          <CouponCard coupon={c} />
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </motion.div>
                 </div>
               )}

@@ -9,6 +9,7 @@ import { routing } from "@/i18n/routing";
 import { COLOR_THEMES, resolveColorTheme } from "@/lib/themes";
 import { fontVariables } from "@/lib/fonts";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { MotionPrefProvider } from "@/components/providers/motion-pref-provider";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import "../globals.css";
 
@@ -63,6 +64,8 @@ export default async function LocaleLayout({
   const colorTheme = resolveColorTheme(cookieStore.get("color-theme")?.value);
   const colorScheme =
     COLOR_THEMES.find((t) => t.key === colorTheme)?.mode ?? "light";
+  // SSR the motion override so the MotionConfig policy is correct from first paint.
+  const forceFullMotion = cookieStore.get("force-full-motion")?.value === "1";
 
   return (
     <html
@@ -73,8 +76,10 @@ export default async function LocaleLayout({
     >
       <body>
         <NextIntlClientProvider>
-          <QueryProvider>{children}</QueryProvider>
-          <Toaster position="top-center" richColors />
+          <MotionPrefProvider initialForceFull={forceFullMotion}>
+            <QueryProvider>{children}</QueryProvider>
+            <Toaster position="top-center" richColors />
+          </MotionPrefProvider>
           <ServiceWorkerRegister />
         </NextIntlClientProvider>
       </body>
