@@ -49,6 +49,18 @@ export const springSnappy: Transition = {
 };
 
 /**
+ * Duration-based transition for 3-keyframe "pop" arrays (scale/y overshoot →
+ * settle). Springs only support two keyframes, so multi-keyframe pops must be
+ * tween-driven; `times` + segmented easing keep the crisp overshoot the frames
+ * were authored for. Use wherever a value animates through three keyframes.
+ */
+export const keyframePop: Transition = {
+  duration: 0.4,
+  times: [0, 0.55, 1],
+  ease: ["easeOut", "easeInOut"],
+};
+
+/**
  * Canonical list-row enter/exit. Same intent as `popIn` but tuned for rows that
  * add/remove/reorder inside an `AnimatePresence` + `layout` list. Use this as the
  * one variant every feature list shares.
@@ -69,7 +81,7 @@ export const listItem: Variants = {
  */
 export const checkPop: Variants = {
   unchecked: { scale: 1 },
-  checked: { scale: [1, 1.25, 1], transition: springSnappy },
+  checked: { scale: [1, 1.25, 1], transition: keyframePop },
 };
 
 /**
