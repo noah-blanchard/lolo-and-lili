@@ -1,7 +1,7 @@
 /* Lolo & Lili service worker — dependency-free, Turbopack-safe.
  * Handles: offline shell caching, static asset SWR, and Web Push (P4). */
 
-const VERSION = "v3";
+const VERSION = "v4";
 const CACHE = `lolo-lili-${VERSION}`;
 const OFFLINE_URL = "/offline.html";
 const PRECACHE = [OFFLINE_URL, "/icon.svg", "/manifest.webmanifest"];
@@ -24,7 +24,17 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+// In local dev the SW must never cache or intercept: Turbopack's HMR chunk URLs
+// change constantly, and serving a stale/mismatched chunk from cache breaks the
+// page and causes an infinite navigate/reload loop. Let the network handle every
+// request here; the push handlers below still work for testing.
+const IS_DEV =
+  self.location.hostname === "localhost" ||
+  self.location.hostname === "127.0.0.1";
+
 self.addEventListener("fetch", (event) => {
+  if (IS_DEV) return;
+
   const { request } = event;
   if (request.method !== "GET") return;
 
