@@ -7,6 +7,7 @@ import {
   ListTodo,
 } from "lucide-react";
 import { HubCard } from "@/components/ui/hub-card";
+import { StaggerIn } from "@/components/ui/stagger-in";
 
 export default async function NousPage({
   params,
@@ -24,7 +25,7 @@ export default async function NousPage({
         <p className="text-muted">{t("hub.nousSubtitle")}</p>
       </header>
 
-      <div className="grid grid-cols-2 gap-3">
+      <StaggerIn className="grid grid-cols-2 gap-3">
         <HubCard
           href="/notes"
           label={t("notes.title")}
@@ -55,7 +56,7 @@ export default async function NousPage({
           description={t("hub.bucketDesc")}
           icon={ListTodo}
         />
-      </div>
+      </StaggerIn>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { listMoods } from "@/lib/services/moods";
 import { getNudgeState } from "@/lib/services/nudges";
 import { getPet } from "@/lib/services/pets";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
+import { StaggerIn } from "@/components/ui/stagger-in";
 import { StatusCard } from "@/components/features/status/status-card";
 import { PetWidget } from "@/components/features/pet/pet-widget";
 import { TreatsCard } from "@/components/features/pet/treats-card";
@@ -66,18 +67,20 @@ export default async function HomePage({
           <p className="text-muted">{spaceName ?? t("app.tagline")}</p>
         </header>
 
-        <StatusCard />
+        <StaggerIn className="flex flex-col gap-5">
+          <StatusCard />
 
-        <NudgeButtons />
+          <NudgeButtons />
 
-        <PetWidget />
+          <PetWidget />
 
-        <TreatsCard />
+          <TreatsCard />
 
-        <Card>
-          <CardTitle>{t("home.todayTitle")}</CardTitle>
-          <CardDescription>{t("home.empty")}</CardDescription>
-        </Card>
+          <Card>
+            <CardTitle>{t("home.todayTitle")}</CardTitle>
+            <CardDescription>{t("home.empty")}</CardDescription>
+          </Card>
+        </StaggerIn>
       </div>
     </HydrationBoundary>
   );

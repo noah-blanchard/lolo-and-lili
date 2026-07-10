@@ -23,7 +23,6 @@ export function NoteCard({ note, onClick }: NoteCardProps) {
   return (
     <motion.button
       type="button"
-      layout
       whileTap={{ scale: 0.95 }}
       transition={springBouncy}
       onClick={onClick}

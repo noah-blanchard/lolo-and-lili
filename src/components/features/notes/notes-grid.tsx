@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useLoveNotes } from "@/hooks/use-love-notes";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -55,11 +55,13 @@ export function NotesGrid({ filter, onSelect }: NotesGridProps) {
       animate="visible"
       className="flex flex-col gap-3"
     >
-      {filtered.map((note) => (
-        <motion.div key={note.id} variants={popIn}>
-          <NoteCard note={note} onClick={() => onSelect(note.id)} />
-        </motion.div>
-      ))}
+      <AnimatePresence initial={false} mode="popLayout">
+        {filtered.map((note) => (
+          <motion.div key={note.id} variants={popIn} exit="exit" layout>
+            <NoteCard note={note} onClick={() => onSelect(note.id)} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </motion.div>
   );
 }

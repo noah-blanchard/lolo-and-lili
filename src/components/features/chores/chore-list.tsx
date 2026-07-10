@@ -37,9 +37,9 @@ export function ChoreList() {
         </Card>
       ) : (
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-2">
-          <AnimatePresence initial={false}>
+          <AnimatePresence initial={false} mode="popLayout">
             {sorted.map((chore) => (
-              <motion.div key={chore.id} variants={popIn}>
+              <motion.div key={chore.id} variants={popIn} exit="exit" layout>
                 <ChoreCard chore={chore} />
               </motion.div>
             ))}

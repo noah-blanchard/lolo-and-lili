@@ -5,7 +5,9 @@ import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { springBouncy } from "@/lib/motion";
+import { springBouncy, tapScale } from "@/lib/motion";
+
+const MotionLink = motion.create(Link);
 
 /** Routes that light up each hub tab (the hub page + its child features). */
 const MAISON_ROUTES = ["/maison", "/chores", "/grocery", "/meals", "/expenses"];
@@ -39,9 +41,11 @@ export function BottomNav() {
         {items.map(({ href, key, icon: Icon, match }) => {
           const active = match(pathname);
           return (
-            <Link
+            <MotionLink
               key={key}
               href={href}
+              whileTap={tapScale}
+              transition={springBouncy}
               className={cn(
                 "relative flex flex-1 flex-col items-center gap-0.5 rounded-[1.25rem] px-2",
                 "py-2",
@@ -54,14 +58,20 @@ export function BottomNav() {
                   className="absolute inset-0 rounded-2xl bg-primary/15"
                 />
               )}
-              <Icon
-                className={cn(
-                  "relative z-10 transition-colors",
-                  "size-6",
-                  active ? "text-primary" : "text-muted",
-                )}
-                strokeWidth={active ? 2.5 : 2}
-              />
+              <motion.span
+                className="relative z-10"
+                animate={{ scale: active ? 1.12 : 1, y: active ? -1 : 0 }}
+                transition={springBouncy}
+              >
+                <Icon
+                  className={cn(
+                    "transition-colors",
+                    "size-6",
+                    active ? "text-primary" : "text-muted",
+                  )}
+                  strokeWidth={active ? 2.5 : 2}
+                />
+              </motion.span>
               <span
                 className={cn(
                   "relative z-10 font-semibold transition-colors",
@@ -71,7 +81,7 @@ export function BottomNav() {
               >
                 {t(key)}
               </span>
-            </Link>
+            </MotionLink>
           );
         })}
       </div>

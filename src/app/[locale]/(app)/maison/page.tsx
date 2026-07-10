@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ListChecks, ShoppingBasket, UtensilsCrossed, Wallet } from "lucide-react";
 import { HubCard } from "@/components/ui/hub-card";
+import { StaggerIn } from "@/components/ui/stagger-in";
 
 export default async function MaisonPage({
   params,
@@ -18,7 +19,7 @@ export default async function MaisonPage({
         <p className="text-muted">{t("hub.maisonSubtitle")}</p>
       </header>
 
-      <div className="grid grid-cols-2 gap-3">
+      <StaggerIn className="grid grid-cols-2 gap-3">
         <HubCard
           href="/chores"
           label={t("nav.chores")}
@@ -43,7 +44,7 @@ export default async function MaisonPage({
           description={t("hub.expensesDesc")}
           icon={Wallet}
         />
-      </div>
+      </StaggerIn>
     </div>
   );
 }

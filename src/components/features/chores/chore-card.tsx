@@ -1,14 +1,14 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check, Trash2 } from "lucide-react";
 import { useDeleteChore, useToggleChore } from "@/hooks/use-chores";
 import { useCouple } from "@/components/providers/couple-provider";
 import { celebrate } from "@/lib/confetti";
 import type { ChoreWithStatus } from "@/lib/chores";
 import { cn } from "@/lib/utils";
-import { popIn, springBouncy, tapScale } from "@/lib/motion";
+import { springBouncy, springSnappy, tapScale } from "@/lib/motion";
 
 export function ChoreCard({ chore }: { chore: ChoreWithStatus }) {
   const t = useTranslations("a11y");
@@ -30,12 +30,7 @@ export function ChoreCard({ chore }: { chore: ChoreWithStatus }) {
   }
 
   return (
-    <motion.div
-      layout
-      variants={popIn}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
+    <div
       className={cn(
         "flex items-center gap-3 rounded-cute bg-surface p-3 shadow-soft transition-opacity",
         done && "opacity-60",
@@ -46,12 +41,27 @@ export function ChoreCard({ chore }: { chore: ChoreWithStatus }) {
         transition={springBouncy}
         onClick={onToggle}
         aria-label={t("toggle")}
+        animate={{
+          backgroundColor: done ? "var(--free)" : "rgba(0,0,0,0)",
+          borderColor: done ? "var(--free)" : "var(--border)",
+        }}
         className={cn(
-          "flex size-9 shrink-0 items-center justify-center rounded-full border-2",
-          done ? "border-free bg-free text-white" : "border-border",
+          "flex size-9 shrink-0 items-center justify-center rounded-full border-2 text-white",
         )}
       >
-        {done && <Check className="size-5" strokeWidth={3} />}
+        <AnimatePresence>
+          {done && (
+            <motion.span
+              key="check"
+              initial={{ scale: 0, rotate: -45 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={springSnappy}
+            >
+              <Check className="size-5" strokeWidth={3} />
+            </motion.span>
+          )}
+        </AnimatePresence>
       </motion.button>
 
       <div className="min-w-0 flex-1">
@@ -71,6 +81,6 @@ export function ChoreCard({ chore }: { chore: ChoreWithStatus }) {
       >
         <Trash2 className="size-4" />
       </button>
-    </motion.div>
+    </div>
   );
 }

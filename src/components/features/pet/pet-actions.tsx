@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { toast } from "sonner";
 import { useCarePet } from "@/hooks/use-pet";
 import { TREAT_COST, reactionEmoji, type PetView } from "@/lib/pets";
-import { celebrate } from "@/lib/confetti";
+import { celebrate, celebrateBig } from "@/lib/confetti";
 import { playSound, vibrate } from "@/lib/feedback";
 import { tapScale, springBouncy } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -50,9 +50,10 @@ export function PetActions({
       onSuccess: (res) => {
         for (const ev of res.events) {
           if (ev.kind === "levelUp") {
+            celebrateBig();
             toast.success(t("leveledUp", { level: ev.value ?? "" }));
           } else if (ev.kind === "stageUp") {
-            celebrate();
+            celebrateBig();
             toast.success(t("grewUp", { name: pet.name }));
           } else if (ev.kind === "unlock") {
             celebrate();

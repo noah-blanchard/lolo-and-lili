@@ -1,12 +1,13 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check, Trash2 } from "lucide-react";
 import { celebrate } from "@/lib/confetti";
 import { vibrate } from "@/lib/feedback";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
+import { springSnappy, tapScale } from "@/lib/motion";
 import { useDeleteBucket, useToggleBucket } from "@/hooks/use-bucket";
 import type { BucketItem as BucketItemRow } from "@/lib/supabase/types";
 
@@ -26,17 +27,31 @@ export function BucketItem({ item }: { item: BucketItemRow }) {
   return (
     <motion.div layout>
       <Card className="flex items-center gap-3">
-        <button
+        <motion.button
           type="button"
           aria-label={t("toggle")}
           onClick={onToggle}
-          className={cn(
-            "flex size-7 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-            item.done ? "border-primary bg-primary text-white" : "border-border",
-          )}
+          whileTap={tapScale}
+          animate={{
+            backgroundColor: item.done ? "var(--primary)" : "rgba(0,0,0,0)",
+            borderColor: item.done ? "var(--primary)" : "var(--border)",
+          }}
+          className="flex size-7 shrink-0 items-center justify-center rounded-full border-2 text-white"
         >
-          {item.done && <Check className="size-4" strokeWidth={3} />}
-        </button>
+          <AnimatePresence>
+            {item.done && (
+              <motion.span
+                key="check"
+                initial={{ scale: 0, rotate: -45 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={springSnappy}
+              >
+                <Check className="size-4" strokeWidth={3} />
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
         <div className="min-w-0 flex-1">
           <p className={cn("font-semibold leading-tight", item.done && "text-muted line-through")}>
             {item.title}
