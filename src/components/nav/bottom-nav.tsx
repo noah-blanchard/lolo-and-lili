@@ -44,6 +44,7 @@ export function BottomNav() {
             <MotionLink
               key={key}
               href={href}
+              prefetch
               whileTap={tapScale}
               transition={springBouncy}
               className={cn(

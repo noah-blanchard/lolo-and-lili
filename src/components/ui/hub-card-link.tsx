@@ -26,6 +26,7 @@ export function HubCardLink({
   return (
     <MotionLink
       href={href}
+      prefetch
       whileTap={tapScale}
       whileHover={hoverScale}
       transition={springBouncy}
