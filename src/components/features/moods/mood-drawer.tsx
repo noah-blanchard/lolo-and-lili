@@ -8,7 +8,7 @@ import { MOODS, type MoodKey } from "@/lib/moods";
 import { useAddMood } from "@/hooks/use-moods";
 import { celebrate } from "@/lib/confetti";
 import { Sheet } from "@/components/ui/sheet";
-import { springBouncy, tapScale } from "@/lib/motion";
+import { keyframePop, springBouncy, tapScale } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 interface MoodDrawerProps {
@@ -78,7 +78,9 @@ export function MoodDrawer({ open, onOpenChange }: MoodDrawerProps) {
                   ? { scale: [1, 1.4, 0.9], y: [0, -10, -4] }
                   : { scale: 1, y: 0 }
               }
-              transition={springBouncy}
+              // Keyframe arrays can't use a spring (two-keyframe limit); the pop
+              // rides the timed keyframePop tween, the reset springs back to rest.
+              transition={chosen === mood.key ? keyframePop : springBouncy}
             >
               {mood.emoji}
             </motion.span>

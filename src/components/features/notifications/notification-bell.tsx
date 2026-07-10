@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 import { Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { springSnappy, tapScale } from "@/lib/motion";
+import { keyframePop, tapScale } from "@/lib/motion";
 import { useUnreadCount } from "@/hooks/use-notifications";
 import { NotificationPanel } from "./notification-panel";
 
@@ -49,7 +49,8 @@ export function NotificationBell() {
               initial={{ scale: 0 }}
               animate={{ scale: [0, 1.35, 1] }}
               exit={{ scale: 0 }}
-              transition={springSnappy}
+              // Three-keyframe pop can't use a spring; keyframePop keeps the snap.
+              transition={keyframePop}
               className={cn(
                 "absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full",
                 "bg-primary px-1 text-xs font-bold text-primary-foreground",

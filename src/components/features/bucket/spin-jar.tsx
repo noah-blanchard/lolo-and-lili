@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Dices } from "lucide-react";
 import { celebrate } from "@/lib/confetti";
 import { vibrate } from "@/lib/feedback";
-import { springBouncy, tapScale } from "@/lib/motion";
+import { keyframePop, springBouncy, tapScale } from "@/lib/motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useBucket } from "@/hooks/use-bucket";
@@ -97,7 +97,9 @@ export function SpinJar() {
             initial={{ opacity: 0, scale: 0.7, rotate: -4 }}
             animate={{ opacity: 1, scale: [0.7, 1.08, 1], rotate: 0 }}
             exit={{ opacity: 0 }}
-            transition={springBouncy}
+            // scale is a 3-keyframe overshoot — springs only allow two keyframes, so
+            // tween scale via keyframePop while single-target props keep the spring.
+            transition={{ ...springBouncy, scale: keyframePop }}
           >
             <Card className="bg-primary/10 text-center">
               <span className="text-xs font-semibold uppercase tracking-wide text-muted">
