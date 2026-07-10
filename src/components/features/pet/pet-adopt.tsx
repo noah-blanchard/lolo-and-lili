@@ -33,8 +33,16 @@ export function PetAdopt() {
   return (
     <Card className="flex flex-col items-center gap-4 text-center">
       <motion.div
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        animate={
+          adopt.isPending
+            ? { rotate: [0, -14, 14, -10, 10, 0], scale: [1, 1.1, 1] }
+            : { y: [0, -8, 0] }
+        }
+        transition={
+          adopt.isPending
+            ? { duration: 0.5, repeat: Infinity }
+            : { duration: 2, repeat: Infinity, ease: "easeInOut" }
+        }
         className="text-6xl"
       >
         {SKIN_EMOJI[skin]}

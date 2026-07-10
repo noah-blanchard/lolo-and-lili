@@ -20,6 +20,7 @@ export function MoodDrawer({ open, onOpenChange }: MoodDrawerProps) {
   const t = useTranslations("moods");
   const { mutate: addMood } = useAddMood();
   const [selecting, setSelecting] = useState(false);
+  const [chosen, setChosen] = useState<MoodKey | null>(null);
 
   // Reset the submitting guard whenever the drawer closes. Adjusting state during
   // render (tracking the previous `open`) is React's supported alternative to a
@@ -27,12 +28,16 @@ export function MoodDrawer({ open, onOpenChange }: MoodDrawerProps) {
   const [prevOpen, setPrevOpen] = useState(open);
   if (open !== prevOpen) {
     setPrevOpen(open);
-    if (!open) setSelecting(false);
+    if (!open) {
+      setSelecting(false);
+      setChosen(null);
+    }
   }
 
   const handleSelectMood = (key: MoodKey) => {
     if (selecting) return;
     setSelecting(true);
+    setChosen(key);
     addMood(
       { id: crypto.randomUUID(), mood: key },
       {
@@ -66,7 +71,17 @@ export function MoodDrawer({ open, onOpenChange }: MoodDrawerProps) {
             )}
             onClick={() => handleSelectMood(mood.key)}
           >
-            <span className="text-3xl">{mood.emoji}</span>
+            <motion.span
+              className="text-3xl"
+              animate={
+                chosen === mood.key
+                  ? { scale: [1, 1.4, 0.9], y: [0, -10, -4] }
+                  : { scale: 1, y: 0 }
+              }
+              transition={springBouncy}
+            >
+              {mood.emoji}
+            </motion.span>
             <span className="text-[0.65rem] font-semibold text-muted">
               {t(`faces.${mood.key}`)}
             </span>

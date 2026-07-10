@@ -5,12 +5,11 @@ import { toast } from "sonner";
 import { motion } from "motion/react";
 import { Trash2 } from "lucide-react";
 import { ApiError } from "@/lib/api/result";
-import { celebrate } from "@/lib/confetti";
+import { celebrateFrom } from "@/lib/confetti";
 import { vibrate } from "@/lib/feedback";
 import { Button } from "@/components/ui/button";
 import { useCouple } from "@/components/providers/couple-provider";
 import { useDeleteCoupon, useRedeemCoupon } from "@/hooks/use-coupons";
-import { springSoft } from "@/lib/motion";
 import type { Coupon } from "@/lib/supabase/types";
 
 export function CouponCard({ coupon }: { coupon: Coupon }) {
@@ -22,14 +21,16 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
   const used = coupon.status === "redeemed";
   const mine = coupon.created_by === me.id;
 
-  async function onRedeem() {
+  async function onRedeem(e: React.MouseEvent) {
+    const { clientX, clientY } = e;
     try {
       await redeem.mutateAsync(coupon.id);
-      celebrate();
+      // Burst from where the coupon was tapped.
+      celebrateFrom(clientX, clientY);
       vibrate(30);
       toast.success(t("redeemed"));
-    } catch (e) {
-      toast.error(e instanceof ApiError ? e.message : tc("error"));
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : tc("error"));
     }
   }
 
@@ -76,9 +77,9 @@ export function CouponCard({ coupon }: { coupon: Coupon }) {
 
       {used && (
         <motion.div
-          initial={{ scale: 1.8, opacity: 0, rotate: -18 }}
-          animate={{ scale: 1, opacity: 1, rotate: -12 }}
-          transition={springSoft}
+          initial={{ scale: 2, opacity: 0, rotate: -24 }}
+          animate={{ scale: [2, 0.92, 1.06, 1], opacity: 1, rotate: -12 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
           className="pointer-events-none absolute inset-0 flex items-center justify-center"
         >
           <span className="rounded-full border-2 border-busy/70 px-4 py-1 font-display text-lg font-bold uppercase tracking-wide text-busy/80">

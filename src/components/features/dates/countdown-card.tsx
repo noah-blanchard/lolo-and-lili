@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { Trash2 } from "lucide-react";
 import { nextOccurrence, yearsAt } from "@/lib/countdowns";
 import { Card } from "@/components/ui/card";
+import { AnimatedNumber } from "@/components/ui/animated-number";
 import { useDeleteSpecialDate } from "@/hooks/use-special-dates";
 import type { SpecialDate } from "@/lib/supabase/types";
 
@@ -32,10 +33,19 @@ export function CountdownCard({ item, days }: { item: SpecialDate; days: number 
         </div>
         <div className="pr-4 text-right">
           {days === 0 ? (
-            <span className="font-display text-lg font-bold text-primary">{t("today")}</span>
+            <motion.span
+              className="font-display text-lg font-bold text-primary"
+              animate={{ scale: [1, 1.08, 1] }}
+              transition={{ duration: 1.6, ease: "easeInOut", repeat: Infinity }}
+            >
+              {t("today")}
+            </motion.span>
           ) : (
             <>
-              <span className="font-display text-2xl font-bold text-primary">{days}</span>
+              <AnimatedNumber
+                value={days}
+                className="font-display text-2xl font-bold text-primary"
+              />
               <span className="block text-xs text-muted">{t("daysLeft")}</span>
             </>
           )}

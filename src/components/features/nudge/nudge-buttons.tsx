@@ -75,14 +75,22 @@ export function NudgeButtons() {
                 "disabled:opacity-40",
               )}
             >
-              {send.isPending ? <Spinner size="sm" /> : <span className="text-2xl">{NUDGE_EMOJI[kind]}</span>}
+              {send.isPending ? (
+                <Spinner size="sm" />
+              ) : (
+                <span className="text-2xl">{NUDGE_EMOJI[kind]}</span>
+              )}
               <span className="text-[0.7rem] font-semibold text-muted">
                 {t(`kinds.${kind}`)}
               </span>
               {onCooldown && (
-                <span className="text-[0.6rem] text-muted">
+                <motion.span
+                  className="text-[0.6rem] text-muted"
+                  initial={{ opacity: 0, y: -2 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
                   {t("cooldown", { min: Math.ceil(left / 60000) })}
-                </span>
+                </motion.span>
               )}
             </motion.button>
           );
