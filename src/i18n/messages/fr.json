@@ -358,5 +358,12 @@
     "title": "Oups, un petit couac 💔",
     "description": "Quelque chose s'est mal passé de notre côté. On peut réessayer tout de suite.",
     "retry": "Réessayer"
+  },
+  "a11y": {
+    "loading": "Chargement",
+    "mute": "Couper le son",
+    "toggle": "Cocher",
+    "delete": "Supprimer",
+    "notifications": "Notifications"
   }
 }

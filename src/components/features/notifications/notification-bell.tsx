@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUnreadCount } from "@/hooks/use-notifications";
@@ -10,12 +11,13 @@ import { NotificationPanel } from "./notification-panel";
 export function NotificationBell() {
   const [open, setOpen] = useState(false);
   const unread = useUnreadCount();
+  const t = useTranslations("a11y");
 
   return (
     <>
       <button
         type="button"
-        aria-label="Notifications"
+        aria-label={t("notifications")}
         onClick={() => setOpen(true)}
         className="fixed right-4 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-surface text-foreground shadow-soft"
         style={{ top: "max(1rem, env(safe-area-inset-top))" }}

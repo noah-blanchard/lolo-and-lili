@@ -31,7 +31,7 @@ export function Sheet({
         <Drawer.Overlay className="fixed inset-0 z-40 bg-black/40" />
         <Drawer.Content
           className={cn(
-            "fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[80vh] flex-col rounded-t-[2rem] bg-background",
+            "fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[80dvh] flex-col rounded-t-[2rem] bg-background",
             "pb-safe outline-none",
             className,
           )}

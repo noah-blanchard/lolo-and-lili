@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { Check, Trash2 } from "lucide-react";
 import { useDeleteChore, useToggleChore } from "@/hooks/use-chores";
@@ -10,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { popIn, springBouncy, tapScale } from "@/lib/motion";
 
 export function ChoreCard({ chore }: { chore: ChoreWithStatus }) {
+  const t = useTranslations("a11y");
   const toggle = useToggleChore();
   const del = useDeleteChore();
   const { me, partner } = useCouple();
@@ -43,7 +45,7 @@ export function ChoreCard({ chore }: { chore: ChoreWithStatus }) {
         whileTap={tapScale}
         transition={springBouncy}
         onClick={onToggle}
-        aria-label="toggle"
+        aria-label={t("toggle")}
         className={cn(
           "flex size-9 shrink-0 items-center justify-center rounded-full border-2",
           done ? "border-free bg-free text-white" : "border-border",
@@ -64,7 +66,7 @@ export function ChoreCard({ chore }: { chore: ChoreWithStatus }) {
 
       <button
         onClick={() => del.mutate(chore.id)}
-        aria-label="delete"
+        aria-label={t("delete")}
         className="p-1.5 text-muted/50 transition-colors hover:text-busy"
       >
         <Trash2 className="size-4" />

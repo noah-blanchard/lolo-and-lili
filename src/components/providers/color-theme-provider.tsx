@@ -27,9 +27,20 @@ function applyTheme(theme: ColorThemeKey) {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
   root.setAttribute("data-color-theme", theme);
+  const palette = COLOR_THEMES.find((t) => t.key === theme);
   // Tell the browser the scheme so native controls/scrollbars match.
-  const mode = COLOR_THEMES.find((t) => t.key === theme)?.mode ?? "light";
-  root.style.colorScheme = mode;
+  root.style.colorScheme = palette?.mode ?? "light";
+  // Keep the browser/status-bar chrome (theme-color) in sync with the active
+  // theme so dark themes don't get a cream status bar (F-042). swatch[0] is the
+  // theme's --background.
+  const bg = palette?.swatch[0] ?? "#fff7f0";
+  let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.name = "theme-color";
+    document.head.appendChild(meta);
+  }
+  meta.content = bg;
 }
 
 export function ColorThemeProvider({
@@ -46,6 +57,10 @@ export function ColorThemeProvider({
   // Sync the attribute on mount and whenever the theme changes.
   useEffect(() => {
     applyTheme(theme);
+    // Persist for SSR: the root layout reads this cookie to render
+    // <html data-color-theme> so a returning user's theme paints with no flash
+    // before hydration (F-030).
+    document.cookie = `color-theme=${theme}; path=/; max-age=31536000; samesite=lax`;
   }, [theme]);
 
   const setTheme = useCallback((next: ColorThemeKey) => {

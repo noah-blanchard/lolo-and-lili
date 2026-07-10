@@ -252,3 +252,13 @@ export function buildPayload(message: NotifyKey, locale: string, vars: Vars): Bu
   const loc: Loc = locale === "zh" ? "zh" : "fr";
   return NOTIFY[message][loc](vars);
 }
+
+/** Localized self-test push (the "send test" route) — no actor involved. */
+export function buildTestPayload(locale: string): Built {
+  const loc: Loc = locale === "zh" ? "zh" : "fr";
+  const copy: Record<Loc, Built> = {
+    fr: { title: "Lolo & Lili 💕", body: "Les notifications fonctionnent !", url: "/" },
+    zh: { title: "Lolo & Lili 💕", body: "通知功能正常！", url: "/" },
+  };
+  return copy[loc];
+}

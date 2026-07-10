@@ -18,6 +18,7 @@ import { usePartnerCare } from "./use-pet-realtime";
 
 export function PetScreen() {
   const t = useTranslations("pet");
+  const ta = useTranslations("a11y");
   const { data: pet, isLoading } = usePet();
   const care = useCarePet();
   const [reaction, setReaction] = useState<{ id: number; emoji: string } | null>(
@@ -92,7 +93,7 @@ export function PetScreen() {
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between px-1 pt-2">
         <h1 className="truncate font-display text-3xl font-bold">{petData.name}</h1>
-        <button onClick={toggleMute} className="text-xl" aria-label="mute">
+        <button onClick={toggleMute} className="text-xl" aria-label={ta("mute")}>
           {muted ? "🔇" : "🔊"}
         </button>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { type HTMLAttributes } from "react";
+import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { spinLinear } from "@/lib/motion";
@@ -19,12 +20,13 @@ export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
 
 export const Spinner = ({ size = "md", className, ...props }: SpinnerProps) => {
   const { px, border } = sizeMap[size];
+  const t = useTranslations("a11y");
 
   return (
     <div
       className={cn("inline-flex items-center justify-center", className)}
       role="status"
-      aria-label="Loading"
+      aria-label={t("loading")}
       {...props}
     >
       <motion.div

@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Toaster } from "sonner";
 
 import { routing } from "@/i18n/routing";
+import { COLOR_THEMES, resolveColorTheme } from "@/lib/themes";
 import { fontVariables } from "@/lib/fonts";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
@@ -29,13 +31,19 @@ export async function generateMetadata({
   };
 }
 
-export const viewport: Viewport = {
-  themeColor: "#fff7f0",
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  viewportFit: "cover",
-};
+// Dynamic so the browser/status-bar chrome matches the user's saved theme from
+// first paint (the color-theme cookie is written client-side on theme change).
+export async function generateViewport(): Promise<Viewport> {
+  const cookieStore = await cookies();
+  const theme = resolveColorTheme(cookieStore.get("color-theme")?.value);
+  const bg = COLOR_THEMES.find((t) => t.key === theme)?.swatch[0] ?? "#fff7f0";
+  return {
+    themeColor: bg,
+    width: "device-width",
+    initialScale: 1,
+    viewportFit: "cover",
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -47,11 +55,22 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
 
-  // Enable static rendering for this locale.
   setRequestLocale(locale);
 
+  // SSR the color theme so dark-theme users don't flash the default peach
+  // palette before hydration (F-030). The client applier keeps live switching.
+  const cookieStore = await cookies();
+  const colorTheme = resolveColorTheme(cookieStore.get("color-theme")?.value);
+  const colorScheme =
+    COLOR_THEMES.find((t) => t.key === colorTheme)?.mode ?? "light";
+
   return (
-    <html lang={locale} className={fontVariables}>
+    <html
+      lang={locale}
+      className={fontVariables}
+      data-color-theme={colorTheme}
+      style={{ colorScheme }}
+    >
       <body>
         <NextIntlClientProvider>
           <QueryProvider>{children}</QueryProvider>
