@@ -1040,8 +1040,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      adjust_treats: {
+        Args: { p_delta: number; p_pet_id: string }
+        Returns: number
+      }
       current_couple_id: { Args: never; Returns: string }
-      adjust_treats: { Args: { p_pet_id: string; p_delta: number }; Returns: number }
     }
     Enums: {
       [_ in never]: never
