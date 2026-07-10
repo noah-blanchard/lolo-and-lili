@@ -2,15 +2,26 @@
 
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { motion } from "motion/react";
-import { celebrate } from "@/lib/confetti";
+import { motion, type Variants } from "motion/react";
+import { celebrateBig } from "@/lib/confetti";
 import { vibrate } from "@/lib/feedback";
+import { springBouncy, staggerContainer } from "@/lib/motion";
 import { questionByKey, questionText } from "@/lib/questions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCouple } from "@/components/providers/couple-provider";
 import { useQuestion, useSubmitAnswer } from "@/hooks/use-question";
+
+// The two answers flip in from opposite sides on reveal.
+const revealLeft: Variants = {
+  hidden: { opacity: 0, x: -44, rotate: -4 },
+  visible: { opacity: 1, x: 0, rotate: 0, transition: springBouncy },
+};
+const revealRight: Variants = {
+  hidden: { opacity: 0, x: 44, rotate: 4 },
+  visible: { opacity: 1, x: 0, rotate: 0, transition: springBouncy },
+};
 
 function AnswerBubble({
   name,
@@ -65,7 +76,7 @@ export function QuestionBoard() {
       {
         onSuccess: (v) => {
           if (v.revealed) {
-            celebrate();
+            celebrateBig();
             vibrate(30);
           }
         },
@@ -100,25 +111,35 @@ export function QuestionBoard() {
           </Button>
         </Card>
       ) : !view.revealed ? (
-        <Card className="flex flex-col gap-2">
-          <span className="text-sm font-semibold text-muted">{t("yourAnswer")}</span>
-          <p className="whitespace-pre-wrap">{view.myAnswer}</p>
-          <p className="pt-2 text-sm text-muted">
-            {t("waiting", { name: partner?.display_name ?? "" })}
-          </p>
-        </Card>
+        <motion.div
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity }}
+        >
+          <Card className="flex flex-col gap-2">
+            <span className="text-sm font-semibold text-muted">{t("yourAnswer")}</span>
+            <p className="whitespace-pre-wrap">{view.myAnswer}</p>
+            <p className="pt-2 text-sm text-muted">
+              {t("waiting", { name: partner?.display_name ?? "" })}
+            </p>
+          </Card>
+        </motion.div>
       ) : (
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
           className="flex flex-col gap-3"
         >
-          <AnswerBubble name={me.display_name} answer={view.myAnswer ?? ""} />
-          <AnswerBubble
-            name={partner?.display_name ?? null}
-            answer={view.partnerAnswer ?? ""}
-            accent
-          />
+          <motion.div variants={revealLeft}>
+            <AnswerBubble name={me.display_name} answer={view.myAnswer ?? ""} />
+          </motion.div>
+          <motion.div variants={revealRight}>
+            <AnswerBubble
+              name={partner?.display_name ?? null}
+              answer={view.partnerAnswer ?? ""}
+              accent
+            />
+          </motion.div>
         </motion.div>
       )}
     </div>
