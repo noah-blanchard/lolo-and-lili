@@ -25,12 +25,23 @@ export function LoginForm() {
   const [invalid, setInvalid] = useState(false);
   const [cooldown, setCooldown] = useState(0);
 
-  // Tick the resend cooldown down to zero.
+  // Tick the resend cooldown down to zero. Keyed on whether a countdown is
+  // active so a single interval runs per countdown (not one recreated each
+  // second); the functional decrement clears itself when it hits zero.
+  const cooldownActive = cooldown > 0;
   useEffect(() => {
-    if (cooldown <= 0) return;
-    const id = setInterval(() => setCooldown((c) => c - 1), 1000);
+    if (!cooldownActive) return;
+    const id = setInterval(() => {
+      setCooldown((c) => {
+        if (c <= 1) {
+          clearInterval(id);
+          return 0;
+        }
+        return c - 1;
+      });
+    }, 1000);
     return () => clearInterval(id);
-  }, [cooldown]);
+  }, [cooldownActive]);
 
   async function sendCode() {
     if (!email || loading) return;

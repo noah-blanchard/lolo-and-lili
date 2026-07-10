@@ -82,6 +82,12 @@ export function RealtimeProvider({
           () => invalidate(queryKeys.chores()),
         )
         .on(
+          // Unlike every other listener, chore_completions has no couple_id
+          // column to filter on (it references a chore, which is couple-scoped).
+          // Delivery is still couple-scoped: realtime enforces the same RLS as
+          // the user's JWT (set via setAuth above), so only completions the
+          // caller can read are pushed. We accept the wider subscription rather
+          // than denormalize couple_id onto the table (F-024, F-013).
           "postgres_changes",
           { event: "*", schema: "public", table: "chore_completions" },
           () => invalidate(queryKeys.chores()),

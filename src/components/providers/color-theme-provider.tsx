@@ -10,7 +10,6 @@ import {
 } from "react";
 import {
   COLOR_THEMES,
-  DEFAULT_COLOR_THEME,
   resolveColorTheme,
   type ColorThemeKey,
 } from "@/lib/themes";
@@ -77,12 +76,9 @@ export function ColorThemeProvider({
 
 export function useColorTheme() {
   const ctx = useContext(ColorThemeContext);
-  if (!ctx) {
-    // Safe no-op fallback so consumers don't crash outside the provider.
-    return {
-      theme: DEFAULT_COLOR_THEME,
-      setTheme: () => {},
-    } satisfies ColorThemeContextValue;
-  }
+  // Fail loudly like useCouple: a missing provider is a wiring bug, and the
+  // error boundaries (TASK-05) now contain the throw gracefully. Consistent
+  // failure philosophy across provider hooks (F-013).
+  if (!ctx) throw new Error("useColorTheme must be used within a ColorThemeProvider");
   return ctx;
 }
