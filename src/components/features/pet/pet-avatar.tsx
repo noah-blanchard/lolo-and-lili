@@ -26,25 +26,25 @@ function accessoryEmoji(id: string | null | undefined): string | null {
 // already-fetched JSON instead of re-fetching every flip/remount (F-025).
 const lottieCache = new Map<string, object>();
 
-/** Fetch a Lottie JSON for the current slot; null until/if present. */
-function useLottie(slot: string): object | null {
+/** Fetch a Lottie JSON by URL; null until/if present. Pass null to skip. */
+function useLottieJson(url: string | null): object | null {
   const [, bump] = useState(0);
   useEffect(() => {
-    if (lottieCache.has(slot)) return;
+    if (!url || lottieCache.has(url)) return;
     let alive = true;
-    fetch(`/lottie/pet/${slot}.json`)
+    fetch(url)
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         if (!json) return;
-        lottieCache.set(slot, json as object);
+        lottieCache.set(url, json as object);
         if (alive) bump((n) => n + 1);
       })
       .catch(() => {});
     return () => {
       alive = false;
     };
-  }, [slot]);
-  return lottieCache.get(slot) ?? null;
+  }, [url]);
+  return url ? (lottieCache.get(url) ?? null) : null;
 }
 
 const idleAnim: Record<Base, { y: number | number[]; rotate: number | number[] }> = {
@@ -67,11 +67,34 @@ export function PetAvatar({
   const state = baseState(pet);
   // Per-skin, per-stage, per-state slot (e.g. "classic-2-happy"). Missing slots
   // (e.g. the "away" basket) fall back to the animated emoji pet below.
-  const lottie = useLottie(`${pet.skin}-${pet.stage}-${state}`);
+  const lottie = useLottieJson(
+    state === "away" ? null : `/lottie/pet/${pet.skin}-${pet.stage}-${state}.json`,
+  );
   const equipped = (pet.equipped ?? {}) as Record<string, string | null>;
-  const hat = accessoryEmoji(equipped.hat);
-  const collar = accessoryEmoji(equipped.collar);
+  const hatId = equipped.hat ?? null;
+  const collarId = equipped.collar ?? null;
+  // Vector accessories are registered to the pet's head/neck on the same 256
+  // canvas, so they only line up when the vector pet is on screen. When we fall
+  // back to the emoji pet, use the emoji accessory spans instead.
+  const vectorMode = !!lottie;
+  const hatJson = useLottieJson(vectorMode && hatId ? `/lottie/accessory/${hatId}.json` : null);
+  const collarJson = useLottieJson(vectorMode && collarId ? `/lottie/accessory/${collarId}.json` : null);
+  const hat = accessoryEmoji(hatId);
+  const collar = accessoryEmoji(collarId);
   const catEmoji = SKIN_EMOJI[pet.skin as keyof typeof SKIN_EMOJI] ?? "🐶";
+  // Puppies (stage 1) are drawn shrunk about (128,150) on the pet canvas; match
+  // that so hats/collars sit on the smaller body. (58% ≈ 150/256.)
+  const stageStyle =
+    pet.stage === 1
+      ? ({ transform: "scale(0.9)", transformOrigin: "50% 58%" } as const)
+      : undefined;
+  // Gentle bob that keeps accessories glued to the bobbing pet, per state.
+  const accBob = idleAnim[state];
+  const accTransition = {
+    duration: state === "happy" ? 0.5 : 2.4,
+    repeat: Infinity,
+    ease: "easeInOut",
+  } as const;
 
   return (
     <div
@@ -116,8 +139,35 @@ export function PetAvatar({
         </motion.div>
       )}
 
-      {/* Accessory overlays */}
-      {hat && (
+      {/* Accessory overlays — registered vector art worn on the pet, bobbing
+          in sync. Falls back to emoji spans when the emoji pet is showing. */}
+      {state !== "away" && vectorMode && (hatJson || collarJson) && (
+        <div className="pointer-events-none absolute inset-0" style={stageStyle}>
+          <motion.div
+            className="absolute inset-0"
+            animate={accBob}
+            transition={accTransition}
+          >
+            {hatJson && (
+              <Lottie
+                animationData={hatJson}
+                loop
+                className="absolute inset-0"
+                style={{ width: size, height: size }}
+              />
+            )}
+            {collarJson && (
+              <Lottie
+                animationData={collarJson}
+                loop
+                className="absolute inset-0"
+                style={{ width: size, height: size }}
+              />
+            )}
+          </motion.div>
+        </div>
+      )}
+      {!vectorMode && hat && state !== "away" && (
         <span
           className="pointer-events-none absolute left-1/2 -translate-x-1/2"
           style={{ top: size * 0.02, fontSize: size * 0.26 }}
@@ -125,7 +175,7 @@ export function PetAvatar({
           {hat}
         </span>
       )}
-      {collar && state !== "away" && (
+      {!vectorMode && collar && state !== "away" && (
         <span
           className="pointer-events-none absolute left-1/2 -translate-x-1/2"
           style={{ bottom: size * 0.14, fontSize: size * 0.2 }}
