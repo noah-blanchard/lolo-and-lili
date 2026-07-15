@@ -145,23 +145,28 @@ export function reactionEmoji(type: PetActionType): string {
   }
 }
 
+export type AccessoryId = "bow" | "party" | "flower" | "bell" | "crown";
+
 export interface Accessory {
-  id: string;
+  id: AccessoryId;
   slot: "hat" | "collar";
   emoji: string;
-  unlock:
-    | { by: "level"; value: number }
-    | { by: "stage"; value: number }
-    | { by: "streak"; value: number };
+  /** Treats spent to buy it (see `TREAT_COST` for care-action costs). */
+  price: number;
 }
 
 export const ACCESSORIES: Accessory[] = [
-  { id: "bow", slot: "collar", emoji: "🎀", unlock: { by: "level", value: 2 } },
-  { id: "party", slot: "hat", emoji: "🎉", unlock: { by: "streak", value: 3 } },
-  { id: "flower", slot: "hat", emoji: "🌸", unlock: { by: "level", value: 4 } },
-  { id: "bell", slot: "collar", emoji: "🔔", unlock: { by: "stage", value: 2 } },
-  { id: "crown", slot: "hat", emoji: "👑", unlock: { by: "level", value: 10 } },
+  { id: "bow", slot: "collar", emoji: "🎀", price: 20 },
+  { id: "party", slot: "hat", emoji: "🎉", price: 30 },
+  { id: "flower", slot: "hat", emoji: "🌸", price: 40 },
+  { id: "bell", slot: "collar", emoji: "🔔", price: 50 },
+  { id: "crown", slot: "hat", emoji: "👑", price: 120 },
 ];
+
+/** Look up an accessory definition by id. */
+export function accessoryById(id: string): Accessory | undefined {
+  return ACCESSORIES.find((a) => a.id === id);
+}
 
 // --- Helpers ----------------------------------------------------------------
 
@@ -214,30 +219,15 @@ export function settle(pet: Pet, now: Date = new Date()): PetState {
   return { ...pet, meters, bond: bondOf(meters), status: statusOf(pet, meters) };
 }
 
-function unlockableAt(
-  level: number,
-  stage: number,
-  streak: number,
-  already: string[],
-): string[] {
-  return ACCESSORIES.filter((a) => {
-    if (already.includes(a.id)) return false;
-    if (a.unlock.by === "level") return level >= a.unlock.value;
-    if (a.unlock.by === "stage") return stage >= a.unlock.value;
-    return streak >= a.unlock.value;
-  }).map((a) => a.id);
-}
-
 /**
- * Apply a care action to a stored pet. Pure: handles meters, xp, level, stage
- * and accessory unlocks. The service layer handles cooldowns, treat costs,
- * the once/day co-op cuddle streak, both-partner call-back, and persistence
- * (it passes the resulting `streakCount` so unlocks see the current streak).
+ * Apply a care action to a stored pet. Pure: handles meters, xp, level and
+ * stage. The service layer handles cooldowns, treat costs, the once/day co-op
+ * cuddle streak, both-partner call-back, and persistence. Accessories are
+ * acquired separately (bought with treats — see `buyAccessory`), not here.
  */
 export function applyCare(
   pet: Pet,
   type: PetActionType,
-  streakCount: number,
   now: Date = new Date(),
 ): { store: Partial<Pet>; events: PetEvent[] } {
   const events: PetEvent[] = [];
@@ -272,11 +262,6 @@ export function applyCare(
   if (level > pet.level) events.push({ kind: "levelUp", value: String(level) });
   if (stage > pet.stage) events.push({ kind: "stageUp", value: String(stage) });
 
-  const already = Array.isArray(pet.unlocked) ? (pet.unlocked as string[]) : [];
-  const newlyUnlocked = unlockableAt(level, stage, streakCount, already);
-  for (const id of newlyUnlocked) events.push({ kind: "unlock", value: id });
-  const unlocked = [...already, ...newlyUnlocked];
-
   return {
     store: {
       ...next,
@@ -284,7 +269,6 @@ export function applyCare(
       xp,
       level,
       stage,
-      unlocked,
       // Any care nudges a wanderer back toward home.
       ran_away_at: bondOf(next) > AWAY_BOND ? null : pet.ran_away_at,
     },

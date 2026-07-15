@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { PetAvatar } from "./pet-avatar";
 import { PetMeters } from "./pet-meters";
 import { PetActions } from "./pet-actions";
+import { PetCloset } from "./pet-closet";
 import { PetAdopt } from "./pet-adopt";
 import { PetMemories } from "./pet-memories";
 import { usePartnerCare } from "./use-pet-realtime";
@@ -144,6 +145,8 @@ export function PetScreen() {
               🤍
             </Button>
           </Card>
+
+          <PetCloset pet={petData} />
         </>
       )}
 
