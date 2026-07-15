@@ -252,10 +252,29 @@
       "gift": "Gâter",
       "heal": "Soigner"
     },
+    "closetTitle": "Garde-robe",
+    "closetHint": "Achète des accessoires avec vos friandises, puis habille-le 🎀",
+    "buy": "Acheter",
+    "wear": "Mettre",
+    "remove": "Enlever",
+    "worn": "Porté",
+    "owned": "Acheté",
+    "bought": "Nouvel accessoire ! {emoji}",
+    "slots": {
+      "hat": "Chapeau",
+      "collar": "Collier"
+    },
+    "items": {
+      "bow": "Nœud",
+      "party": "Fête",
+      "flower": "Fleur",
+      "bell": "Clochette",
+      "crown": "Couronne"
+    },
     "memory": {
       "adopted": "{name} a rejoint la famille 🐶",
       "stageUp": "Notre chiot a grandi 🐕",
-      "unlock": "Nouvel accessoire débloqué 🎁",
+      "unlock": "Nouvel accessoire acheté 🎁",
       "streak": "Série de {count} jours 🔥",
       "recovered": "Notre chien est rentré 🏡"
     }

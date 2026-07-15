@@ -55,9 +55,6 @@ export function PetActions({
           } else if (ev.kind === "stageUp") {
             celebrateBig();
             toast.success(t("grewUp", { name: pet.name }));
-          } else if (ev.kind === "unlock") {
-            celebrate();
-            toast.success(t("unlocked"));
           } else if (ev.kind === "streak") {
             celebrate();
             toast.success(t("streakReached", { count: ev.value ?? "" }));

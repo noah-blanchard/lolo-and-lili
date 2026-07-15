@@ -30,3 +30,6 @@ export const equipSchema = z.object({
   itemId: z.string().nullable(), // null = unequip
 });
 export type EquipInput = z.infer<typeof equipSchema>;
+
+export const buyAccessorySchema = z.object({ itemId: z.string() });
+export type BuyAccessoryInput = z.infer<typeof buyAccessorySchema>;

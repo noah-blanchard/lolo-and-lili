@@ -6,7 +6,11 @@ import { queryKeys } from "@/lib/query/keys";
 import type { PetView, CareResult, PetActionType } from "@/lib/pets";
 import { applyCare, settle, TREAT_COST } from "@/lib/pets";
 import type { PetMemory } from "@/lib/supabase/types";
-import type { AdoptPetInput, EquipInput } from "@/lib/schemas/pet";
+import type {
+  AdoptPetInput,
+  BuyAccessoryInput,
+  EquipInput,
+} from "@/lib/schemas/pet";
 
 export function usePet() {
   return useQuery({
@@ -46,7 +50,7 @@ export function useCarePet() {
       await qc.cancelQueries({ queryKey: queryKeys.pet() });
       const previous = qc.getQueryData<PetView>(queryKeys.pet());
       if (previous) {
-        const { store } = applyCare(previous, type, previous.streak_count ?? 0);
+        const { store } = applyCare(previous, type);
         const settled = settle({ ...previous, ...store });
         const optimistic: PetView = {
           ...settled,
@@ -75,6 +79,16 @@ export function useEquip() {
   return useMutation({
     mutationFn: (input: EquipInput) =>
       apiFetch<PetView>("/api/pets/equip", jsonBody(input)),
+    onSuccess: (pet) => qc.setQueryData(queryKeys.pet(), pet),
+    onSettled: () => qc.invalidateQueries({ queryKey: queryKeys.pet() }),
+  });
+}
+
+export function useBuyAccessory() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: BuyAccessoryInput) =>
+      apiFetch<PetView>("/api/pets/buy", jsonBody(input)),
     onSuccess: (pet) => qc.setQueryData(queryKeys.pet(), pet),
     onSettled: () => qc.invalidateQueries({ queryKey: queryKeys.pet() }),
   });

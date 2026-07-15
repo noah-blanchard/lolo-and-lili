@@ -4,6 +4,7 @@ import { ApiError, ErrorCode, fail } from "@/lib/api/result";
 import { today } from "@/lib/chores";
 import { requireCoupleId } from "./couples";
 import {
+  accessoryById,
   applyCare,
   cooldownRemaining,
   decayMeters,
@@ -16,7 +17,12 @@ import {
   type PetView,
   type CareResult,
 } from "@/lib/pets";
-import type { AdoptPetInput, CareInput, EquipInput } from "@/lib/schemas/pet";
+import type {
+  AdoptPetInput,
+  BuyAccessoryInput,
+  CareInput,
+  EquipInput,
+} from "@/lib/schemas/pet";
 import type { NotifyKey } from "@/lib/notifications/messages";
 import { notifyPartner } from "./notifications";
 
@@ -213,7 +219,7 @@ export async function care(
     if (partnerCuddled && pet.streak_last_day !== today()) {
       streakCount = pet.streak_last_day === yesterday() ? pet.streak_count + 1 : 1;
     }
-    const applied = applyCare(pet, "cuddle", streakCount, now);
+    const applied = applyCare(pet, "cuddle", now);
     patch = { ...applied.store };
     events.push(...applied.events);
     if (partnerCuddled && pet.streak_last_day !== today()) {
@@ -240,11 +246,11 @@ export async function care(
       const view = await getPet(supabase, coupleId, user.id);
       return { pet: view!, events: [] };
     }
-    const applied = applyCare(pet, "callback", pet.streak_count, now);
+    const applied = applyCare(pet, "callback", now);
     patch = { ...applied.store, treats: pet.treats };
     events.push(...applied.events);
   } else {
-    const applied = applyCare(pet, type, pet.streak_count, now);
+    const applied = applyCare(pet, type, now);
     patch = { ...applied.store };
     events.push(...applied.events);
     if (cost > 0) patch.treats = pet.treats - cost;
@@ -302,6 +308,52 @@ export async function equip(
   else delete equipped[input.slot];
 
   await supabase.from("pets").update({ equipped }).eq("id", pet.id);
+  const view = await getPet(supabase, coupleId, user.id);
+  return view!;
+}
+
+/**
+ * Buy an accessory with treats from the shared wallet, then auto-equip it into
+ * its slot so the pet visibly changes right away. Treats are spent atomically
+ * via the `adjust_treats` RPC (shared wallet — avoid lost updates).
+ */
+export async function buyAccessory(
+  supabase: DB,
+  user: User,
+  input: BuyAccessoryInput,
+): Promise<PetView> {
+  const coupleId = await requireCoupleId(supabase, user);
+  const pet = await fetchPetRow(supabase, coupleId);
+  if (!pet) throw fail.notFound("No pet yet");
+
+  const item = accessoryById(input.itemId);
+  if (!item) throw fail.notFound("Unknown accessory");
+
+  const unlocked = Array.isArray(pet.unlocked) ? (pet.unlocked as string[]) : [];
+  if (unlocked.includes(item.id)) {
+    throw new ApiError(ErrorCode.CONFLICT, "Already owned");
+  }
+  if (pet.treats < item.price) {
+    throw new ApiError(ErrorCode.FORBIDDEN, "Not enough treats — do a chore together 🪙");
+  }
+
+  // Atomic spend (clamped ≥ 0) so simultaneous purchases can't lose updates.
+  await supabase.rpc("adjust_treats", { p_pet_id: pet.id, p_delta: -item.price });
+
+  const equipped = { ...(pet.equipped as Record<string, string | null>) };
+  equipped[item.slot] = item.id;
+  await supabase
+    .from("pets")
+    .update({ unlocked: [...unlocked, item.id], equipped })
+    .eq("id", pet.id);
+
+  await insertMemory(supabase, coupleId, pet.id, {
+    kind: "unlock",
+    title: "Bought an accessory",
+    emoji: item.emoji,
+    meta: { item: item.id },
+  });
+
   const view = await getPet(supabase, coupleId, user.id);
   return view!;
 }

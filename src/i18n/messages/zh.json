@@ -252,10 +252,29 @@
       "gift": "宠溺",
       "heal": "治疗"
     },
+    "closetTitle": "衣橱",
+    "closetHint": "用零食购买配饰，然后给它打扮 🎀",
+    "buy": "购买",
+    "wear": "戴上",
+    "remove": "取下",
+    "worn": "已戴",
+    "owned": "已购买",
+    "bought": "新配饰！{emoji}",
+    "slots": {
+      "hat": "帽子",
+      "collar": "项圈"
+    },
+    "items": {
+      "bow": "蝴蝶结",
+      "party": "派对帽",
+      "flower": "花朵",
+      "bell": "铃铛",
+      "crown": "皇冠"
+    },
     "memory": {
       "adopted": "{name} 加入了家庭 🐶",
       "stageUp": "小狗长大了 🐕",
-      "unlock": "解锁了新配饰 🎁",
+      "unlock": "购买了新配饰 🎁",
       "streak": "连续 {count} 天 🔥",
       "recovered": "我们的狗回家了 🏡"
     }
