@@ -14,10 +14,13 @@ export type PetActionType =
   | "heal"
   | "gift"
   | "cuddle"
-  | "callback";
+  | "callback"
+  | "walk";
 
 export type PetStatus = "ok" | "sick" | "away";
-export type MeterKey = "hunger" | "affection" | "energy" | "cleanliness";
+// `bladder` is the odd one out: it RISES over time and high is bad (a walk
+// resets it). Every other meter decays down and higher is better.
+export type MeterKey = "hunger" | "affection" | "energy" | "cleanliness" | "bladder";
 export type Meters = Record<MeterKey, number>;
 
 export type PetEventKind =
@@ -55,12 +58,16 @@ export interface CareResult {
 
 // --- Tuning (all in one place; tweak freely) --------------------------------
 
-/** Meter points lost per hour. */
+/**
+ * Per-hour change, computed on read from `meters_at`. Wellbeing meters are
+ * subtracted (they fall); `bladder` is ADDED in `decayMeters` (it fills).
+ */
 export const DECAY_PER_HOUR: Meters = {
   hunger: 4,
   affection: 2.5,
   energy: 3,
   cleanliness: 1.5,
+  bladder: 6, // rises ~0→100 in ~16h if never taken out
 };
 
 /** How much each action refills, per meter. */
@@ -72,6 +79,7 @@ const REFILL: Partial<Record<PetActionType, Partial<Meters>>> = {
   heal: { hunger: 20, affection: 20, energy: 20, cleanliness: 20 },
   gift: { affection: 25, energy: 15 },
   cuddle: { affection: 20, energy: 10 },
+  walk: { affection: 10, energy: 8 }, // fresh air; bladder reset handled in applyCare
 };
 
 /** Cooldown between two actions of the same type (ms). 0 = no cooldown. */
@@ -84,6 +92,7 @@ export const COOLDOWN_MS: Record<PetActionType, number> = {
   gift: 12 * 3_600_000,
   cuddle: 0, // gated to once/day/user instead
   callback: 0,
+  walk: 30 * 60_000,
 };
 
 /** Treat cost (chore-earned currency). */
@@ -101,6 +110,7 @@ const XP_PER_ACTION: Record<PetActionType, number> = {
   gift: 8,
   cuddle: 10,
   callback: 12,
+  walk: 6,
 };
 
 const XP_PER_LEVEL = 100;
@@ -140,6 +150,8 @@ export function reactionEmoji(type: PetActionType): string {
       return "💗";
     case "callback":
       return "🏡";
+    case "walk":
+      return "🚶";
     default:
       return "✨";
   }
@@ -188,14 +200,23 @@ export function stageForLevel(level: number): number {
   return level >= STAGE_UP_LEVEL ? 2 : 1;
 }
 
-/** Weighted wellbeing (hunger + affection matter a little more). */
+/**
+ * Weighted wellbeing (hunger + affection matter a little more). A very full
+ * `bladder` (past 70) softly dents the bond — so a dog left without a walk can
+ * eventually tip into `sick`, but normal play is unaffected.
+ */
 export function bondOf(m: Meters): number {
-  const score =
-    m.hunger * 1.2 + m.affection * 1.2 + m.energy * 0.8 + m.cleanliness * 0.8;
-  return Math.round(score / 4);
+  const base =
+    (m.hunger * 1.2 + m.affection * 1.2 + m.energy * 0.8 + m.cleanliness * 0.8) /
+    4;
+  const accident = Math.max(0, m.bladder - 70) * 0.5; // 0 below 70, −15 at 100
+  return Math.round(base - accident);
 }
 
-/** Decay each meter from its stored value since `meters_at`. */
+/**
+ * Recompute live meters from the stored values since `meters_at`. Wellbeing
+ * meters fall; `bladder` rises (high is bad — a walk resets it).
+ */
 export function decayMeters(pet: Pet, now: Date): Meters {
   const h = hoursBetween(pet.meters_at, now);
   return {
@@ -203,6 +224,7 @@ export function decayMeters(pet: Pet, now: Date): Meters {
     affection: clamp(pet.affection - DECAY_PER_HOUR.affection * h),
     energy: clamp(pet.energy - DECAY_PER_HOUR.energy * h),
     cleanliness: clamp(pet.cleanliness - DECAY_PER_HOUR.cleanliness * h),
+    bladder: clamp(pet.bladder + DECAY_PER_HOUR.bladder * h),
   };
 }
 
@@ -240,6 +262,7 @@ export function applyCare(
       affection: Math.max(meters.affection, RECOVER_TO),
       energy: Math.max(meters.energy, RECOVER_TO),
       cleanliness: Math.max(meters.cleanliness, RECOVER_TO),
+      bladder: 0, // a fresh start back home
     };
     events.push({ kind: "recovered" });
     return {
@@ -254,6 +277,8 @@ export function applyCare(
     affection: clamp(meters.affection + (refill.affection ?? 0)),
     energy: clamp(meters.energy + (refill.energy ?? 0)),
     cleanliness: clamp(meters.cleanliness + (refill.cleanliness ?? 0)),
+    // A walk empties the bladder; every other action leaves it as-is (risen).
+    bladder: type === "walk" ? 0 : meters.bladder,
   };
 
   const xp = pet.xp + XP_PER_ACTION[type];
@@ -293,4 +318,5 @@ export const METERS: { key: MeterKey; emoji: string }[] = [
   { key: "affection", emoji: "❤️" },
   { key: "energy", emoji: "🧶" },
   { key: "cleanliness", emoji: "🧼" },
+  { key: "bladder", emoji: "🚽" }, // rises over time; high is bad (take out for a walk)
 ];

@@ -30,6 +30,7 @@ type PetsTable = {
     affection: number;
     energy: number;
     cleanliness: number;
+    bladder: number;
     meters_at: string;
     ran_away_at: string | null;
     treats: number;
@@ -52,6 +53,7 @@ type PetsTable = {
     affection?: number;
     energy?: number;
     cleanliness?: number;
+    bladder?: number;
     meters_at?: string;
     ran_away_at?: string | null;
     treats?: number;

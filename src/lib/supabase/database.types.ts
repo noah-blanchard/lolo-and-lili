@@ -737,6 +737,7 @@ export type Database = {
       pets: {
         Row: {
           affection: number
+          bladder: number
           cleanliness: number
           couple_id: string
           created_at: string
@@ -759,6 +760,7 @@ export type Database = {
         }
         Insert: {
           affection?: number
+          bladder?: number
           cleanliness?: number
           couple_id: string
           created_at?: string
@@ -781,6 +783,7 @@ export type Database = {
         }
         Update: {
           affection?: number
+          bladder?: number
           cleanliness?: number
           couple_id?: string
           created_at?: string

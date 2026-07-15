@@ -242,7 +242,8 @@
       "hunger": "Faim",
       "affection": "Amour",
       "energy": "Énergie",
-      "cleanliness": "Propreté"
+      "cleanliness": "Propreté",
+      "bladder": "Envie"
     },
     "actions": {
       "feed": "Nourrir",
@@ -250,7 +251,13 @@
       "play": "Jouer",
       "groom": "Toiletter",
       "gift": "Gâter",
-      "heal": "Soigner"
+      "heal": "Soigner",
+      "walk": "Sortir"
+    },
+    "walk": {
+      "title": "La promenade",
+      "hint": "Touche le caca pour nettoyer 🧻",
+      "skip": "Passer"
     },
     "closetTitle": "Garde-robe",
     "closetHint": "Achète des accessoires avec vos friandises, puis habille-le 🎀",

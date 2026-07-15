@@ -9,7 +9,17 @@ const METER_COLOR: Record<string, string> = {
   affection: "#ff8fa3",
   energy: "#9ee6cf",
   cleanliness: "#8fbcff",
+  bladder: "#9ee6cf",
 };
+
+// `bladder` rises and high is bad, so its bar shifts green → amber → red as it
+// fills. Every other meter uses its fixed colour (higher = better).
+function barColor(key: string, val: number): string {
+  if (key !== "bladder") return METER_COLOR[key];
+  if (val >= 80) return "#ff8f8f";
+  if (val >= 55) return "#ffcf8f";
+  return "#9ee6cf";
+}
 
 export function PetMeters({ pet }: { pet: PetView }) {
   const t = useTranslations("pet");
@@ -26,7 +36,7 @@ export function PetMeters({ pet }: { pet: PetView }) {
             <div className="h-3 flex-1 overflow-hidden rounded-full bg-surface-muted">
               <motion.div
                 className="h-full rounded-full"
-                style={{ backgroundColor: METER_COLOR[key] }}
+                style={{ backgroundColor: barColor(key, val) }}
                 animate={{ width: `${val}%` }}
                 transition={{ type: "spring", stiffness: 120, damping: 20 }}
               />

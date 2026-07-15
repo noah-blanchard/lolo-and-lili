@@ -35,6 +35,7 @@ const CARE_TYPES: PetActionType[] = [
   "groom",
   "heal",
   "gift",
+  "walk",
 ];
 /** Both partners must call within this window to coax the cat home. */
 const CALLBACK_WINDOW_MS = 6 * 3_600_000;
@@ -448,6 +449,9 @@ async function nourish(
       affection: clamp(m.affection + (deltas.affection ?? 0)),
       energy: clamp(m.energy + (deltas.energy ?? 0)),
       cleanliness: clamp(m.cleanliness + (deltas.cleanliness ?? 0)),
+      // Persist the risen bladder before re-anchoring meters_at, else the
+      // accrued rise would be silently reset on every nudge.
+      bladder: clamp(m.bladder + (deltas.bladder ?? 0)),
       meters_at: now.toISOString(),
     })
     .eq("id", pet.id);
