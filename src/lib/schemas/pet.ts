@@ -10,6 +10,7 @@ const CARE_TYPES = [
   "gift",
   "cuddle",
   "callback",
+  "walk",
 ] as const;
 
 export const adoptPetSchema = z.object({

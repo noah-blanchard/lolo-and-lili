@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { PetAvatar } from "./pet-avatar";
 import { PetMeters } from "./pet-meters";
 import { PetActions } from "./pet-actions";
+import { PetWalkOverlay } from "./pet-walk-overlay";
 import { PetCloset } from "./pet-closet";
 import { PetAdopt } from "./pet-adopt";
 import { PetMemories } from "./pet-memories";
@@ -26,6 +27,7 @@ export function PetScreen() {
     null,
   );
   const [muted, setMutedState] = useState(false);
+  const [walkOpen, setWalkOpen] = useState(false);
 
   usePartnerCare((type) => {
     setReaction({ id: Date.now(), emoji: reactionEmoji(type as PetActionType) });
@@ -84,6 +86,26 @@ export function PetScreen() {
     });
   }
 
+  // Fired when the poop is cleaned in the walk overlay — resets the bladder.
+  function walkDone() {
+    playSound("purr");
+    react("🌿");
+    care.mutate("walk", {
+      onSuccess: (res) => {
+        for (const ev of res.events) {
+          if (ev.kind === "levelUp") {
+            celebrate();
+            toast.success(t("leveledUp", { level: ev.value ?? "" }));
+          } else if (ev.kind === "stageUp") {
+            celebrate();
+            toast.success(t("grewUp", { name: petData.name }));
+          }
+        }
+      },
+      onError: (e) => toast.error((e as Error).message),
+    });
+  }
+
   function toggleMute() {
     const next = !muted;
     setMuted(next);
@@ -120,7 +142,11 @@ export function PetScreen() {
           <Card className="flex flex-col gap-4">
             <CardTitle>{t("careTitle")}</CardTitle>
             <PetMeters pet={petData} />
-            <PetActions pet={petData} onReaction={react} />
+            <PetActions
+              pet={petData}
+              onReaction={react}
+              onWalk={() => setWalkOpen(true)}
+            />
           </Card>
 
           <Card className="flex items-center justify-between gap-3">
@@ -151,6 +177,13 @@ export function PetScreen() {
       )}
 
       <PetMemories />
+
+      <PetWalkOverlay
+        open={walkOpen}
+        pet={petData}
+        onCleaned={walkDone}
+        onClose={() => setWalkOpen(false)}
+      />
     </div>
   );
 }

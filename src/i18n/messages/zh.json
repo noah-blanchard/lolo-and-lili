@@ -242,7 +242,8 @@
       "hunger": "饥饿",
       "affection": "爱",
       "energy": "活力",
-      "cleanliness": "清洁"
+      "cleanliness": "清洁",
+      "bladder": "如厕"
     },
     "actions": {
       "feed": "喂食",
@@ -250,7 +251,13 @@
       "play": "玩耍",
       "groom": "梳理",
       "gift": "宠溺",
-      "heal": "治疗"
+      "heal": "治疗",
+      "walk": "遛狗"
+    },
+    "walk": {
+      "title": "遛狗时间",
+      "hint": "点击便便清理干净 🧻",
+      "skip": "跳过"
     },
     "closetTitle": "衣橱",
     "closetHint": "用零食购买配饰，然后给它打扮 🎀",

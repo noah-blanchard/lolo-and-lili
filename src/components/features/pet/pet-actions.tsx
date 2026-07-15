@@ -11,15 +11,17 @@ import { tapScale, springBouncy } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
 
-/** The six actions surfaced in the grid (cuddle/callback live elsewhere). */
-type CareActionType = "feed" | "pet" | "play" | "groom" | "gift" | "heal";
+/** Actions surfaced in the grid (cuddle/callback live elsewhere). */
+type GridAction = "feed" | "pet" | "play" | "groom" | "gift" | "heal" | "walk";
 
 interface ActionDef {
-  type: CareActionType;
+  type: GridAction;
   emoji: string;
   sound: string;
   cost?: number;
   sickOnly?: boolean;
+  /** Opens the fullscreen walk animation instead of mutating directly. */
+  opensOverlay?: boolean;
 }
 
 const ACTIONS: ActionDef[] = [
@@ -29,20 +31,27 @@ const ACTIONS: ActionDef[] = [
   { type: "groom", emoji: "🧼", sound: "purr" },
   { type: "gift", emoji: "🎁", sound: "purr", cost: TREAT_COST.gift },
   { type: "heal", emoji: "🩹", sound: "meow", cost: TREAT_COST.heal, sickOnly: true },
+  { type: "walk", emoji: "🦮", sound: "purr", opensOverlay: true },
 ];
 
 export function PetActions({
   pet,
   onReaction,
+  onWalk,
 }: {
   pet: PetView;
   onReaction: (emoji: string) => void;
+  onWalk: () => void;
 }) {
   const t = useTranslations("pet");
   const care = useCarePet();
 
   function run(def: ActionDef) {
     if (care.isPending) return;
+    if (def.opensOverlay) {
+      onWalk();
+      return;
+    }
     vibrate(20);
     playSound(def.sound);
     onReaction(reactionEmoji(def.type));

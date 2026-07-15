@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "motion/react";
 import { ACCESSORIES, SKIN_EMOJI, type PetView } from "@/lib/pets";
+import { useLottieJson } from "@/lib/use-lottie-json";
 
 // Client-only Lottie player; falls back gracefully when no JSON is present.
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
@@ -20,31 +20,6 @@ function baseState(pet: PetView): Base {
 function accessoryEmoji(id: string | null | undefined): string | null {
   if (!id) return null;
   return ACCESSORIES.find((a) => a.id === id)?.emoji ?? null;
-}
-
-// Module-level cache so switching pet states (which changes the slot) reuses
-// already-fetched JSON instead of re-fetching every flip/remount (F-025).
-const lottieCache = new Map<string, object>();
-
-/** Fetch a Lottie JSON by URL; null until/if present. Pass null to skip. */
-function useLottieJson(url: string | null): object | null {
-  const [, bump] = useState(0);
-  useEffect(() => {
-    if (!url || lottieCache.has(url)) return;
-    let alive = true;
-    fetch(url)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((json) => {
-        if (!json) return;
-        lottieCache.set(url, json as object);
-        if (alive) bump((n) => n + 1);
-      })
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
-  }, [url]);
-  return url ? (lottieCache.get(url) ?? null) : null;
 }
 
 const idleAnim: Record<Base, { y: number | number[]; rotate: number | number[] }> = {
